@@ -22,5 +22,9 @@ public class UserController {
 
     private final UserService userService;
 
-
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public UserDto createUser(@RequestBody @Valid NewUserRequest newUserRequest) {
+        return userService.addUser(newUserRequest);
+    }
 }
