@@ -12,6 +12,7 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NewUserRequest {
+
     @Email
     @NotBlank(message = "Email не может быть пустым.")
     @Length(min = 6, max = 254, message = "Длина email должна быть в диапазоне от 6 до 254 символов.")
