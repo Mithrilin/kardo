@@ -20,5 +20,13 @@ public class UserServiceImpl implements UserService {
 
     private final UserMapper userMapper;
 
-
+    @Override
+    @Transactional
+    public UserDto addUser(NewUserRequest newUserRequest) {
+        User user = userMapper.newUserRequestToUser(newUserRequest);
+        User returnedUser = userRepository.save(user);
+        UserDto returnedUserDto = userMapper.userToUserDto(returnedUser);
+        log.info("Добавлен новый пользователь с ID = {}", returnedUserDto.getId());
+        return returnedUserDto;
+    }
 }
