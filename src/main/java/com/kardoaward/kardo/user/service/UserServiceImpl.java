@@ -5,11 +5,10 @@ import com.kardoaward.kardo.user.model.NewUserRequest;
 import com.kardoaward.kardo.user.model.User;
 import com.kardoaward.kardo.user.model.UserDto;
 import com.kardoaward.kardo.user.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
 
 @Slf4j
 @Service
