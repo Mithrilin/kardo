@@ -1,9 +1,9 @@
 package com.kardoaward.kardo.user.controller;
 
 import com.kardoaward.kardo.user.mapper.UserMapper;
-import com.kardoaward.kardo.user.model.NewUserRequest;
+import com.kardoaward.kardo.user.model.dto.NewUserRequest;
 import com.kardoaward.kardo.user.model.User;
-import com.kardoaward.kardo.user.model.UserDto;
+import com.kardoaward.kardo.user.model.dto.UserDto;
 import com.kardoaward.kardo.user.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
