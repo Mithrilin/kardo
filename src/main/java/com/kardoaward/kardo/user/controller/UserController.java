@@ -4,6 +4,7 @@ import com.kardoaward.kardo.exception.BadRequestException;
 import com.kardoaward.kardo.user.mapper.UserMapper;
 import com.kardoaward.kardo.user.model.dto.NewUserRequest;
 import com.kardoaward.kardo.user.model.User;
+import com.kardoaward.kardo.user.model.dto.UserDto;
 import com.kardoaward.kardo.user.model.dto.UpdateUserRequest;
 import com.kardoaward.kardo.user.model.dto.UserDto;
 import com.kardoaward.kardo.user.service.UserService;
@@ -56,7 +57,6 @@ public class UserController {
 
     @PostMapping("/reg")
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
     public UserDto createUser(@RequestBody @Valid NewUserRequest newUserRequest) {
         log.info("Добавление нового пользователь {}.", newUserRequest);
         User user = userMapper.newUserRequestToUser(newUserRequest);

@@ -2,6 +2,7 @@ package com.kardoaward.kardo.user.mapper;
 
 import com.kardoaward.kardo.user.model.dto.NewUserRequest;
 import com.kardoaward.kardo.user.model.User;
+import com.kardoaward.kardo.user.model.dto.UserDto;
 import com.kardoaward.kardo.user.model.dto.UpdateUserRequest;
 import com.kardoaward.kardo.user.model.dto.UserDto;
 import com.kardoaward.kardo.user.model.dto.UserShortDto;
