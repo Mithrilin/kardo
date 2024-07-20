@@ -16,5 +16,14 @@ public class UserValidationHelper {
 
     private final UserRepository userRepository;
 
+    public User isUserPresent(Long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
 
+        if (optionalUser.isEmpty()) {
+            log.error("Пользователь с ИД {} отсутствует в БД.", userId);
+            throw new NotFoundException(String.format("Пользователь с ИД %d отсутствует в БД.", userId));
+        }
+
+        return optionalUser.get();
+    }
 }
