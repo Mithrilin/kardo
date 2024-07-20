@@ -6,6 +6,7 @@ import com.kardoaward.kardo.user.model.User;
 import com.kardoaward.kardo.user.model.dto.UserDto;
 import com.kardoaward.kardo.user.service.UserService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,8 +18,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Slf4j
 @AllArgsConstructor
@@ -58,5 +62,15 @@ public class UserController {
         //ToDo Изменить текст лога?
         log.info("Запрос на удаление пользователя с ИД {}.", userId);
         userService.deleteUser(userId);
+    }
+
+    @GetMapping
+    //ToDo Нужен ли такой метод? Если нет, то переделать под получение всех пользователей
+    public List<UserDto> getUsersByIds(@RequestParam(required = false) List<Long> ids,
+                                       @RequestParam(defaultValue = "0") @Min(0) int from,
+                                       @RequestParam(defaultValue = "10") @Positive int size) {
+        log.info("Запрос на возврат списка пользователей.");
+        List<User> users = userService.getUsersByIds(ids, from, size);
+        return userMapper.userListToUserDtoList(users);
     }
 }
