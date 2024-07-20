@@ -30,7 +30,7 @@ public class UserController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto createUser(@RequestBody @Valid NewUserRequest newUserRequest) {
-        log.info("Добавлен новый пользователь {}.", newUserRequest);
+        log.info("Получен новый пользователь {}.", newUserRequest);
         User user = userMapper.newUserRequestToUser(newUserRequest);
         User returnedUser = userService.addUser(user);
         return userMapper.userToUserDto(returnedUser);
