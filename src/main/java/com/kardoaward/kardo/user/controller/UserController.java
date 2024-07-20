@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +32,7 @@ public class UserController {
     private final UserMapper userMapper;
 
     @PostMapping
+    //ToDo Какой статус возвращать фронту и нужно ли?
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto createUser(@RequestBody @Valid NewUserRequest newUserRequest) {
         log.info("Получен новый пользователь {}.", newUserRequest);
@@ -40,10 +42,21 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
+    //ToDo Какой статус возвращать фронту и нужно ли?
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public UserDto getUserById(@PathVariable @Positive Long userId) {
+        //ToDo Изменить текст лога?
         log.info("Запрос на возврат пользователя с ИД {}.", userId);
         User returnedUser = userService.getUserById(userId);
         return userMapper.userToUserDto(returnedUser);
+    }
+
+    @DeleteMapping("/{userId}")
+    //ToDo Какой статус возвращать фронту и нужно ли?
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUser(@PathVariable @Positive Long userId) {
+        //ToDo Изменить текст лога?
+        log.info("Запрос на удаление пользователя с ИД {}.", userId);
+        userService.deleteUser(userId);
     }
 }

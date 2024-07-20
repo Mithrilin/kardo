@@ -31,4 +31,11 @@ public class UserServiceImpl implements UserService {
         log.info("Пользователь с ИД {} возвращен.", userId);
         return user;
     }
+
+    @Override
+    public void deleteUser(Long userId) {
+        userValidationHelper.isUserPresent(userId);
+        userRepository.deleteById(userId);
+        log.info("Пользователь с ID {} удалён.", userId);
+    }
 }
