@@ -39,6 +39,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUser(Long userId) {
         userValidationHelper.isUserPresent(userId);
         userRepository.deleteById(userId);
