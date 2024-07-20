@@ -6,7 +6,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -28,5 +27,6 @@ public class UserDto {
     private String profilePhoto;
     private String portfolio;
     private String aboutMe;
-    private List<String> networks;
+    //ToDo Исправить на список. В БД это поле отсутствует.
+    private String network;
 }

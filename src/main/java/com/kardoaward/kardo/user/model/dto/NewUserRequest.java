@@ -10,7 +10,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -41,5 +40,6 @@ public class NewUserRequest {
     @NotBlank(message = "City не может быть пустым.")
     @Size(min = 2, max = 250, message = "Длина city должна быть в диапазоне от 2 до 250 символов.")
     private String city;
-    private List<String> networks;
+    //ToDo Исправить на список. В БД это поле отсутствует.
+    private String network;
 }

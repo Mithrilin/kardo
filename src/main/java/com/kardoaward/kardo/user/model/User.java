@@ -17,7 +17,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -49,6 +48,7 @@ public class User {
     private String portfolio;
     @Column(name = "about_me")
     private String aboutMe;
+    //ToDo Исправить на список. В БД это поле отсутствует.
     @Transient
-    private List<String> networks;
+    private String network;
 }
