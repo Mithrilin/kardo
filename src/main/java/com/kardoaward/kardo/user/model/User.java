@@ -1,5 +1,6 @@
 package com.kardoaward.kardo.user.model;
 
+import jakarta.persistence.*;
 import com.kardoaward.kardo.user.model.enums.Gender;
 import com.kardoaward.kardo.user.model.enums.Role;
 import jakarta.persistence.CollectionTable;
@@ -34,6 +35,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String email;
     private String name;
     private String surname;

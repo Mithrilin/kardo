@@ -12,6 +12,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -33,6 +34,23 @@ public class UserController {
 
     private final UserMapper userMapper;
 
+    /*TODO тестовый эндпроит для незарегистрированных юзеров. Должен вести на какую-то стартовую страницу
+    *  обсудить с фронтами, куда будет выводить*/
+    @GetMapping()
+    public String welcome() {
+        return "Добро пожаловать на сайт Kardo";
+    }
+
+    /*TODO тестовый эндпроит для регистрации/зарегистрированных, требует ввода логина и пароля
+    *  реализация будет корректироваться до двух: зарегистрироваться и вход для зарегистрированных */
+    @GetMapping("/auth")
+    public String authorized() {
+        return "Это страница Kardo для авторизованных пользователей";
+    }
+
+
+    @PostMapping("/reg")
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public UserDto createUser(@RequestBody @Valid NewUserRequest newUserRequest) {
         log.info("Добавление нового пользователь {}.", newUserRequest);
