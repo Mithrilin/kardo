@@ -39,7 +39,7 @@ public class UserController {
     //ToDo Какой статус возвращать фронту и нужно ли?
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto createUser(@RequestBody @Valid NewUserRequest newUserRequest) {
-        log.info("Получен новый пользователь {}.", newUserRequest);
+        log.info("Добавление нового пользователь {}.", newUserRequest);
         User user = userMapper.newUserRequestToUser(newUserRequest);
         User returnedUser = userService.addUser(user);
         return userMapper.userToUserDto(returnedUser);
@@ -49,8 +49,7 @@ public class UserController {
     //ToDo Какой статус возвращать фронту и нужно ли?
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public UserDto getUserById(@PathVariable @Positive Long userId) {
-        //ToDo Изменить текст лога?
-        log.info("Запрос на возврат пользователя с ИД {}.", userId);
+        log.info("Возвращение пользователя с ИД {}.", userId);
         User returnedUser = userService.getUserById(userId);
         return userMapper.userToUserDto(returnedUser);
     }
@@ -59,8 +58,7 @@ public class UserController {
     //ToDo Какой статус возвращать фронту и нужно ли?
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable @Positive Long userId) {
-        //ToDo Изменить текст лога?
-        log.info("Запрос на удаление пользователя с ИД {}.", userId);
+        log.info("Удаление пользователя с ИД {}.", userId);
         userService.deleteUser(userId);
     }
 
@@ -69,7 +67,7 @@ public class UserController {
     public List<UserDto> getUsersByIds(@RequestParam(required = false) List<Long> ids,
                                        @RequestParam(defaultValue = "0") @Min(0) int from,
                                        @RequestParam(defaultValue = "10") @Positive int size) {
-        log.info("Запрос на возврат списка пользователей.");
+        log.info("Возвращение списка пользователей.");
         List<User> users = userService.getUsersByIds(ids, from, size);
         return userMapper.userListToUserDtoList(users);
     }
