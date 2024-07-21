@@ -29,9 +29,10 @@ public class MyUserDetails implements UserDetails {
         return user.getPassword();
     }
 
+    /*TODO нюанс дефолтных методов UserDetails - реально это email в качестве уникального username для регистрации*/
     @Override
     public String getUsername() {
-        return user.getName();
+        return user.getEmail();
     }
 
     @Override
