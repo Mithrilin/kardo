@@ -29,7 +29,7 @@ public class NewUserRequest {
     @Size(min = 2, max = 250, message = "Длина patronymic должна быть в диапазоне от 2 до 250 символов.")
     private String patronymic;
     @NotNull(message = "Birthday не может быть null.")
-    @Past
+    @Past(message = "Birthday должен быть в прошлом.")
     private LocalDate birthday;
     @NotBlank(message = "Country не может быть пустым.")
     @Size(min = 2, max = 250, message = "Длина country должна быть в диапазоне от 2 до 250 символов.")
