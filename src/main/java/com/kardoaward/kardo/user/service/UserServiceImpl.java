@@ -13,10 +13,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -103,5 +108,10 @@ public class UserServiceImpl implements UserService {
         log.info("Список участников оффлайн-отбора с ИД {} с номера {} размером {} возвращён.",
                 selectionId, from, users.size());
         return userShortDtos;
+    }
+
+    public UserDetails loadUserByEmail(String Email) throws UsernameNotFoundException {
+//        Optional<User> user = userRepository.findByEmail(Email)
+        return null;
     }
 }
