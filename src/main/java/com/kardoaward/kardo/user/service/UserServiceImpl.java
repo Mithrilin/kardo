@@ -10,6 +10,7 @@ import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -28,9 +29,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService {
-
     private PasswordEncoder passwordEncoder;
-
     private final UserRepository userRepository;
 
     private final UserMapper userMapper;
