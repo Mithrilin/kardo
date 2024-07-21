@@ -1,6 +1,8 @@
 package com.kardoaward.kardo.user.service;
 
+import com.kardoaward.kardo.user.mapper.UserMapper;
 import com.kardoaward.kardo.user.model.User;
+import com.kardoaward.kardo.user.model.dto.UpdateUserRequest;
 import com.kardoaward.kardo.user.repository.UserRepository;
 import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import jakarta.transaction.Transactional;
@@ -20,6 +22,8 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
+    private final UserMapper userMapper;
 
     private final UserValidationHelper userValidationHelper;
 
@@ -68,5 +72,14 @@ public class UserServiceImpl implements UserService {
         List<User> users = usersPage.getContent();
         log.info("Список пользователей с номера {} размером {} возвращён.", from, users.size());
         return users;
+    }
+
+    @Override
+    public User updateUser(Long userId, UpdateUserRequest request) {
+        User user = userValidationHelper.isUserPresent(userId);
+        userMapper.updateUser(request, user);
+        User updatedUser = userRepository.save(user);
+        log.info("Пользователь с ID {} обновлён.", userId);
+        return updatedUser;
     }
 }

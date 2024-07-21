@@ -3,6 +3,7 @@ package com.kardoaward.kardo.user.controller;
 import com.kardoaward.kardo.user.mapper.UserMapper;
 import com.kardoaward.kardo.user.model.dto.NewUserRequest;
 import com.kardoaward.kardo.user.model.User;
+import com.kardoaward.kardo.user.model.dto.UpdateUserRequest;
 import com.kardoaward.kardo.user.model.dto.UserDto;
 import com.kardoaward.kardo.user.service.UserService;
 import jakarta.validation.Valid;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -70,5 +72,13 @@ public class UserController {
         log.info("Возвращение списка пользователей.");
         List<User> users = userService.getUsersByIds(ids, from, size);
         return userMapper.userListToUserDtoList(users);
+    }
+
+    @PatchMapping("/{userId}")
+    public UserDto updateUser(@PathVariable @Positive Long userId,
+                              @RequestBody @Valid UpdateUserRequest request) {
+        log.info("Обновление пользователя с ИД {}.", userId);
+        User updatedUser = userService.updateUser(userId, request);
+        return userMapper.userToUserDto(updatedUser);
     }
 }
