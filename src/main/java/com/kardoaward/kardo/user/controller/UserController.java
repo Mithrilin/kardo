@@ -49,11 +49,6 @@ public class UserController {
         return "Это страница Kardo для авторизованных пользователей";
     }
 
-    @GetMapping("/org")
-    public String loginForOrganizer() {
-        return "Это страница Kardo для организаторов";
-    }
-
     @PostMapping("/reg")
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto createUser(@RequestBody @Valid NewUserRequest newUserRequest) {
