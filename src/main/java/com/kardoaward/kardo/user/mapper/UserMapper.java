@@ -14,6 +14,8 @@ import java.util.List;
 
 import static org.mapstruct.NullValuePropertyMappingStrategy.IGNORE;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 

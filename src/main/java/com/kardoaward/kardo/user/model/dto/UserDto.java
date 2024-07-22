@@ -29,6 +29,8 @@ public class UserDto {
     private String profilePhoto;
     private String portfolio;
     private String aboutMe;
-    private Set<String> network;
-    private Role role;
+    //ToDo Исправить на список. В БД это поле отсутствует.
+    private String network;
+    private String roles;
+    private String password;
 }

@@ -45,4 +45,5 @@ public class NewUserRequest {
     private Set<String> network;
     @NotNull(message = "Role не может быть null.")
     private Role role;
+    private String password;
 }
