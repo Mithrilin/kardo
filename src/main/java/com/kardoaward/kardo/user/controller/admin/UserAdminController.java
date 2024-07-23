@@ -40,6 +40,14 @@ public class UserAdminController {
         userService.deleteUser(userId);
     }
 
+    @GetMapping("/{userId}")
+    //ToDo Какой статус возвращать фронту и нужно ли?
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public UserDto getUserById(@PathVariable @Positive Long userId) {
+        log.info("Возвращение админу информации о пользователе с ИД {}.", userId);
+        User returnedUser = userService.getUserById(userId);
+        return userMapper.userToUserDto(returnedUser);
+    }
 
     @GetMapping
     //ToDo Нужен ли такой метод? Если нет, то переделать под получение всех пользователей
