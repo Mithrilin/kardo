@@ -44,26 +44,36 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    //ToDo Какой статус возвращать фронту и нужно ли?
+    /* ToDo
+        Какой статус возвращать фронту и нужно ли?
+        Как проверить, что юзер запросил данные именно своего профиля?
+     */
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public UserDto getUserById(@PathVariable @Positive Long userId) {
-        log.info("Возвращение пользователя с ИД {}.", userId);
+        log.info("Получение пользователем с ИД {} своих данных.", userId);
         User returnedUser = userService.getUserById(userId);
         return userMapper.userToUserDto(returnedUser);
     }
 
     @DeleteMapping("/{userId}")
-    //ToDo Какой статус возвращать фронту и нужно ли?
+    /* ToDo
+        Какой статус возвращать фронту и нужно ли?
+        Как проверить, что юзер удаляет именно свой профиль?
+     */
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable @Positive Long userId) {
-        log.info("Удаление пользователя с ИД {}.", userId);
+        log.info("Удаление пользователем с ИД {} своего профиля.", userId);
         userService.deleteUser(userId);
     }
 
     @PatchMapping("/{userId}")
+    /* ToDo
+        Какой статус возвращать фронту и нужно ли?
+        Как проверить, что юзер обновляет именно свой профиль?
+     */
     public UserDto updateUser(@PathVariable @Positive Long userId,
                               @RequestBody @Valid UpdateUserRequest request) {
-        log.info("Обновление пользователя с ИД {}.", userId);
+        log.info("Обновление пользователем с ИД {} своих данных.", userId);
         User updatedUser = userService.updateUser(userId, request);
         return userMapper.userToUserDto(updatedUser);
     }
