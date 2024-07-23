@@ -32,6 +32,13 @@ public class UserAdminController {
 
     private final UserMapper userMapper;
 
+    @DeleteMapping("/{userId}")
+    //ToDo Какой статус возвращать фронту и нужно ли?
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteUser(@PathVariable @Positive Long userId) {
+        log.info("Удаление админом пользователя с ИД {}.", userId);
+        userService.deleteUser(userId);
+    }
 
 
     @GetMapping
