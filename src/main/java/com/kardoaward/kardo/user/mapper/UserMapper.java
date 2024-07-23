@@ -24,6 +24,8 @@ public interface UserMapper {
 
     List<UserDto> userListToUserDtoList(List<User> userList);
 
+    List<UserShortDto> userListToUserShortDtoList(List<User> userList);
+
     @BeanMapping(nullValuePropertyMappingStrategy = IGNORE)
     void updateUser(UpdateUserRequest request, @MappingTarget User user);
 }
