@@ -13,5 +13,12 @@ CREATE TABLE users (
   citizenship VARCHAR(250),
   profile_photo VARCHAR(250),
   portfolio VARCHAR(250),
-  about_me VARCHAR(7000)
+  about_me VARCHAR(7000),
+  role VARCHAR(10)
+);
+
+CREATE TABLE user_networks (
+  user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  network VARCHAR(250) NOT NULL,
+  PRIMARY KEY (user_id, network)
 );

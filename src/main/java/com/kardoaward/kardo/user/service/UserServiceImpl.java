@@ -1,6 +1,8 @@
 package com.kardoaward.kardo.user.service;
 
+import com.kardoaward.kardo.user.mapper.UserMapper;
 import com.kardoaward.kardo.user.model.User;
+import com.kardoaward.kardo.user.model.dto.UpdateUserRequest;
 import com.kardoaward.kardo.user.repository.UserRepository;
 import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import jakarta.transaction.Transactional;
@@ -20,6 +22,8 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+
+    private final UserMapper userMapper;
 
     private final UserValidationHelper userValidationHelper;
 
@@ -47,10 +51,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    //ToDo Нужен ли такой метод? Если нет, то переделать под получение всех пользователей
     public List<User> getUsersByIds(List<Long> ids, int from, int size) {
         int page = from / size;
-        //ToDo По какому параметру сортируем?
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
         Page<User> usersPage;
@@ -68,5 +70,15 @@ public class UserServiceImpl implements UserService {
         List<User> users = usersPage.getContent();
         log.info("Список пользователей с номера {} размером {} возвращён.", from, users.size());
         return users;
+    }
+
+    @Override
+    @Transactional
+    public User updateUser(Long userId, UpdateUserRequest request) {
+        User user = userValidationHelper.isUserPresent(userId);
+        userMapper.updateUser(request, user);
+        User updatedUser = userRepository.save(user);
+        log.info("Пользователь с ID {} обновлён.", userId);
+        return updatedUser;
     }
 }

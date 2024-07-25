@@ -1,11 +1,13 @@
 package com.kardoaward.kardo.user.model.dto;
 
 import com.kardoaward.kardo.user.model.enums.Gender;
+import com.kardoaward.kardo.user.model.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -27,6 +29,6 @@ public class UserDto {
     private String profilePhoto;
     private String portfolio;
     private String aboutMe;
-    //ToDo Исправить на список. В БД это поле отсутствует.
-    private String network;
+    private Set<String> network;
+    private Role role;
 }
