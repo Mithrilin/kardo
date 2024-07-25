@@ -51,10 +51,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    //ToDo Нужен ли такой метод? Если нет, то переделать под получение всех пользователей
     public List<User> getUsersByIds(List<Long> ids, int from, int size) {
         int page = from / size;
-        //ToDo По какому параметру сортируем?
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
         Page<User> usersPage;
@@ -75,6 +73,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public User updateUser(Long userId, UpdateUserRequest request) {
         User user = userValidationHelper.isUserPresent(userId);
         userMapper.updateUser(request, user);

@@ -87,11 +87,18 @@ public class UserController {
     @PatchMapping("/{userId}")
     /* ToDo
         Какой статус возвращать фронту и нужно ли?
-        Как проверить, что юзер обновляет именно свой профиль?
      */
-    public UserDto updateUser(@PathVariable @Positive Long userId,
+    public UserDto updateUser(@RequestHeader("X-Participant-User-Id") Long participantId,
+                              @PathVariable @Positive Long userId,
                               @RequestBody @Valid UpdateUserRequest request) {
         log.info("Обновление пользователем с ИД {} своих данных.", userId);
+
+        if (!userId.equals(participantId)) {
+            log.error("Пользователь с ИД {} не может обновить профиль пользователя с ИД {}.", participantId, userId);
+            throw new BadRequestException(String.format("Пользователь с ИД %d не может обновить " +
+                    "профиль пользователя с ИД %d.", participantId, userId));
+        }
+
         User updatedUser = userService.updateUser(userId, request);
         return userMapper.userToUserDto(updatedUser);
     }

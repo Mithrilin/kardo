@@ -50,7 +50,6 @@ public class UserAdminController {
     }
 
     @GetMapping
-    //ToDo Нужен ли такой метод? Если нет, то переделать под получение всех пользователей
     public List<UserShortDto> getUsersByIds(@RequestParam(required = false) List<Long> ids,
                                             @RequestParam(defaultValue = "0") @Min(0) int from,
                                             @RequestParam(defaultValue = "10") @Positive int size) {
