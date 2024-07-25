@@ -1,5 +1,6 @@
 package com.kardoaward.kardo.user.controller;
 
+import com.kardoaward.kardo.exception.BadRequestException;
 import com.kardoaward.kardo.user.mapper.UserMapper;
 import com.kardoaward.kardo.user.model.dto.NewUserRequest;
 import com.kardoaward.kardo.user.model.User;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,7 +36,9 @@ public class UserController {
     private final UserMapper userMapper;
 
     @PostMapping
-    //ToDo Какой статус возвращать фронту и нужно ли?
+    /*ToDo
+       Какой статус возвращать фронту и нужно ли?
+     */
     @ResponseStatus(HttpStatus.CREATED)
     public UserDto createUser(@RequestBody @Valid NewUserRequest newUserRequest) {
         log.info("Добавление нового пользователь {}.", newUserRequest);
@@ -58,11 +62,18 @@ public class UserController {
     @DeleteMapping("/{userId}")
     /* ToDo
         Какой статус возвращать фронту и нужно ли?
-        Как проверить, что юзер удаляет именно свой профиль?
      */
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@PathVariable @Positive Long userId) {
+    public void deleteUser(@RequestHeader("X-Participant-User-Id") Long participantId,
+                           @PathVariable @Positive Long userId) {
         log.info("Удаление пользователем с ИД {} своего профиля.", userId);
+
+        if (!userId.equals(participantId)) {
+            log.error("Пользователь с ИД {} не может удалить профиль пользователя с ИД {}.", participantId, userId);
+            throw new BadRequestException(String.format("Пользователь с ИД %d не может удалить " +
+                    "профиль пользователя с ИД %d.", participantId, userId));
+        }
+
         userService.deleteUser(userId);
     }
 
