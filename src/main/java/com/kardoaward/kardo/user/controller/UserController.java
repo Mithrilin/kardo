@@ -50,11 +50,18 @@ public class UserController {
     @GetMapping("/{userId}")
     /* ToDo
         Какой статус возвращать фронту и нужно ли?
-        Как проверить, что юзер запросил данные именно своего профиля?
      */
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public UserDto getUserById(@PathVariable @Positive Long userId) {
+    public UserDto getUserById(@RequestHeader("X-Participant-User-Id") Long participantId,
+                               @PathVariable @Positive Long userId) {
         log.info("Получение пользователем с ИД {} своих данных.", userId);
+
+        if (!userId.equals(participantId)) {
+            log.error("Пользователь с ИД {} не может просматривать профиль пользователя с ИД {}.", participantId, userId);
+            throw new BadRequestException(String.format("Пользователь с ИД %d не может просматривать " +
+                    "профиль пользователя с ИД %d.", participantId, userId));
+        }
+
         User returnedUser = userService.getUserById(userId);
         return userMapper.userToUserDto(returnedUser);
     }
