@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.URL;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -46,6 +47,5 @@ public class UpdateUserRequest {
     private String portfolio;
     @Size(min = 2, max = 10000, message = "Длина aboutMe должна быть в диапазоне от 2 до 10000 символов.")
     private String aboutMe;
-    //ToDo Исправить на список. В БД это поле отсутствует.
-    private String network;
+    private Set<String> network;
 }

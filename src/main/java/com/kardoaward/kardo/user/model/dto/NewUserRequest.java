@@ -1,5 +1,6 @@
 package com.kardoaward.kardo.user.model.dto;
 
+import com.kardoaward.kardo.user.model.enums.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -10,6 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -40,6 +42,7 @@ public class NewUserRequest {
     @NotBlank(message = "City не может быть пустым.")
     @Size(min = 2, max = 250, message = "Длина city должна быть в диапазоне от 2 до 250 символов.")
     private String city;
-    //ToDo Исправить на список. В БД это поле отсутствует.
-    private String network;
+    private Set<String> network;
+    @NotNull(message = "Role не может быть null.")
+    private Role role;
 }
