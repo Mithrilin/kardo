@@ -1,6 +1,6 @@
 package com.kardoaward.kardo.offlineCompetition.model.dto;
 
-import com.kardoaward.kardo.offlineCompetition.model.enums.EventStatus;
+import com.kardoaward.kardo.offlineCompetition.model.enums.Status;
 import com.kardoaward.kardo.offlineCompetition.model.enums.Field;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 
-import static com.kardoaward.kardo.offlineCompetition.model.enums.EventStatus.UPCOMING;
+import static com.kardoaward.kardo.offlineCompetition.model.enums.Status.UPCOMING;
 
 @Data
 @AllArgsConstructor
@@ -32,7 +32,7 @@ public class NewOfflineCompetitionRequest {
     @NotNull(message = "CompetitionEnd не может быть null.")
     @Future(message = "CompetitionEnd должен быть в будущем.")
     private LocalDate competitionEnd;
-    private EventStatus status = UPCOMING;
+    private Status status = UPCOMING;
     @NotBlank(message = "Location не может быть пустым.")
     @Size(min = 2, max = 250, message = "Длина location должна быть в диапазоне от 2 до 250 символов.")
     private String location;

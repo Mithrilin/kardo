@@ -1,6 +1,6 @@
 package com.kardoaward.kardo.offlineCompetition.model.dto;
 
-import com.kardoaward.kardo.offlineCompetition.model.enums.EventStatus;
+import com.kardoaward.kardo.offlineCompetition.model.enums.Status;
 import com.kardoaward.kardo.offlineCompetition.model.enums.Field;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,7 +19,7 @@ public class OfflineCompetitionDto {
     private String hashtag;
     private LocalDate competitionStart;
     private LocalDate competitionEnd;
-    private EventStatus status;
+    private Status status;
     private String location;
     private List<Field> fields;
     private String description;

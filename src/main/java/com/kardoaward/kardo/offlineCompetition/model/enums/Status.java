@@ -1,6 +1,6 @@
 package com.kardoaward.kardo.offlineCompetition.model.enums;
 
-public enum EventStatus {
+public enum Status {
 
     FINISHED,
     UPCOMING,
