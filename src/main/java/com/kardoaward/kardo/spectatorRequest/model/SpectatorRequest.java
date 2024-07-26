@@ -37,7 +37,7 @@ public class SpectatorRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "creation_time")
-    private LocalDateTime creationTime;
+    private LocalDateTime creationTime = LocalDateTime.now();
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinColumn(name = "event_id")
