@@ -26,5 +26,4 @@ public class SelectionDto {
     private Status status;
     private List<Field> fields;
     private String location;
-    private String selectionPhoto;
 }

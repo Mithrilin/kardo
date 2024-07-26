@@ -65,6 +65,4 @@ public class Selection {
  */
     private List<Field> fields;
     private String location;
-    @Column(name = "selection_photo")
-    private String selectionPhoto;
 }

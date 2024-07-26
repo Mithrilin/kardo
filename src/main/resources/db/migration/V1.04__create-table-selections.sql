@@ -7,8 +7,7 @@ CREATE TABLE selections (
   selection_start DATE NOT NULL,
   selection_end DATE NOT NULL,
   status VARCHAR(20) NOT NULL,
-  location VARCHAR(250) NOT NULL,
-  selection_photo VARCHAR(250) NOT NULL
+  location VARCHAR(250) NOT NULL
 );
 
 CREATE TABLE selection_fields (
