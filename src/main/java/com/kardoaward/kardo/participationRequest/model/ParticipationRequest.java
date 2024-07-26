@@ -26,6 +26,8 @@ import lombok.ToString;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.kardoaward.kardo.enums.RequestStatus.PENDING;
+
 @Entity
 @Table(name = "participation_requests")
 @AllArgsConstructor
@@ -49,7 +51,7 @@ public class ParticipationRequest {
     @JoinColumn(name = "requester_id")
     private User requester;
     @Enumerated(EnumType.STRING)
-    private RequestStatus status;
+    private RequestStatus status = PENDING;
     @ElementCollection
     @CollectionTable(name="participation_request_fields",
             joinColumns=@JoinColumn(name="participation_request_id"))
