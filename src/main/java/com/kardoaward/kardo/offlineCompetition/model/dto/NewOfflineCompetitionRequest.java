@@ -1,7 +1,7 @@
 package com.kardoaward.kardo.offlineCompetition.model.dto;
 
-import com.kardoaward.kardo.offlineCompetition.model.enums.Status;
-import com.kardoaward.kardo.offlineCompetition.model.enums.Field;
+import com.kardoaward.kardo.enums.Status;
+import com.kardoaward.kardo.enums.Field;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.List;
 
-import static com.kardoaward.kardo.offlineCompetition.model.enums.Status.UPCOMING;
+import static com.kardoaward.kardo.enums.Status.UPCOMING;
 
 @Data
 @AllArgsConstructor

@@ -1,6 +1,6 @@
 package com.kardoaward.kardo.onlineCompetition.model;
 
-import com.kardoaward.kardo.offlineCompetition.model.enums.Status;
+import com.kardoaward.kardo.enums.Status;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;

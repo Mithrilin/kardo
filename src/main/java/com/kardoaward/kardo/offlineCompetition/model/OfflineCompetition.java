@@ -1,7 +1,7 @@
 package com.kardoaward.kardo.offlineCompetition.model;
 
-import com.kardoaward.kardo.offlineCompetition.model.enums.Status;
-import com.kardoaward.kardo.offlineCompetition.model.enums.Field;
+import com.kardoaward.kardo.enums.Status;
+import com.kardoaward.kardo.enums.Field;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;

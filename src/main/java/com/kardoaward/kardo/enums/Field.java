@@ -1,4 +1,4 @@
-package com.kardoaward.kardo.offlineCompetition.model.enums;
+package com.kardoaward.kardo.enums;
 
 public enum Field {
 
