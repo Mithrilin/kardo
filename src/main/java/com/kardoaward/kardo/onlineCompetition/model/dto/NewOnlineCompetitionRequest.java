@@ -1,6 +1,5 @@
-package com.kardoaward.kardo.offlineCompetition.model.dto;
+package com.kardoaward.kardo.onlineCompetition.model.dto;
 
-import com.kardoaward.kardo.enums.Field;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -10,12 +9,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class NewOfflineCompetitionRequest {
+public class NewOnlineCompetitionRequest {
 
     @NotBlank(message = "Title не может быть пустым.")
     @Size(min = 2, max = 250, message = "Длина title должна быть в диапазоне от 2 до 250 символов.")
@@ -29,11 +27,6 @@ public class NewOfflineCompetitionRequest {
     @NotNull(message = "CompetitionEnd не может быть null.")
     @Future(message = "CompetitionEnd должен быть в будущем.")
     private LocalDate competitionEnd;
-    @NotBlank(message = "Location не может быть пустым.")
-    @Size(min = 2, max = 250, message = "Длина location должна быть в диапазоне от 2 до 250 символов.")
-    private String location;
-    @NotNull(message = "Fields не может быть null.")
-    private List<Field> fields;
     @NotBlank(message = "Description не может быть пустым.")
     @Size(min = 2, max = 10000, message = "Длина Description должна быть в диапазоне от 2 до 10000 символов.")
     private String description;
