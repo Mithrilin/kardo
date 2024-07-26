@@ -26,6 +26,6 @@ public class EventDto {
     private List<EventProgram> programs;
     private List<Field> fields;
     private String logo;
-    private boolean isMainEvent;
+    private Boolean isMainEvent;
     private String description;
 }

@@ -72,6 +72,6 @@ public class Event {
     private List<Field> fields;
     private String logo;
     @Column(name="is_main_event")
-    private boolean isMainEvent;
+    private Boolean isMainEvent;
     private String description;
 }
