@@ -32,7 +32,7 @@ public class NewOfflineCompetitionRequest {
     @NotBlank(message = "Location не может быть пустым.")
     @Size(min = 2, max = 250, message = "Длина location должна быть в диапазоне от 2 до 250 символов.")
     private String location;
-    @NotNull(message = "Fields не может быть null.")
+    @NotBlank(message = "Fields не может быть пустым.")
     private List<Field> fields;
     @NotBlank(message = "Description не может быть пустым.")
     @Size(min = 2, max = 10000, message = "Длина Description должна быть в диапазоне от 2 до 10000 символов.")

@@ -34,7 +34,7 @@ public class NewSelectionRequest {
     @NotNull(message = "SelectionEnd не может быть null.")
     @Future(message = "SelectionEnd должен быть в будущем.")
     private LocalDate selectionEnd;
-    @NotNull(message = "Fields не может быть null.")
+    @NotBlank(message = "Fields не может быть пустым.")
     private List<Field> fields;
     @NotBlank(message = "Location не может быть пустым.")
     @Size(min = 2, max = 250, message = "Длина location должна быть в диапазоне от 2 до 250 символов.")
