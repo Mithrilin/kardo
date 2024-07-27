@@ -10,4 +10,9 @@ import java.util.List;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     Page<User> findByIdIn(List<Long> ids, PageRequest pageRequest);
+
+    /* ToDo
+        Написать SQL запрос.
+     */
+    Page<User> findAllBySelectionId(Long selectionId, PageRequest pageRequest);
 }

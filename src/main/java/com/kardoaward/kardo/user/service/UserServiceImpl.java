@@ -1,8 +1,10 @@
 package com.kardoaward.kardo.user.service;
 
+import com.kardoaward.kardo.selection.service.helper.SelectionValidationHelper;
 import com.kardoaward.kardo.user.mapper.UserMapper;
 import com.kardoaward.kardo.user.model.User;
 import com.kardoaward.kardo.user.model.dto.UpdateUserRequest;
+import com.kardoaward.kardo.user.model.dto.UserShortDto;
 import com.kardoaward.kardo.user.repository.UserRepository;
 import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import jakarta.transaction.Transactional;
@@ -26,6 +28,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     private final UserValidationHelper userValidationHelper;
+    private final SelectionValidationHelper selectionValidationHelper;
 
     @Override
     @Transactional
@@ -80,5 +83,24 @@ public class UserServiceImpl implements UserService {
         User updatedUser = userRepository.save(user);
         log.info("Пользователь с ID {} обновлён.", userId);
         return updatedUser;
+    }
+
+    @Override
+    public List<UserShortDto> getContestantsBySelectionId(Long selectionId, int from, int size) {
+        selectionValidationHelper.isSelectionPresent(selectionId);
+        int page = from / size;
+        Sort sort = Sort.by(Sort.Direction.ASC, "id");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+        Page<User> usersPage = userRepository.findAllBySelectionId(selectionId, pageRequest);
+
+        if (usersPage.isEmpty()) {
+            log.info("Не нашлось пользователей по заданным параметрам.");
+            return new ArrayList<>();
+        }
+
+        List<User> users = usersPage.getContent();
+        List<UserShortDto> userShortDtos = userMapper.userListToUserShortDtoList(users);
+        log.info("Список участников отбора с ИД {} с номера {} размером {} возвращён.", selectionId, from, users.size());
+        return userShortDtos;
     }
 }

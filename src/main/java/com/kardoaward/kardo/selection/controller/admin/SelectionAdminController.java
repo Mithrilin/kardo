@@ -6,6 +6,7 @@ import com.kardoaward.kardo.selection.model.dto.SelectionDto;
 import com.kardoaward.kardo.selection.model.dto.UpdateSelectionRequest;
 import com.kardoaward.kardo.selection.service.SelectionService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -39,13 +40,13 @@ public class SelectionAdminController {
     }
 
     @DeleteMapping("/{selectionId}")
-    public void deleteSelection(@PathVariable Long selectionId) {
+    public void deleteSelection(@PathVariable @Positive Long selectionId) {
         log.info("Удаление администратором отбора с ИД {}.", selectionId);
         selectionService.deleteSelection(selectionId);
     }
 
     @PatchMapping("/{selectionId}")
-    public SelectionDto updateSelectionById(@PathVariable Long selectionId,
+    public SelectionDto updateSelectionById(@PathVariable @Positive Long selectionId,
                                             @RequestBody @Valid UpdateSelectionRequest request) {
         log.info("Обновление администратором отбора с ИД {}.", selectionId);
         return selectionService.updateSelectionById(selectionId, request);

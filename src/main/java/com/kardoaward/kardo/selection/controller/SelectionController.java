@@ -2,6 +2,8 @@ package com.kardoaward.kardo.selection.controller;
 
 import com.kardoaward.kardo.selection.model.dto.SelectionDto;
 import com.kardoaward.kardo.selection.service.SelectionService;
+import com.kardoaward.kardo.user.model.dto.UserShortDto;
+import com.kardoaward.kardo.user.service.UserService;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -23,9 +25,10 @@ import java.util.List;
 public class SelectionController {
 
     private final SelectionService selectionService;
+    private final UserService userService;
 
     @GetMapping("/{selectionId}")
-    public SelectionDto getSelectionById(@PathVariable Long selectionId) {
+    public SelectionDto getSelectionById(@PathVariable @Positive Long selectionId) {
         log.info("Получение отбора с ИД {}.", selectionId);
         return selectionService.getSelectionById(selectionId);
     }
@@ -35,5 +38,13 @@ public class SelectionController {
                                             @RequestParam(defaultValue = "10") @Positive int size) {
         log.info("Получение списка отборов.");
         return selectionService.getSelections(from, size);
+    }
+
+    @GetMapping("/{selectionId}/contestants")
+    public List<UserShortDto> getContestantsBySelectionId(@PathVariable @Positive Long selectionId,
+                                                          @RequestParam(defaultValue = "0") @Min(0) int from,
+                                                          @RequestParam(defaultValue = "10") @Positive int size) {
+        log.info("Получение списка участников отбора с ИД {}.", selectionId);
+        return userService.getContestantsBySelectionId(selectionId, from, size);
     }
 }
