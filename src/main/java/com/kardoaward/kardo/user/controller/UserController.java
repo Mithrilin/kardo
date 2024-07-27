@@ -52,54 +52,38 @@ public class UserController {
         Какой статус возвращать фронту и нужно ли?
      */
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public UserDto getUserById(@RequestHeader("X-Participant-User-Id") Long participantId,
+    public UserDto getUserById(@RequestHeader("X-Requestor-Id") Long requestorId,
                                @PathVariable @Positive Long userId) {
         log.info("Получение пользователем с ИД {} своих данных.", userId);
 
-        if (!userId.equals(participantId)) {
-            log.error("Пользователь с ИД {} не может просматривать профиль пользователя с ИД {}.", participantId, userId);
+        if (!userId.equals(requestorId)) {
+            log.error("Пользователь с ИД {} не может просматривать профиль пользователя с ИД {}.", requestorId, userId);
             throw new BadRequestException(String.format("Пользователь с ИД %d не может просматривать " +
-                    "профиль пользователя с ИД %d.", participantId, userId));
+                    "профиль пользователя с ИД %d.", requestorId, userId));
         }
 
         User returnedUser = userService.getUserById(userId);
         return userMapper.userToUserDto(returnedUser);
     }
 
-    @DeleteMapping("/{userId}")
+    @DeleteMapping
     /* ToDo
         Какой статус возвращать фронту и нужно ли?
      */
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUser(@RequestHeader("X-Participant-User-Id") Long participantId,
-                           @PathVariable @Positive Long userId) {
-        log.info("Удаление пользователем с ИД {} своего профиля.", userId);
-
-        if (!userId.equals(participantId)) {
-            log.error("Пользователь с ИД {} не может удалить профиль пользователя с ИД {}.", participantId, userId);
-            throw new BadRequestException(String.format("Пользователь с ИД %d не может удалить " +
-                    "профиль пользователя с ИД %d.", participantId, userId));
-        }
-
-        userService.deleteUser(userId);
+    public void deleteUser(@RequestHeader("X-Requestor-Id") Long requestorId) {
+        log.info("Удаление пользователем с ИД {} своего профиля.", requestorId);
+        userService.deleteUser(requestorId);
     }
 
-    @PatchMapping("/{userId}")
+    @PatchMapping
     /* ToDo
         Какой статус возвращать фронту и нужно ли?
      */
-    public UserDto updateUser(@RequestHeader("X-Participant-User-Id") Long participantId,
-                              @PathVariable @Positive Long userId,
+    public UserDto updateUser(@RequestHeader("X-Requestor-Id") Long requestorId,
                               @RequestBody @Valid UpdateUserRequest request) {
-        log.info("Обновление пользователем с ИД {} своих данных.", userId);
-
-        if (!userId.equals(participantId)) {
-            log.error("Пользователь с ИД {} не может обновить профиль пользователя с ИД {}.", participantId, userId);
-            throw new BadRequestException(String.format("Пользователь с ИД %d не может обновить " +
-                    "профиль пользователя с ИД %d.", participantId, userId));
-        }
-
-        User updatedUser = userService.updateUser(userId, request);
+        log.info("Обновление пользователем с ИД {} своих данных.", requestorId);
+        User updatedUser = userService.updateUser(requestorId, request);
         return userMapper.userToUserDto(updatedUser);
     }
 }
