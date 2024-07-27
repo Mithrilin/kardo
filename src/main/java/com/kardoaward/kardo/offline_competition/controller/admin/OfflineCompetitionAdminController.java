@@ -1,8 +1,16 @@
 package com.kardoaward.kardo.offline_competition.controller.admin;
 
+import com.kardoaward.kardo.offline_competition.mapper.OfflineCompetitionMapper;
+import com.kardoaward.kardo.offline_competition.model.OfflineCompetition;
+import com.kardoaward.kardo.offline_competition.model.dto.NewOfflineCompetitionRequest;
+import com.kardoaward.kardo.offline_competition.model.dto.OfflineCompetitionDto;
+import com.kardoaward.kardo.offline_competition.service.OfflineCompetitionService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,5 +21,15 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class OfflineCompetitionAdminController {
 
+    private final OfflineCompetitionService service;
 
+    private final OfflineCompetitionMapper mapper;
+
+    @PostMapping
+    public OfflineCompetitionDto createOfflineCompetition(@RequestBody @Valid NewOfflineCompetitionRequest newCompetition) {
+        log.info("Добавление администратором нового оффлайн-соревнования {}.", newCompetition);
+        OfflineCompetition competition = mapper.newOfflineCompetitionRequestToOfflineCompetition(newCompetition);
+        OfflineCompetition returnedCompetition = service.addOfflineCompetition(competition);
+        return mapper.OfflineCompetitionToOfflineCompetitionDto(returnedCompetition);
+    }
 }
