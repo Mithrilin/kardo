@@ -1,9 +1,12 @@
-package com.kardoaward.kardo.comment.model;
+package com.kardoaward.kardo.spectator_request.model;
 
+import com.kardoaward.kardo.enums.RequestStatus;
+import com.kardoaward.kardo.event.model.Event;
 import com.kardoaward.kardo.user.model.User;
-import com.kardoaward.kardo.video_clip.model.VideoClip;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,27 +22,30 @@ import lombok.ToString;
 
 import java.time.LocalDateTime;
 
+import static com.kardoaward.kardo.enums.RequestStatus.PENDING;
+
 @Entity
-@Table(name = "comments")
+@Table(name = "spectators_requests")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-public class Comment {
+public class SpectatorRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "creation_time")
+    private LocalDateTime creationTime = LocalDateTime.now();
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
-    @JoinColumn(name = "author_id")
-    private User author;
-    @Column(name = "publication_time")
-    private LocalDateTime publicationTime = LocalDateTime.now();
+    @JoinColumn(name = "event_id")
+    private Event event;
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
-    @JoinColumn(name = "video_id")
-    private VideoClip videoClip;
-    private String text;
+    @JoinColumn(name = "requester_id")
+    private User requester;
+    @Enumerated(EnumType.STRING)
+    private RequestStatus status = PENDING;
 }

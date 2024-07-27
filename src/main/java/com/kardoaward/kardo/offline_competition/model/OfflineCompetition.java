@@ -1,21 +1,17 @@
-package com.kardoaward.kardo.selection.model;
+package com.kardoaward.kardo.offline_competition.model;
 
-import com.kardoaward.kardo.enums.Field;
 import com.kardoaward.kardo.enums.Status;
-import com.kardoaward.kardo.offline_competition.model.OfflineCompetition;
-import com.kardoaward.kardo.selection.model.enums.SelectionType;
+import com.kardoaward.kardo.enums.Field;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -29,40 +25,34 @@ import java.util.List;
 import static com.kardoaward.kardo.enums.Status.UPCOMING;
 
 @Entity
-@Table(name = "selections")
+@Table(name = "offline_competitions")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-public class Selection {
+public class OfflineCompetition {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String hashtag;
-    @Enumerated(EnumType.STRING)
-    @Column(name = "selection_type")
-    private SelectionType selectionType;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @ToString.Exclude
-    @JoinColumn(name = "competition_id")
-    private OfflineCompetition competition;
-    @Column(name = "selection_start")
-    private LocalDate selectionStart;
-    @Column(name = "selection_end")
-    private LocalDate selectionEnd;
+    @Column(name = "competition_start")
+    private LocalDate competitionStart;
+    @Column(name = "competition_end")
+    private LocalDate competitionEnd;
     @Enumerated(EnumType.STRING)
     private Status status = UPCOMING;
+    private String location;
     @ElementCollection
-    @CollectionTable(name="selection_fields",
-            joinColumns=@JoinColumn(name="selection_id"))
+    @CollectionTable(name="offline_competition_fields",
+            joinColumns=@JoinColumn(name="offline_competition_id"))
     @Column(name="field")
     @Enumerated(EnumType.STRING)
 /*  ToDo
      После добавления контроллера проверить сохраняются/возвращаются ли значения в этом поле.
  */
     private List<Field> fields;
-    private String location;
+    private String description;
 }

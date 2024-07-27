@@ -1,9 +1,9 @@
-package com.kardoaward.kardo.event.model;
+package com.kardoaward.kardo.participation_request.model;
 
 import com.kardoaward.kardo.enums.Field;
-import com.kardoaward.kardo.enums.Status;
-import com.kardoaward.kardo.event.model.enums.EventProgram;
-import com.kardoaward.kardo.offline_competition.model.OfflineCompetition;
+import com.kardoaward.kardo.enums.RequestStatus;
+import com.kardoaward.kardo.selection.model.Selection;
+import com.kardoaward.kardo.user.model.User;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -26,52 +26,39 @@ import lombok.ToString;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.kardoaward.kardo.enums.Status.UPCOMING;
+import static com.kardoaward.kardo.enums.RequestStatus.PENDING;
 
 @Entity
-@Table(name = "events")
+@Table(name = "participation_requests")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-public class Event {
+public class ParticipationRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String title;
+    @Column(name = "creation_time")
+    private LocalDateTime creationTime = LocalDateTime.now();
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
-    @JoinColumn(name = "competition_id")
-    private OfflineCompetition competition;
-    @Column(name = "event_start")
-    private LocalDateTime eventStart;
-    @Column(name = "event_end")
-    private LocalDateTime eventEnd;
-    private String location;
+    @JoinColumn(name = "selection_id")
+    private Selection selection;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @JoinColumn(name = "requester_id")
+    private User requester;
     @Enumerated(EnumType.STRING)
-    private Status status = UPCOMING;
+    private RequestStatus status = PENDING;
     @ElementCollection
-    @CollectionTable(name="event_programs",
-            joinColumns=@JoinColumn(name="event_id"))
-    @Column(name="program")
-    @Enumerated(EnumType.STRING)
-/*  ToDo
-     После добавления контроллера проверить сохраняются/возвращаются ли значения в этом поле.
- */
-    private List<EventProgram> programs;
-    @ElementCollection
-    @CollectionTable(name="event_fields",
-            joinColumns=@JoinColumn(name="event_id"))
+    @CollectionTable(name="participation_request_fields",
+            joinColumns=@JoinColumn(name="participation_request_id"))
     @Column(name="field")
     @Enumerated(EnumType.STRING)
 /*  ToDo
      После добавления контроллера проверить сохраняются/возвращаются ли значения в этом поле.
  */
     private List<Field> fields;
-    private String logo;
-    @Column(name="is_main_event")
-    private Boolean isMainEvent;
-    private String description;
 }

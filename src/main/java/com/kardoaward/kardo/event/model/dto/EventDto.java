@@ -3,7 +3,7 @@ package com.kardoaward.kardo.event.model.dto;
 import com.kardoaward.kardo.enums.Field;
 import com.kardoaward.kardo.enums.Status;
 import com.kardoaward.kardo.event.model.enums.EventProgram;
-import com.kardoaward.kardo.offlineCompetition.model.dto.OfflineCompetitionDto;
+import com.kardoaward.kardo.offline_competition.model.dto.OfflineCompetitionDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

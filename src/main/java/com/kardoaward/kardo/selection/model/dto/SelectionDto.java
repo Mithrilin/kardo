@@ -2,7 +2,7 @@ package com.kardoaward.kardo.selection.model.dto;
 
 import com.kardoaward.kardo.enums.Field;
 import com.kardoaward.kardo.enums.Status;
-import com.kardoaward.kardo.offlineCompetition.model.dto.OfflineCompetitionDto;
+import com.kardoaward.kardo.offline_competition.model.dto.OfflineCompetitionDto;
 import com.kardoaward.kardo.selection.model.enums.SelectionType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
