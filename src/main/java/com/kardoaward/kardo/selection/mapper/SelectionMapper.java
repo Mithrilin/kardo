@@ -7,6 +7,8 @@ import com.kardoaward.kardo.selection.model.dto.SelectionDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface SelectionMapper {
 
@@ -14,4 +16,6 @@ public interface SelectionMapper {
     Selection newSelectionRequestToSelection(NewSelectionRequest newSelectionRequest, OfflineCompetition competition);
 
     SelectionDto selectionToSelectionDto(Selection returnedSelection);
+
+    List<SelectionDto> selectionListToSelectionDtoList(List<Selection> selections);
 }
