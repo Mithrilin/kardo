@@ -1,6 +1,8 @@
 package com.kardoaward.kardo.offline_competition.service;
 
+import com.kardoaward.kardo.offline_competition.mapper.OfflineCompetitionMapper;
 import com.kardoaward.kardo.offline_competition.model.OfflineCompetition;
+import com.kardoaward.kardo.offline_competition.model.dto.UpdateOfflineCompetitionRequest;
 import com.kardoaward.kardo.offline_competition.repository.OfflineCompetitionRepository;
 import com.kardoaward.kardo.offline_competition.service.helper.OfflineCompetitionValidationHelper;
 import jakarta.transaction.Transactional;
@@ -20,6 +22,8 @@ import java.util.List;
 public class OfflineCompetitionServiceImpl implements OfflineCompetitionService {
 
     private final OfflineCompetitionRepository repository;
+
+    private final OfflineCompetitionMapper mapper;
 
     private final OfflineCompetitionValidationHelper helper;
 
@@ -61,5 +65,15 @@ public class OfflineCompetitionServiceImpl implements OfflineCompetitionService 
         List<OfflineCompetition> competitions = competitionsPage.getContent();
         log.info("Список оффлайн-соревнований с номера {} размером {} возвращён.", from, competitions.size());
         return competitions;
+    }
+
+    @Override
+    @Transactional
+    public OfflineCompetition updateOfflineCompetition(Long competitionId, UpdateOfflineCompetitionRequest request) {
+        OfflineCompetition competition = helper.isOfflineCompetitionPresent(competitionId);
+        mapper.updateOfflineCompetition(request, competition);
+        OfflineCompetition updatedCompetition = repository.save(competition);
+        log.info("Оффлайн-соревнование с ID {} обновлено.", competitionId);
+        return updatedCompetition;
     }
 }
