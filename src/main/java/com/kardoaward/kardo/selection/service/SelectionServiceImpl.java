@@ -6,6 +6,7 @@ import com.kardoaward.kardo.selection.model.Selection;
 import com.kardoaward.kardo.selection.model.dto.NewSelectionRequest;
 import com.kardoaward.kardo.selection.model.dto.SelectionDto;
 import com.kardoaward.kardo.selection.repository.SelectionRepository;
+import com.kardoaward.kardo.selection.service.helper.SelectionValidationHelper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,8 @@ public class SelectionServiceImpl implements SelectionService {
 
     private final SelectionMapper selectionMapper;
 
+    private final SelectionValidationHelper selectionValidationHelper;
+
     @Override
     @Transactional
     public SelectionDto addSelection(NewSelectionRequest newSelectionRequest) {
@@ -32,5 +35,13 @@ public class SelectionServiceImpl implements SelectionService {
         SelectionDto selectionDto = selectionMapper.selectionToSelectionDto(returnedSelection);
         log.info("Отбор с ID = {} создан.", selectionDto.getId());
         return selectionDto;
+    }
+
+    @Override
+    @Transactional
+    public void deleteSelection(Long selectionId) {
+        selectionValidationHelper.isSelectionPresent(selectionId);
+        selectionRepository.deleteById(selectionId);
+        log.info("Отбор с ID {} удалён.", selectionId);
     }
 }
