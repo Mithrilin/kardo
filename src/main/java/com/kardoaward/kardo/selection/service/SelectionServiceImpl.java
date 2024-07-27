@@ -44,4 +44,12 @@ public class SelectionServiceImpl implements SelectionService {
         selectionRepository.deleteById(selectionId);
         log.info("Отбор с ID {} удалён.", selectionId);
     }
+
+    @Override
+    public SelectionDto getSelectionById(Long selectionId) {
+        Selection selection = selectionValidationHelper.isSelectionPresent(selectionId);
+        SelectionDto selectionDto = selectionMapper.selectionToSelectionDto(selection);
+        log.info("Отбор с ИД {} возвращен.", selectionId);
+        return selectionDto;
+    }
 }
