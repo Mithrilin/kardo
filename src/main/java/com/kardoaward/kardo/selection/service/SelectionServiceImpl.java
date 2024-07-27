@@ -8,6 +8,7 @@ import com.kardoaward.kardo.selection.model.dto.SelectionDto;
 import com.kardoaward.kardo.selection.model.dto.UpdateSelectionRequest;
 import com.kardoaward.kardo.selection.repository.SelectionRepository;
 import com.kardoaward.kardo.selection.service.helper.SelectionValidationHelper;
+import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,7 @@ public class SelectionServiceImpl implements SelectionService {
     private final SelectionMapper selectionMapper;
 
     private final SelectionValidationHelper selectionValidationHelper;
+    private final UserValidationHelper userValidationHelper;
 
     @Override
     @Transactional
@@ -79,6 +81,7 @@ public class SelectionServiceImpl implements SelectionService {
     }
 
     @Override
+    @Transactional
     public SelectionDto updateSelectionById(Long selectionId, UpdateSelectionRequest request) {
         Selection selection = selectionValidationHelper.isSelectionPresent(selectionId);
         selectionValidationHelper.isUpdateSelectionDateValid(selection, request);
@@ -87,5 +90,25 @@ public class SelectionServiceImpl implements SelectionService {
         SelectionDto selectionDto = selectionMapper.selectionToSelectionDto(updatedSelection);
         log.info("Отбор с ID {} обновлён.", selectionId);
         return selectionDto;
+    }
+
+    @Override
+    public List<SelectionDto> getSelectionsByRequestorId(Long requestorId, int from, int size) {
+        userValidationHelper.isUserPresent(requestorId);
+        int page = from / size;
+        Sort sort = Sort.by(Sort.Direction.ASC, "id");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+        Page<Selection> selectionsPage = selectionRepository.findAllByRequestorId(requestorId, pageRequest);
+
+        if (selectionsPage.isEmpty()) {
+            log.info("Не нашлось отборов по заданным параметрам.");
+            return new ArrayList<>();
+        }
+
+        List<Selection> selections = selectionsPage.getContent();
+        List<SelectionDto> selectionDtos = selectionMapper.selectionListToSelectionDtoList(selections);
+        log.info("Список отборов с участием пользователя с ИД {} с номера {} размером {} возвращён.", requestorId,
+                from, selectionDtos.size());
+        return selectionDtos;
     }
 }
