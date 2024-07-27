@@ -7,4 +7,6 @@ public interface OfflineCompetitionService {
     OfflineCompetition addOfflineCompetition(OfflineCompetition competition);
 
     void deleteOfflineCompetition(Long competitionId);
+
+    OfflineCompetition getOfflineCompetitionById(Long competitionId);
 }

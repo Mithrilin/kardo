@@ -10,5 +10,5 @@ public interface OfflineCompetitionMapper {
 
     OfflineCompetition newOfflineCompetitionRequestToOfflineCompetition(NewOfflineCompetitionRequest newCompetition);
 
-    OfflineCompetitionDto OfflineCompetitionToOfflineCompetitionDto(OfflineCompetition returnedCompetition);
+    OfflineCompetitionDto offlineCompetitionToOfflineCompetitionDto(OfflineCompetition returnedCompetition);
 }

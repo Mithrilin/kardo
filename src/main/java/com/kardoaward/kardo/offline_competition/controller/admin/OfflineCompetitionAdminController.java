@@ -33,7 +33,7 @@ public class OfflineCompetitionAdminController {
         log.info("Добавление администратором нового оффлайн-соревнования {}.", newCompetition);
         OfflineCompetition competition = mapper.newOfflineCompetitionRequestToOfflineCompetition(newCompetition);
         OfflineCompetition returnedCompetition = service.addOfflineCompetition(competition);
-        return mapper.OfflineCompetitionToOfflineCompetitionDto(returnedCompetition);
+        return mapper.offlineCompetitionToOfflineCompetitionDto(returnedCompetition);
     }
 
     @DeleteMapping("/{competitionId}")

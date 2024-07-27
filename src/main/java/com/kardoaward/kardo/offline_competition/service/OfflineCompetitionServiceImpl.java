@@ -32,4 +32,11 @@ public class OfflineCompetitionServiceImpl implements OfflineCompetitionService 
         repository.deleteById(competitionId);
         log.info("Оффлайн-соревнование с ID {} удалено.", competitionId);
     }
+
+    @Override
+    public OfflineCompetition getOfflineCompetitionById(Long competitionId) {
+        OfflineCompetition competition = helper.isOfflineCompetitionPresent(competitionId);
+        log.info("Оффлайн-соревнование с ИД {} возвращено.", competitionId);
+        return competition;
+    }
 }
