@@ -16,5 +16,15 @@ public class OfflineCompetitionValidationHelper {
 
     private final OfflineCompetitionRepository repository;
 
+    public OfflineCompetition isOfflineCompetitionPresent(Long offlineCompetitionId) {
+        Optional<OfflineCompetition> optionalOfflineCompetition = repository.findById(offlineCompetitionId);
 
+        if (optionalOfflineCompetition.isEmpty()) {
+            log.error("Оффлайн-соревнование с ИД {} отсутствует в БД.", offlineCompetitionId);
+            throw new NotFoundException(String.format("Оффлайн-соревнование с ИД %d отсутствует в БД.",
+                    offlineCompetitionId));
+        }
+
+        return optionalOfflineCompetition.get();
+    }
 }
