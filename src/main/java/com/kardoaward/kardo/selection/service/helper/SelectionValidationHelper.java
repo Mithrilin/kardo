@@ -1,7 +1,9 @@
 package com.kardoaward.kardo.selection.service.helper;
 
+import com.kardoaward.kardo.exception.BadRequestException;
 import com.kardoaward.kardo.exception.NotFoundException;
 import com.kardoaward.kardo.selection.model.Selection;
+import com.kardoaward.kardo.selection.model.dto.UpdateSelectionRequest;
 import com.kardoaward.kardo.selection.repository.SelectionRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,5 +27,28 @@ public class SelectionValidationHelper {
         }
 
         return optionalSelection.get();
+    }
+
+    public void isUpdateSelectionDateValid(Selection selection, UpdateSelectionRequest request) {
+        if (request.getSelectionStart() != null
+                && request.getSelectionEnd() != null
+                && request.getSelectionEnd().isBefore(request.getSelectionStart())) {
+            log.error("Дата и время начала отбора не может быть после его конца.");
+            throw new BadRequestException("Дата и время начала отбора не может быть после его конца.");
+        }
+
+        if (request.getSelectionStart() != null
+                && request.getSelectionEnd() == null
+                && request.getSelectionStart().isAfter(selection.getSelectionEnd())) {
+            log.error("Дата и время начала отбора не может быть в после его конца.");
+            throw new BadRequestException("Дата и время начала отбора не может быть в после его конца.");
+        }
+
+        if (request.getSelectionStart() == null
+                && request.getSelectionEnd() != null
+                && request.getSelectionEnd().isBefore(selection.getSelectionStart())) {
+            log.error("Дата и время конца отбора не может быть в раньше его начала.");
+            throw new BadRequestException("Дата и время конца отбора не может быть в раньше его начала.");
+        }
     }
 }
