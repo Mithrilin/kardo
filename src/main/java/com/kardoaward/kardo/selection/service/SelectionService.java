@@ -6,4 +6,6 @@ import com.kardoaward.kardo.selection.model.dto.SelectionDto;
 public interface SelectionService {
 
     SelectionDto addSelection(NewSelectionRequest newSelectionRequest);
+
+    void deleteSelection(Long selectionId);
 }

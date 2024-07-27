@@ -7,6 +7,8 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,5 +27,11 @@ public class SelectionAdminController {
     public SelectionDto createSelection(@RequestBody @Valid NewSelectionRequest newSelectionRequest) {
         log.info("Добавление администратором нового отбора {}.", newSelectionRequest);
         return selectionService.addSelection(newSelectionRequest);
+    }
+
+    @DeleteMapping("/{selectionId}")
+    public void deleteSelection(@PathVariable Long selectionId) {
+        log.info("Удаление администратором отбора с ИД {}.", selectionId);
+        selectionService.deleteSelection(selectionId);
     }
 }
