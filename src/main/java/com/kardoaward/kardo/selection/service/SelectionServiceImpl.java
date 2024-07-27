@@ -10,7 +10,13 @@ import com.kardoaward.kardo.selection.service.helper.SelectionValidationHelper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -51,5 +57,23 @@ public class SelectionServiceImpl implements SelectionService {
         SelectionDto selectionDto = selectionMapper.selectionToSelectionDto(selection);
         log.info("Отбор с ИД {} возвращен.", selectionId);
         return selectionDto;
+    }
+
+    @Override
+    public List<SelectionDto> getSelections(int from, int size) {
+        int page = from / size;
+        Sort sort = Sort.by(Sort.Direction.ASC, "id");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+        Page<Selection> selectionsPage = selectionRepository.findAll(pageRequest);
+
+        if (selectionsPage.isEmpty()) {
+            log.info("Не нашлось пользователей по заданным параметрам.");
+            return new ArrayList<>();
+        }
+
+        List<Selection> selections = selectionsPage.getContent();
+        List<SelectionDto> selectionDtos = selectionMapper.selectionListToSelectionDtoList(selections);
+        log.info("Список пользователей с номера {} размером {} возвращён.", from, selectionDtos.size());
+        return selectionDtos;
     }
 }
