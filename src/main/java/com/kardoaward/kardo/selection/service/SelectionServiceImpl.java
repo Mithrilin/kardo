@@ -5,6 +5,7 @@ import com.kardoaward.kardo.selection.mapper.SelectionMapper;
 import com.kardoaward.kardo.selection.model.Selection;
 import com.kardoaward.kardo.selection.model.dto.NewSelectionRequest;
 import com.kardoaward.kardo.selection.model.dto.SelectionDto;
+import com.kardoaward.kardo.selection.model.dto.UpdateSelectionRequest;
 import com.kardoaward.kardo.selection.repository.SelectionRepository;
 import com.kardoaward.kardo.selection.service.helper.SelectionValidationHelper;
 import jakarta.transaction.Transactional;
@@ -67,13 +68,24 @@ public class SelectionServiceImpl implements SelectionService {
         Page<Selection> selectionsPage = selectionRepository.findAll(pageRequest);
 
         if (selectionsPage.isEmpty()) {
-            log.info("Не нашлось пользователей по заданным параметрам.");
+            log.info("Не нашлось отборов по заданным параметрам.");
             return new ArrayList<>();
         }
 
         List<Selection> selections = selectionsPage.getContent();
         List<SelectionDto> selectionDtos = selectionMapper.selectionListToSelectionDtoList(selections);
-        log.info("Список пользователей с номера {} размером {} возвращён.", from, selectionDtos.size());
+        log.info("Список отборов с номера {} размером {} возвращён.", from, selectionDtos.size());
         return selectionDtos;
+    }
+
+    @Override
+    public SelectionDto updateSelectionById(Long selectionId, UpdateSelectionRequest request) {
+        Selection selection = selectionValidationHelper.isSelectionPresent(selectionId);
+        selectionValidationHelper.isUpdateSelectionDateValid(selection, request);
+        selectionMapper.updateSelection(request, selection);
+        Selection updatedSelection = selectionRepository.save(selection);
+        SelectionDto selectionDto = selectionMapper.selectionToSelectionDto(updatedSelection);
+        log.info("Отбор с ID {} обновлён.", selectionId);
+        return selectionDto;
     }
 }
