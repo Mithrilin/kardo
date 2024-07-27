@@ -17,4 +17,6 @@ public interface SelectionService {
     List<SelectionDto> getSelections(int from, int size);
 
     SelectionDto updateSelectionById(Long selectionId, UpdateSelectionRequest request);
+
+    List<SelectionDto> getSelectionsByRequestorId(Long requestorId, int from, int size);
 }

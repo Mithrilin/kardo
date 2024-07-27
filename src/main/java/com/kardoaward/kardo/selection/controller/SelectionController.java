@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,5 +47,13 @@ public class SelectionController {
                                                           @RequestParam(defaultValue = "10") @Positive int size) {
         log.info("Получение списка участников отбора с ИД {}.", selectionId);
         return userService.getContestantsBySelectionId(selectionId, from, size);
+    }
+
+    @GetMapping("/contestants/users")
+    public List<SelectionDto> getSelectionsByRequestorId(@RequestHeader("X-Requestor-Id") Long requestorId,
+                                                         @RequestParam(defaultValue = "0") @Min(0) int from,
+                                                         @RequestParam(defaultValue = "10") @Positive int size) {
+        log.info("Получение списка отборов с участием пользователя с ИД {}.", requestorId);
+        return selectionService.getSelectionsByRequestorId(requestorId, from, size);
     }
 }
