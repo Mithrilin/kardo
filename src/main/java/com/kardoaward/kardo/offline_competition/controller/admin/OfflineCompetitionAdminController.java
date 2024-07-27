@@ -6,9 +6,12 @@ import com.kardoaward.kardo.offline_competition.model.dto.NewOfflineCompetitionR
 import com.kardoaward.kardo.offline_competition.model.dto.OfflineCompetitionDto;
 import com.kardoaward.kardo.offline_competition.service.OfflineCompetitionService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,5 +34,11 @@ public class OfflineCompetitionAdminController {
         OfflineCompetition competition = mapper.newOfflineCompetitionRequestToOfflineCompetition(newCompetition);
         OfflineCompetition returnedCompetition = service.addOfflineCompetition(competition);
         return mapper.OfflineCompetitionToOfflineCompetitionDto(returnedCompetition);
+    }
+
+    @DeleteMapping("/{competitionId}")
+    public void deleteOfflineCompetition(@PathVariable @Positive Long competitionId) {
+        log.info("Удаление администратором оффлайн-соревнования с ИД {}.", competitionId);
+        service.deleteOfflineCompetition(competitionId);
     }
 }
