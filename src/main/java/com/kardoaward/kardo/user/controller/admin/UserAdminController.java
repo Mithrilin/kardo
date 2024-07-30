@@ -9,14 +9,12 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -33,18 +31,14 @@ public class UserAdminController {
     private final UserMapper userMapper;
 
     @DeleteMapping("/{userId}")
-    //ToDo Какой статус возвращать фронту и нужно ли?
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@PathVariable @Positive Long userId) {
-        log.info("Удаление админом пользователя с ИД {}.", userId);
+        log.info("Удаление администратором пользователя с ИД {}.", userId);
         userService.deleteUser(userId);
     }
 
     @GetMapping("/{userId}")
-    //ToDo Какой статус возвращать фронту и нужно ли?
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public UserDto getUserById(@PathVariable @Positive Long userId) {
-        log.info("Возвращение админу информации о пользователе с ИД {}.", userId);
+        log.info("Возвращение администратору информации о пользователе с ИД {}.", userId);
         User returnedUser = userService.getUserById(userId);
         return userMapper.userToUserDto(returnedUser);
     }
@@ -53,7 +47,7 @@ public class UserAdminController {
     public List<UserShortDto> getUsersByIds(@RequestParam(required = false) List<Long> ids,
                                             @RequestParam(defaultValue = "0") @Min(0) int from,
                                             @RequestParam(defaultValue = "10") @Positive int size) {
-        log.info("Возвращение админу списка пользователей.");
+        log.info("Возвращение администратору списка пользователей.");
         List<User> users = userService.getUsersByIds(ids, from, size);
         return userMapper.userListToUserShortDtoList(users);
     }
