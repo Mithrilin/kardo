@@ -56,4 +56,12 @@ public class SelectionController {
         log.info("Получение списка отборов с участием пользователя с ИД {}.", requestorId);
         return selectionService.getSelectionsByRequestorId(requestorId, from, size);
     }
+
+    @GetMapping("/competitions/offline/{competitionId}")
+    public List<SelectionDto> getSelectionsByOfflineCompetitionId(@PathVariable @Positive Long competitionId,
+                                                                  @RequestParam(defaultValue = "0") @Min(0) int from,
+                                                                  @RequestParam(defaultValue = "10") @Positive int size) {
+        log.info("Получение списка отборов к оффлайн-соревнованию с ИД {}.", competitionId);
+        return selectionService.getSelectionsByOfflineCompetitionId(competitionId, from, size);
+    }
 }

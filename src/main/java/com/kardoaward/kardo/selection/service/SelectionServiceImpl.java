@@ -111,4 +111,27 @@ public class SelectionServiceImpl implements SelectionService {
                 from, selectionDtos.size());
         return selectionDtos;
     }
+
+    @Override
+    public List<SelectionDto> getSelectionsByOfflineCompetitionId(Long competitionId, int from, int size) {
+        /* ToDo
+            Исправить. Добавить хелпер.
+         */
+        OfflineCompetition competition = null;
+        int page = from / size;
+        Sort sort = Sort.by(Sort.Direction.ASC, "id");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+        Page<Selection> selectionsPage = selectionRepository.findAllByOfflineCompetitionId(competitionId, pageRequest);
+
+        if (selectionsPage.isEmpty()) {
+            log.info("Не нашлось отборов по заданным параметрам.");
+            return new ArrayList<>();
+        }
+
+        List<Selection> selections = selectionsPage.getContent();
+        List<SelectionDto> selectionDtos = selectionMapper.selectionListToSelectionDtoList(selections);
+        log.info("Список отборов к оффлайн-соревнованию с ИД {} с номера {} размером {} возвращён.", competitionId,
+                from, selectionDtos.size());
+        return selectionDtos;
+    }
 }
