@@ -40,15 +40,15 @@ public class SelectionValidationHelper {
         if (request.getSelectionStart() != null
                 && request.getSelectionEnd() == null
                 && request.getSelectionStart().isAfter(selection.getSelectionEnd())) {
-            log.error("Дата и время начала отбора не может быть в после его конца.");
-            throw new BadRequestException("Дата и время начала отбора не может быть в после его конца.");
+            log.error("Дата и время начала отбора не может быть после его конца.");
+            throw new BadRequestException("Дата и время начала отбора не может быть после его конца.");
         }
 
         if (request.getSelectionStart() == null
                 && request.getSelectionEnd() != null
                 && request.getSelectionEnd().isBefore(selection.getSelectionStart())) {
-            log.error("Дата и время конца отбора не может быть в раньше его начала.");
-            throw new BadRequestException("Дата и время конца отбора не может быть в раньше его начала.");
+            log.error("Дата и время конца отбора не может быть раньше его начала.");
+            throw new BadRequestException("Дата и время конца отбора не может быть раньше его начала.");
         }
     }
 }

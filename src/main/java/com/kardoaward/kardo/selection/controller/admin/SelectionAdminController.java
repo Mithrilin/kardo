@@ -31,8 +31,8 @@ public class SelectionAdminController {
     public SelectionDto createSelection(@RequestBody @Valid NewSelectionRequest newSelectionRequest) {
 
         if (newSelectionRequest.getSelectionEnd().isBefore(newSelectionRequest.getSelectionStart())) {
-            log.error("Дата и время начала отбора не может быть в после его конца.");
-            throw new BadRequestException("Дата и время начала отбора не может быть в после его конца.");
+            log.error("Дата и время начала отбора не может быть после его конца.");
+            throw new BadRequestException("Дата и время начала отбора не может быть после его конца.");
         }
 
         log.info("Добавление администратором нового отбора {}.", newSelectionRequest);
