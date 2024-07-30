@@ -60,9 +60,6 @@ public class Selection {
             joinColumns=@JoinColumn(name="selection_id"))
     @Column(name="field")
     @Enumerated(EnumType.STRING)
-/*  ToDo
-     После добавления контроллера проверить сохраняются/возвращаются ли значения в этом поле.
- */
     private List<Field> fields;
     private String location;
 }
