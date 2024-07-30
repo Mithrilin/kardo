@@ -1,6 +1,7 @@
 package com.kardoaward.kardo.selection.service;
 
 import com.kardoaward.kardo.offline_competition.model.OfflineCompetition;
+import com.kardoaward.kardo.offline_competition.service.helper.OfflineCompetitionValidationHelper;
 import com.kardoaward.kardo.selection.mapper.SelectionMapper;
 import com.kardoaward.kardo.selection.model.Selection;
 import com.kardoaward.kardo.selection.model.dto.NewSelectionRequest;
@@ -31,14 +32,13 @@ public class SelectionServiceImpl implements SelectionService {
 
     private final SelectionValidationHelper selectionValidationHelper;
     private final UserValidationHelper userValidationHelper;
+    private final OfflineCompetitionValidationHelper offlineValidationHelper;
 
     @Override
     @Transactional
     public SelectionDto addSelection(NewSelectionRequest newSelectionRequest) {
-        /* ToDo
-            Исправить. Добавить хелпер.
-         */
-        OfflineCompetition competition = null;
+        OfflineCompetition competition = offlineValidationHelper
+                .isOfflineCompetitionPresent(newSelectionRequest.getCompetitionId());
         Selection selection = selectionMapper.newSelectionRequestToSelection(newSelectionRequest, competition);
         Selection returnedSelection = selectionRepository.save(selection);
         SelectionDto selectionDto = selectionMapper.selectionToSelectionDto(returnedSelection);
@@ -114,14 +114,11 @@ public class SelectionServiceImpl implements SelectionService {
 
     @Override
     public List<SelectionDto> getSelectionsByOfflineCompetitionId(Long competitionId, int from, int size) {
-        /* ToDo
-            Исправить. Добавить хелпер.
-         */
-        OfflineCompetition competition = null;
+        offlineValidationHelper.isOfflineCompetitionPresent(competitionId);
         int page = from / size;
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
-        Page<Selection> selectionsPage = selectionRepository.findAllByOfflineCompetitionId(competitionId, pageRequest);
+        Page<Selection> selectionsPage = selectionRepository.findByCompetition_Id(competitionId, pageRequest);
 
         if (selectionsPage.isEmpty()) {
             log.info("Не нашлось отборов по заданным параметрам.");
