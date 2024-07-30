@@ -11,4 +11,9 @@ public interface SelectionRepository extends JpaRepository<Selection, Long> {
         Написать SQL запрос.
      */
     Page<Selection> findAllByRequestorId(Long requestorId, PageRequest pageRequest);
+
+    /* ToDo
+        Написать SQL запрос.
+     */
+    Page<Selection> findAllByOfflineCompetitionId(Long competitionId, PageRequest pageRequest);
 }
