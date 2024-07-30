@@ -11,7 +11,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -36,10 +34,6 @@ public class UserController {
     private final UserMapper userMapper;
 
     @PostMapping
-    /*ToDo
-       Какой статус возвращать фронту и нужно ли?
-     */
-    @ResponseStatus(HttpStatus.CREATED)
     public UserDto createUser(@RequestBody @Valid NewUserRequest newUserRequest) {
         log.info("Добавление нового пользователь {}.", newUserRequest);
         User user = userMapper.newUserRequestToUser(newUserRequest);
@@ -48,10 +42,6 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    /* ToDo
-        Какой статус возвращать фронту и нужно ли?
-     */
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public UserDto getUserById(@RequestHeader("X-Requestor-Id") Long requestorId,
                                @PathVariable @Positive Long userId) {
         log.info("Получение пользователем с ИД {} своих данных.", userId);
@@ -67,19 +57,12 @@ public class UserController {
     }
 
     @DeleteMapping
-    /* ToDo
-        Какой статус возвращать фронту и нужно ли?
-     */
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteUser(@RequestHeader("X-Requestor-Id") Long requestorId) {
         log.info("Удаление пользователем с ИД {} своего профиля.", requestorId);
         userService.deleteUser(requestorId);
     }
 
     @PatchMapping
-    /* ToDo
-        Какой статус возвращать фронту и нужно ли?
-     */
     public UserDto updateUser(@RequestHeader("X-Requestor-Id") Long requestorId,
                               @RequestBody @Valid UpdateUserRequest request) {
         log.info("Обновление пользователем с ИД {} своих данных.", requestorId);
