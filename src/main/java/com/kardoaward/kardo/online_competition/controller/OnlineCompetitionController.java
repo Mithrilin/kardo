@@ -24,6 +24,12 @@ public class OnlineCompetitionController {
 
     private final OnlineCompetitionService service;
 
+    @GetMapping("/{competitionId}")
+    public OnlineCompetitionDto getOnlineCompetitionById(@PathVariable @Positive Long competitionId) {
+        log.info("Возвращение онлайн-соревнования с ИД {}.", competitionId);
+        return service.getOnlineCompetitionById(competitionId);
+    }
+
 
 
 
