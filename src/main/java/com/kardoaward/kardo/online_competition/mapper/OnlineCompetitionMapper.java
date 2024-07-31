@@ -21,9 +21,6 @@ public interface OnlineCompetitionMapper {
 
     List<OnlineCompetitionDto> onlineCompetitionListToOnlineCompetitionDtoList(List<OnlineCompetition> competitions);
 
-
-
-
-
-
+    @BeanMapping(nullValuePropertyMappingStrategy = IGNORE)
+    void updateOnlineCompetition(UpdateOnlineCompetitionRequest request, @MappingTarget OnlineCompetition competition);
 }
