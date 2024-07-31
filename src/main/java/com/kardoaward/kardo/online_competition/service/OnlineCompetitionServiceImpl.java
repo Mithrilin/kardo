@@ -55,8 +55,23 @@ public class OnlineCompetitionServiceImpl implements OnlineCompetitionService {
         return competitionDto;
     }
 
+    @Override
+    public List<OnlineCompetitionDto> getOnlineCompetitions(int from, int size) {
+        int page = from / size;
+        Sort sort = Sort.by(Sort.Direction.ASC, "id");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+        Page<OnlineCompetition> competitionsPage = repository.findAll(pageRequest);
 
+        if (competitionsPage.isEmpty()) {
+            log.info("Не нашлось онлайн-соревнований по заданным параметрам.");
+            return new ArrayList<>();
+        }
 
+        List<OnlineCompetition> competitions = competitionsPage.getContent();
+        List<OnlineCompetitionDto> competitionDtos = mapper.onlineCompetitionListToOnlineCompetitionDtoList(competitions);
+        log.info("Список онлайн-соревнований с номера {} размером {} возвращён.", from, competitionDtos.size());
+        return competitionDtos;
+    }
 
     @Override
     @Transactional

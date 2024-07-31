@@ -14,6 +14,7 @@ public interface OnlineCompetitionService {
 
     OnlineCompetitionDto getOnlineCompetitionById(Long competitionId);
 
+    List<OnlineCompetitionDto> getOnlineCompetitions(int from, int size);
 
     OnlineCompetitionDto updateOnlineCompetition(Long competitionId, UpdateOnlineCompetitionRequest request);
 }
