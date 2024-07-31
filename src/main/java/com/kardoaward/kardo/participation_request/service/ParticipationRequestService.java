@@ -8,4 +8,6 @@ public interface ParticipationRequestService {
     ParticipationRequestDto addParticipation(Long requestorId, NewParticipationRequest newParticipationRequest);
 
     void deleteParticipationById(Long requestorId, Long participationId);
+
+    ParticipationRequestDto getParticipationById(Long requestorId, Long participationId);
 }

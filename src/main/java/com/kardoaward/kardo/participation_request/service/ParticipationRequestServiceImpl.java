@@ -51,4 +51,14 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
         repository.deleteById(participationId);
         log.info("Заявка с ИД {} пользователя с ИД {} удалена.", participationId, requestorId);
     }
+
+    @Override
+    public ParticipationRequestDto getParticipationById(Long requestorId, Long participationId) {
+        User user = userValidationHelper.isUserPresent(requestorId);
+        ParticipationRequest request = helper.isParticipationRequestPresent(participationId);
+        helper.isUserRequester(user, request);
+        ParticipationRequestDto requestDto = mapper.participationRequestToParticipationRequestDto(request);
+        log.info("Заявка с ИД {} пользователя с ИД {} возвращена.", participationId, requestorId);
+        return requestDto;
+    }
 }

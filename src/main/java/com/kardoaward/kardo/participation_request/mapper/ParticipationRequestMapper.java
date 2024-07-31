@@ -17,6 +17,7 @@ public interface ParticipationRequestMapper {
     @Mapping(target = "status", constant = "PENDING")
     @Mapping(source = "selection", target = "selection")
     @Mapping(source = "user", target = "requester")
+    @Mapping(source = "newParticipationRequest.fields", target = "fields")
     ParticipationRequest newParticipationRequestToParticipationRequest(NewParticipationRequest newParticipationRequest,
                                                                        User user,
                                                                        Selection selection);
