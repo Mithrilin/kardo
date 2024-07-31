@@ -1,4 +1,4 @@
-package com.kardoaward.kardo.online_competition.model.dto;
+package com.kardoaward.kardo.video_contest.model.dto;
 
 import com.kardoaward.kardo.enums.Status;
 import lombok.AllArgsConstructor;
@@ -10,13 +10,13 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OnlineCompetitionDto {
+public class VideoContestDto {
 
     private Long id;
     private String title;
     private String hashtag;
-    private LocalDate competitionStart;
-    private LocalDate competitionEnd;
+    private LocalDate contestStart;
+    private LocalDate contestEnd;
     private Status status;
     private String description;
 }

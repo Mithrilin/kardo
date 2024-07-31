@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @AllArgsConstructor
 @RestController
-@RequestMapping("/admin/competitions/offline")
+@RequestMapping("/admin/competitions")
 @Validated
 public class OfflineCompetitionAdminController {
 
@@ -46,7 +46,7 @@ public class OfflineCompetitionAdminController {
 
     @PatchMapping("/{competitionId}")
     public OfflineCompetitionDto updateOfflineCompetition(@PathVariable @Positive Long competitionId,
-                                                          @RequestBody UpdateOfflineCompetitionRequest request) {
+                                                          @RequestBody @Valid UpdateOfflineCompetitionRequest request) {
         log.info("Обновление администратором оффлайн-соревнования с ИД {}.", competitionId);
         OfflineCompetition updatedCompetition = service.updateOfflineCompetition(competitionId, request);
         return mapper.offlineCompetitionToOfflineCompetitionDto(updatedCompetition);
