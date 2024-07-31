@@ -1,4 +1,4 @@
-package com.kardoaward.kardo.online_competition.model;
+package com.kardoaward.kardo.video_contest.model;
 
 import com.kardoaward.kardo.enums.Status;
 import jakarta.persistence.Column;
@@ -20,23 +20,23 @@ import java.time.LocalDate;
 import static com.kardoaward.kardo.enums.Status.UPCOMING;
 
 @Entity
-@Table(name = "online_competitions")
+@Table(name = "video_contests")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-public class OnlineCompetition {
+public class VideoContest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String hashtag;
-    @Column(name = "competition_start")
-    private LocalDate competitionStart;
-    @Column(name = "competition_end")
-    private LocalDate competitionEnd;
+    @Column(name = "contest_start")
+    private LocalDate contestStart;
+    @Column(name = "contest_end")
+    private LocalDate contestEnd;
     @Enumerated(EnumType.STRING)
     private Status status = UPCOMING;
     private String description;

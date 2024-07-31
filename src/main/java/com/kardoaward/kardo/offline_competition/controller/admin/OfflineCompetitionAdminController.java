@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @AllArgsConstructor
 @RestController
-@RequestMapping("/admin/competitions/offline")
+@RequestMapping("/admin/competitions")
 @Validated
 public class OfflineCompetitionAdminController {
 

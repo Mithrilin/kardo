@@ -20,7 +20,7 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 @RestController
-@RequestMapping("/competitions/offline")
+@RequestMapping("/competitions")
 @Validated
 public class OfflineCompetitionController {
 
