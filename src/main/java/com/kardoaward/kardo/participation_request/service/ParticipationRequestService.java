@@ -10,4 +10,6 @@ public interface ParticipationRequestService {
     void deleteParticipationById(Long requestorId, Long participationId);
 
     ParticipationRequestDto getParticipationById(Long requestorId, Long participationId);
+
+    ParticipationRequestDto getParticipationByIdByAdmin(Long participationId);
 }

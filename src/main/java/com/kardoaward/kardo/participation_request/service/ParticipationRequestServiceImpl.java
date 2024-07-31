@@ -61,4 +61,12 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
         log.info("Заявка с ИД {} пользователя с ИД {} возвращена.", participationId, requestorId);
         return requestDto;
     }
+
+    @Override
+    public ParticipationRequestDto getParticipationByIdByAdmin(Long participationId) {
+        ParticipationRequest request = helper.isParticipationRequestPresent(participationId);
+        ParticipationRequestDto requestDto = mapper.participationRequestToParticipationRequestDto(request);
+        log.info("Заявка с ИД {} возвращена администратору.", participationId);
+        return requestDto;
+    }
 }
