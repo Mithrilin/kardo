@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface OnlineCompetitionService {
 
-
+    OnlineCompetitionDto createOnlineCompetition(NewOnlineCompetitionRequest newCompetition);
 
 
 

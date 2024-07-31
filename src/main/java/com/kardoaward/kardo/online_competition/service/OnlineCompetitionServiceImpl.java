@@ -29,9 +29,15 @@ public class OnlineCompetitionServiceImpl implements OnlineCompetitionService {
 
     private final OnlineCompetitionValidationHelper helper;
 
-
-
-
+    @Override
+    @Transactional
+    public OnlineCompetitionDto createOnlineCompetition(NewOnlineCompetitionRequest newCompetition) {
+        OnlineCompetition competition = mapper.newOnlineCompetitionRequestToOnlineCompetition(newCompetition);
+        OnlineCompetition returnedCompetition = repository.save(competition);
+        OnlineCompetitionDto competitionDto = mapper.onlineCompetitionToOnlineCompetitionDto(returnedCompetition);
+        log.info("Онлайн-соревнование с ID = {} создано.", returnedCompetition.getId());
+        return competitionDto;
+    }
 
 
 

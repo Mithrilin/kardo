@@ -26,9 +26,11 @@ public class OnlineCompetitionAdminController {
 
     private final OnlineCompetitionService service;
 
-
-
-
+    @PostMapping
+    public OnlineCompetitionDto createOnlineCompetition(@RequestBody @Valid NewOnlineCompetitionRequest newCompetition) {
+        log.info("Добавление администратором нового онлайн-соревнования {}.", newCompetition);
+        return service.createOnlineCompetition(newCompetition);
+    }
 
 
 
