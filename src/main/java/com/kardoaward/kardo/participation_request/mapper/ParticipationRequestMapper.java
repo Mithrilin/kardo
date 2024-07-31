@@ -3,14 +3,19 @@ package com.kardoaward.kardo.participation_request.mapper;
 import com.kardoaward.kardo.participation_request.model.ParticipationRequest;
 import com.kardoaward.kardo.participation_request.model.dto.NewParticipationRequest;
 import com.kardoaward.kardo.participation_request.model.dto.ParticipationRequestDto;
+import com.kardoaward.kardo.participation_request.model.dto.update.UpdateParticipationRequest;
 import com.kardoaward.kardo.selection.mapper.SelectionMapper;
 import com.kardoaward.kardo.selection.model.Selection;
 import com.kardoaward.kardo.user.mapper.UserMapper;
 import com.kardoaward.kardo.user.model.User;
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
+
+import static org.mapstruct.NullValuePropertyMappingStrategy.IGNORE;
 
 @Mapper(componentModel = "spring", uses = {UserMapper.class, SelectionMapper.class})
 public interface ParticipationRequestMapper {
@@ -29,4 +34,7 @@ public interface ParticipationRequestMapper {
     ParticipationRequestDto participationRequestToParticipationRequestDto(ParticipationRequest request);
 
     List<ParticipationRequestDto> participationRequestListToParticipationRequestDtoList(List<ParticipationRequest> participations);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = IGNORE)
+    void updateParticipation(UpdateParticipationRequest updateRequest, @MappingTarget ParticipationRequest request);
 }
