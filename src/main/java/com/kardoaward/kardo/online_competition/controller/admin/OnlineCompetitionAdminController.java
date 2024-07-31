@@ -38,5 +38,10 @@ public class OnlineCompetitionAdminController {
         service.deleteOnlineCompetition(competitionId);
     }
 
-
+    @PatchMapping("/{competitionId}")
+    public OnlineCompetitionDto updateOnlineCompetition(@PathVariable @Positive Long competitionId,
+                                                        @RequestBody @Valid UpdateOnlineCompetitionRequest request) {
+        log.info("Обновление администратором онлайн-соревнования с ИД {}.", competitionId);
+        return service.updateOnlineCompetition(competitionId, request);
+    }
 }

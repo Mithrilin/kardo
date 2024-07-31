@@ -14,5 +14,5 @@ public interface OnlineCompetitionService {
 
 
 
-
+    OnlineCompetitionDto updateOnlineCompetition(Long competitionId, UpdateOnlineCompetitionRequest request);
 }

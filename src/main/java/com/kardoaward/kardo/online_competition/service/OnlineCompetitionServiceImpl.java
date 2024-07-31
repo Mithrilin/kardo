@@ -51,5 +51,14 @@ public class OnlineCompetitionServiceImpl implements OnlineCompetitionService {
 
 
 
-
+    @Override
+    @Transactional
+    public OnlineCompetitionDto updateOnlineCompetition(Long competitionId, UpdateOnlineCompetitionRequest request) {
+        OnlineCompetition competition = helper.isOnlineCompetitionPresent(competitionId);
+        mapper.updateOnlineCompetition(request, competition);
+        OnlineCompetition updatedCompetition = repository.save(competition);
+        OnlineCompetitionDto competitionDto = mapper.onlineCompetitionToOnlineCompetitionDto(updatedCompetition);
+        log.info("Онлайн-соревнование с ID {} обновлено.", competitionId);
+        return competitionDto;
+    }
 }
