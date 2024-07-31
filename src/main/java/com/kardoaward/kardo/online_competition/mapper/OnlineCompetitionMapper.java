@@ -19,6 +19,8 @@ public interface OnlineCompetitionMapper {
 
     OnlineCompetitionDto onlineCompetitionToOnlineCompetitionDto(OnlineCompetition competition);
 
+    List<OnlineCompetitionDto> onlineCompetitionListToOnlineCompetitionDtoList(List<OnlineCompetition> competitions);
+
 
 
 
