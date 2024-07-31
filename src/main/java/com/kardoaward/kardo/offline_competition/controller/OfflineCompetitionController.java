@@ -30,7 +30,7 @@ public class OfflineCompetitionController {
 
     @GetMapping("/{competitionId}")
     public OfflineCompetitionDto getOfflineCompetitionById(@PathVariable @Positive Long competitionId) {
-        log.info("Возвращение администратору информации о оффлайн-соревновании с ИД {}.", competitionId);
+        log.info("Возвращение оффлайн-соревнования с ИД {}.", competitionId);
         OfflineCompetition returnedOfflineCompetition = service.getOfflineCompetitionById(competitionId);
         return mapper.offlineCompetitionToOfflineCompetitionDto(returnedOfflineCompetition);
     }

@@ -15,6 +15,8 @@ import static org.mapstruct.NullValuePropertyMappingStrategy.IGNORE;
 @Mapper(componentModel = "spring")
 public interface OnlineCompetitionMapper {
 
+    OnlineCompetition newOnlineCompetitionRequestToOnlineCompetition(NewOnlineCompetitionRequest newCompetition);
+
 
 
 

@@ -17,6 +17,8 @@ import lombok.ToString;
 
 import java.time.LocalDate;
 
+import static com.kardoaward.kardo.enums.Status.UPCOMING;
+
 @Entity
 @Table(name = "online_competitions")
 @AllArgsConstructor
@@ -36,6 +38,6 @@ public class OnlineCompetition {
     @Column(name = "competition_end")
     private LocalDate competitionEnd;
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = UPCOMING;
     private String description;
 }
