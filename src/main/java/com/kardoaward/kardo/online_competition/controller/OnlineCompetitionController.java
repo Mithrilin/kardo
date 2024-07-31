@@ -30,11 +30,10 @@ public class OnlineCompetitionController {
         return service.getOnlineCompetitionById(competitionId);
     }
 
-
-
-
-
-
-
-
+    @GetMapping
+    public List<OnlineCompetitionDto> getOnlineCompetitions(@RequestParam(defaultValue = "0") @Min(0) int from,
+                                                            @RequestParam(defaultValue = "10") @Positive int size) {
+        log.info("Возвращение списка онлайн-соревнований.");
+        return service.getOnlineCompetitions(from, size);
+    }
 }
