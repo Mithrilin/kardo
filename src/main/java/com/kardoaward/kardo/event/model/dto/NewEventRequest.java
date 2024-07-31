@@ -4,6 +4,7 @@ import com.kardoaward.kardo.enums.Field;
 import com.kardoaward.kardo.event.model.enums.EventProgram;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -32,9 +33,9 @@ public class NewEventRequest {
     @NotBlank(message = "Location не может быть пустым.")
     @Size(min = 2, max = 250, message = "Длина location должна быть в диапазоне от 2 до 250 символов.")
     private String location;
-    @NotBlank(message = "Programs не может быть пустым.")
+    @NotEmpty(message = "Programs не может быть пустым.")
     private List<EventProgram> programs;
-    @NotBlank(message = "Fields не может быть пустым.")
+    @NotEmpty(message = "Fields не может быть пустым.")
     private List<Field> fields;
     @NotBlank(message = "Logo не может быть пустым.")
     @Size(min = 2, max = 250, message = "Длина Logo должна быть в диапазоне от 2 до 250 символов.")
