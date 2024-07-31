@@ -8,9 +8,11 @@ import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,10 +26,17 @@ public class ParticipationRequestController {
     private final ParticipationRequestService service;
 
     @PostMapping
-    public ParticipationRequestDto createParticipation(@PathVariable @Positive Long requestorId,
+    public ParticipationRequestDto createParticipation(@RequestHeader("X-Requestor-Id") Long requestorId,
                                                        @RequestBody @Valid NewParticipationRequest newParticipationRequest) {
         log.info("Добавление пользователем с ИД {} новой заявки на участие в отборе с ИД {}.", requestorId,
                 newParticipationRequest.getSelectionId());
         return service.addParticipation(requestorId, newParticipationRequest);
+    }
+
+    @DeleteMapping("/{participationId}")
+    public void deleteParticipationById(@RequestHeader("X-Requestor-Id") Long requestorId,
+                                        @PathVariable @Positive Long participationId) {
+        log.info("Удаление пользователем с ИД {} своей заявки с ИД {} на участие в отборе.", requestorId, participationId);
+        service.deleteParticipationById(requestorId, participationId);
     }
 }

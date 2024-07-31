@@ -6,4 +6,6 @@ import com.kardoaward.kardo.participation_request.model.dto.ParticipationRequest
 public interface ParticipationRequestService {
 
     ParticipationRequestDto addParticipation(Long requestorId, NewParticipationRequest newParticipationRequest);
+
+    void deleteParticipationById(Long requestorId, Long participationId);
 }
