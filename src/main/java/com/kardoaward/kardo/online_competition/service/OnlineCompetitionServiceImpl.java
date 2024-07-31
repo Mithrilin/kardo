@@ -39,6 +39,13 @@ public class OnlineCompetitionServiceImpl implements OnlineCompetitionService {
         return competitionDto;
     }
 
+    @Override
+    @Transactional
+    public void deleteOnlineCompetition(Long competitionId) {
+        helper.isOnlineCompetitionPresent(competitionId);
+        repository.deleteById(competitionId);
+        log.info("Онлайн-соревнование с ID {} удалено.", competitionId);
+    }
 
 
 

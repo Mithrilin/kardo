@@ -32,6 +32,11 @@ public class OnlineCompetitionAdminController {
         return service.createOnlineCompetition(newCompetition);
     }
 
+    @DeleteMapping("/{competitionId}")
+    public void deleteOnlineCompetition(@PathVariable @Positive Long competitionId) {
+        log.info("Удаление администратором онлайн-соревнования с ИД {}.", competitionId);
+        service.deleteOnlineCompetition(competitionId);
+    }
 
 
 }

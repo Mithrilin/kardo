@@ -10,6 +10,7 @@ public interface OnlineCompetitionService {
 
     OnlineCompetitionDto createOnlineCompetition(NewOnlineCompetitionRequest newCompetition);
 
+    void deleteOnlineCompetition(Long competitionId);
 
 
 
