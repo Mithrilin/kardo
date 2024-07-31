@@ -30,14 +30,14 @@ public class SelectionController {
 
     @GetMapping("/{selectionId}")
     public SelectionDto getSelectionById(@PathVariable @Positive Long selectionId) {
-        log.info("Получение отбора с ИД {}.", selectionId);
+        log.info("Возвращение отбора с ИД {}.", selectionId);
         return selectionService.getSelectionById(selectionId);
     }
 
     @GetMapping
     public List<SelectionDto> getSelections(@RequestParam(defaultValue = "0") @Min(0) int from,
                                             @RequestParam(defaultValue = "10") @Positive int size) {
-        log.info("Получение списка отборов.");
+        log.info("Возвращение списка отборов.");
         return selectionService.getSelections(from, size);
     }
 
@@ -45,7 +45,7 @@ public class SelectionController {
     public List<UserShortDto> getContestantsBySelectionId(@PathVariable @Positive Long selectionId,
                                                           @RequestParam(defaultValue = "0") @Min(0) int from,
                                                           @RequestParam(defaultValue = "10") @Positive int size) {
-        log.info("Получение списка участников отбора с ИД {}.", selectionId);
+        log.info("Возвращение списка участников отбора с ИД {}.", selectionId);
         return userService.getContestantsBySelectionId(selectionId, from, size);
     }
 
@@ -53,7 +53,7 @@ public class SelectionController {
     public List<SelectionDto> getSelectionsByRequestorId(@RequestHeader("X-Requestor-Id") Long requestorId,
                                                          @RequestParam(defaultValue = "0") @Min(0) int from,
                                                          @RequestParam(defaultValue = "10") @Positive int size) {
-        log.info("Получение списка отборов с участием пользователя с ИД {}.", requestorId);
+        log.info("Возвращение списка отборов с участием пользователя с ИД {}.", requestorId);
         return selectionService.getSelectionsByRequestorId(requestorId, from, size);
     }
 
@@ -61,7 +61,7 @@ public class SelectionController {
     public List<SelectionDto> getSelectionsByOfflineCompetitionId(@PathVariable @Positive Long competitionId,
                                                                   @RequestParam(defaultValue = "0") @Min(0) int from,
                                                                   @RequestParam(defaultValue = "10") @Positive int size) {
-        log.info("Получение списка отборов к оффлайн-соревнованию с ИД {}.", competitionId);
+        log.info("Возвращение списка отборов к оффлайн-соревнованию с ИД {}.", competitionId);
         return selectionService.getSelectionsByOfflineCompetitionId(competitionId, from, size);
     }
 }
