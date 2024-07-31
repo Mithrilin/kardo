@@ -1,8 +1,16 @@
 package com.kardoaward.kardo.participation_request.controller;
 
+import com.kardoaward.kardo.participation_request.model.dto.NewParticipationRequest;
+import com.kardoaward.kardo.participation_request.model.dto.ParticipationRequestDto;
+import com.kardoaward.kardo.participation_request.service.ParticipationRequestService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,4 +20,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/participations")
 @Validated
 public class ParticipationRequestController {
+
+    private final ParticipationRequestService service;
+
+    @PostMapping
+    public ParticipationRequestDto createParticipation(@PathVariable @Positive Long requestorId,
+                                                       @RequestBody @Valid NewParticipationRequest newParticipationRequest) {
+        log.info("Добавление пользователем с ИД {} новой заявки на участие в отборе с ИД {}.", requestorId,
+                newParticipationRequest.getSelectionId());
+        return service.addParticipation(requestorId, newParticipationRequest);
+    }
 }
