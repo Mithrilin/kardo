@@ -12,6 +12,7 @@ public interface OnlineCompetitionService {
 
     void deleteOnlineCompetition(Long competitionId);
 
+    OnlineCompetitionDto getOnlineCompetitionById(Long competitionId);
 
 
     OnlineCompetitionDto updateOnlineCompetition(Long competitionId, UpdateOnlineCompetitionRequest request);

@@ -47,6 +47,13 @@ public class OnlineCompetitionServiceImpl implements OnlineCompetitionService {
         log.info("Онлайн-соревнование с ID {} удалено.", competitionId);
     }
 
+    @Override
+    public OnlineCompetitionDto getOnlineCompetitionById(Long competitionId) {
+        OnlineCompetition competition = helper.isOnlineCompetitionPresent(competitionId);
+        OnlineCompetitionDto competitionDto = mapper.onlineCompetitionToOnlineCompetitionDto(competition);
+        log.info("Онлайн-соревнование с ИД {} возвращено.", competitionId);
+        return competitionDto;
+    }
 
 
 
