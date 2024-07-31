@@ -10,6 +10,8 @@ import com.kardoaward.kardo.user.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", uses = {UserMapper.class, SelectionMapper.class})
 public interface ParticipationRequestMapper {
 
@@ -25,4 +27,6 @@ public interface ParticipationRequestMapper {
     @Mapping(source = "request.selection", target = "selectionDto")
     @Mapping(source = "request.requester", target = "requesterDto")
     ParticipationRequestDto participationRequestToParticipationRequestDto(ParticipationRequest request);
+
+    List<ParticipationRequestDto> participationRequestListToParticipationRequestDtoList(List<ParticipationRequest> participations);
 }
