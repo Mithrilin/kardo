@@ -13,7 +13,13 @@ import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -68,5 +74,26 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
         ParticipationRequestDto requestDto = mapper.participationRequestToParticipationRequestDto(request);
         log.info("Заявка с ИД {} возвращена администратору.", participationId);
         return requestDto;
+    }
+
+    @Override
+    public List<ParticipationRequestDto> getParticipationsBySelectionId(Long selectionId, int from, int size) {
+        selectionValidationHelper.isSelectionPresent(selectionId);
+        int page = from / size;
+        Sort sort = Sort.by(Sort.Direction.ASC, "id");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+        Page<ParticipationRequest> participationPage = repository.findBySelection_Id(selectionId, pageRequest);
+
+        if (participationPage.isEmpty()) {
+            log.info("Не нашлось заявок по заданным параметрам.");
+            return new ArrayList<>();
+        }
+
+        List<ParticipationRequest> participations = participationPage.getContent();
+        List<ParticipationRequestDto> participationDtos =
+                mapper.participationRequestListToParticipationRequestDtoList(participations);
+        log.info("Список заявок на участие в отборе с ИД {} с номера {} размером {} возвращён.", selectionId,
+                from, participationDtos.size());
+        return participationDtos;
     }
 }
