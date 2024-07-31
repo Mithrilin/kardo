@@ -17,6 +17,8 @@ public interface OnlineCompetitionMapper {
 
     OnlineCompetition newOnlineCompetitionRequestToOnlineCompetition(NewOnlineCompetitionRequest newCompetition);
 
+    OnlineCompetitionDto onlineCompetitionToOnlineCompetitionDto(OnlineCompetition competition);
+
 
 
 
