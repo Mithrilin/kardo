@@ -4,6 +4,7 @@ import com.kardoaward.kardo.participation_request.mapper.ParticipationRequestMap
 import com.kardoaward.kardo.participation_request.model.ParticipationRequest;
 import com.kardoaward.kardo.participation_request.model.dto.NewParticipationRequest;
 import com.kardoaward.kardo.participation_request.model.dto.ParticipationRequestDto;
+import com.kardoaward.kardo.participation_request.model.dto.update.UpdateParticipationRequest;
 import com.kardoaward.kardo.participation_request.repository.ParticipationRequestRepository;
 import com.kardoaward.kardo.participation_request.service.helper.ParticipationRequestValidationHelper;
 import com.kardoaward.kardo.selection.model.Selection;
@@ -95,5 +96,18 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
         log.info("Список заявок на участие в отборе с ИД {} с номера {} размером {} возвращён.", selectionId,
                 from, participationDtos.size());
         return participationDtos;
+    }
+
+    @Override
+    @Transactional
+    public ParticipationRequestDto updateParticipationById(Long requestorId, Long participationId,
+                                                           UpdateParticipationRequest updateRequest) {
+        userValidationHelper.isUserPresent(requestorId);
+        ParticipationRequest request = helper.isParticipationRequestPresent(participationId);
+        mapper.updateParticipation(updateRequest, request);
+        ParticipationRequest updatedRequest = repository.save(request);
+        ParticipationRequestDto participationDto = mapper.participationRequestToParticipationRequestDto(updatedRequest);
+        log.info("Заявка с ID {} обновлена.", participationId);
+        return participationDto;
     }
 }
