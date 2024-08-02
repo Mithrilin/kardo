@@ -6,4 +6,6 @@ import com.kardoaward.kardo.event.model.dto.NewEventRequest;
 public interface EventService {
 
     EventDto addEvent(NewEventRequest newEventRequest);
+
+    void deleteEventById(Long eventId);
 }
