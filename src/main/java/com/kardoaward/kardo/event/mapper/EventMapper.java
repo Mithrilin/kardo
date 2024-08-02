@@ -8,6 +8,8 @@ import com.kardoaward.kardo.offline_competition.model.OfflineCompetition;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", uses = OfflineCompetitionMapper.class)
 public interface EventMapper {
 
@@ -22,4 +24,6 @@ public interface EventMapper {
 
     @Mapping(source = "returnedEvent.competition", target = "competitionDto")
     EventDto eventToEventDto(Event returnedEvent);
+
+    List<EventDto> eventListToEventDtoList(List<Event> events);
 }
