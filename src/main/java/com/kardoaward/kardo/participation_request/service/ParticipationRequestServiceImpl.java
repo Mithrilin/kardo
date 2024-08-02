@@ -1,14 +1,18 @@
 package com.kardoaward.kardo.participation_request.service;
 
+import com.kardoaward.kardo.enums.RequestStatus;
+import com.kardoaward.kardo.enums.UpdateRequestStatus;
 import com.kardoaward.kardo.participation_request.mapper.ParticipationRequestMapper;
 import com.kardoaward.kardo.participation_request.model.ParticipationRequest;
 import com.kardoaward.kardo.participation_request.model.dto.NewParticipationRequest;
 import com.kardoaward.kardo.participation_request.model.dto.ParticipationRequestDto;
+import com.kardoaward.kardo.participation_request.model.dto.update.ParticipationRequestStatusUpdateRequest;
+import com.kardoaward.kardo.participation_request.model.dto.update.ParticipationRequestStatusUpdateResult;
 import com.kardoaward.kardo.participation_request.model.dto.update.UpdateParticipationRequest;
 import com.kardoaward.kardo.participation_request.repository.ParticipationRequestRepository;
 import com.kardoaward.kardo.participation_request.service.helper.ParticipationRequestValidationHelper;
-import com.kardoaward.kardo.selection.model.Selection;
-import com.kardoaward.kardo.selection.service.helper.SelectionValidationHelper;
+import com.kardoaward.kardo.selection.offline_selection.model.OfflineSelection;
+import com.kardoaward.kardo.selection.offline_selection.service.helper.OfflineSelectionValidationHelper;
 import com.kardoaward.kardo.user.model.User;
 import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import jakarta.transaction.Transactional;
@@ -33,20 +37,21 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
 
     private final ParticipationRequestValidationHelper helper;
     private final UserValidationHelper userValidationHelper;
-    private final SelectionValidationHelper selectionValidationHelper;
+    private final OfflineSelectionValidationHelper offlineSelectionValidationHelper;
 
     @Override
     @Transactional
     public ParticipationRequestDto addParticipation(Long requestorId, NewParticipationRequest newParticipationRequest) {
         User user = userValidationHelper.isUserPresent(requestorId);
-        Selection selection = selectionValidationHelper.isSelectionPresent(newParticipationRequest.getSelectionId());
+        OfflineSelection offlineSelection = offlineSelectionValidationHelper
+                .isOfflineSelectionPresent(newParticipationRequest.getSelectionId());
         ParticipationRequest request = mapper.newParticipationRequestToParticipationRequest(newParticipationRequest,
-                user, selection);
+                user, offlineSelection);
         ParticipationRequest returnedRequest = repository.save(request);
         ParticipationRequestDto requestDto = mapper.participationRequestToParticipationRequestDto(returnedRequest);
         log.info("Заявка с ИД {} пользователя с ИД {} на участие в отборе с ИД {} создана.", requestDto.getId(),
-                requestorId, selection.getId());
-        return null;
+                requestorId, offlineSelection.getId());
+        return requestDto;
     }
 
     @Override
@@ -79,7 +84,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
 
     @Override
     public List<ParticipationRequestDto> getParticipationsBySelectionId(Long selectionId, int from, int size) {
-        selectionValidationHelper.isSelectionPresent(selectionId);
+        offlineSelectionValidationHelper.isOfflineSelectionPresent(selectionId);
         int page = from / size;
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
@@ -93,7 +98,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
         List<ParticipationRequest> participations = participationPage.getContent();
         List<ParticipationRequestDto> participationDtos =
                 mapper.participationRequestListToParticipationRequestDtoList(participations);
-        log.info("Список заявок на участие в отборе с ИД {} с номера {} размером {} возвращён.", selectionId,
+        log.info("Список заявок на участие в оффлайн-отборе с ИД {} с номера {} размером {} возвращён.", selectionId,
                 from, participationDtos.size());
         return participationDtos;
     }
@@ -109,5 +114,39 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
         ParticipationRequestDto participationDto = mapper.participationRequestToParticipationRequestDto(updatedRequest);
         log.info("Заявка с ID {} обновлена.", participationId);
         return participationDto;
+    }
+
+    @Override
+    public ParticipationRequestStatusUpdateResult updateParticipationRequestStatusById(
+            Long selectionId, ParticipationRequestStatusUpdateRequest request) {
+
+        offlineSelectionValidationHelper.isOfflineSelectionPresent(selectionId);
+        List<Long> ids = request.getRequestIds();
+        List<ParticipationRequest> participations = repository.findAllById(ids);
+        ParticipationRequestStatusUpdateResult result = new ParticipationRequestStatusUpdateResult();
+        List<ParticipationRequest> updatedRequests = new ArrayList<>();
+
+        for (ParticipationRequest participationRequest : participations) {
+            ParticipationRequestDto participationRequestDto = mapper
+                    .participationRequestToParticipationRequestDto(participationRequest);
+
+            if (participationRequest.getStatus() == RequestStatus.PENDING) {
+
+                if (request.getStatus() == UpdateRequestStatus.CONFIRMED) {
+                    participationRequest.setStatus(RequestStatus.CONFIRMED);
+                } else {
+                    participationRequest.setStatus(RequestStatus.CANCELED);
+                }
+                updatedRequests.add(participationRequest);
+                result.getUpdatedRequests().add(participationRequestDto);
+            } else {
+                result.getNotUpdatedRequests().add(participationRequestDto);
+            }
+        }
+
+        repository.saveAll(updatedRequests);
+        log.info("Статуса заявок на участие в оффлайн-отборе с ИД {} у {} заявок и не обновился у {} заявок.",
+                selectionId, result.getUpdatedRequests().size(), result.getNotUpdatedRequests().size());
+        return result;
     }
 }

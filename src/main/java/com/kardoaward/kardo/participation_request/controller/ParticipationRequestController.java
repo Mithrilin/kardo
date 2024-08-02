@@ -30,7 +30,8 @@ public class ParticipationRequestController {
 
     @PostMapping
     public ParticipationRequestDto createParticipation(@RequestHeader("X-Requestor-Id") Long requestorId,
-                                                       @RequestBody @Valid NewParticipationRequest newParticipationRequest) {
+                                                       @RequestBody @Valid
+                                                       NewParticipationRequest newParticipationRequest) {
         log.info("Добавление пользователем с ИД {} новой заявки на участие в отборе с ИД {}.", requestorId,
                 newParticipationRequest.getSelectionId());
         return service.addParticipation(requestorId, newParticipationRequest);
@@ -39,14 +40,16 @@ public class ParticipationRequestController {
     @DeleteMapping("/{participationId}")
     public void deleteParticipationById(@RequestHeader("X-Requestor-Id") Long requestorId,
                                         @PathVariable @Positive Long participationId) {
-        log.info("Удаление пользователем с ИД {} своей заявки с ИД {} на участие в отборе.", requestorId, participationId);
+        log.info("Удаление пользователем с ИД {} своей заявки с ИД {} на участие в отборе.",
+                requestorId, participationId);
         service.deleteParticipationById(requestorId, participationId);
     }
 
     @GetMapping("/{participationId}")
     public ParticipationRequestDto getParticipationById(@RequestHeader("X-Requestor-Id") Long requestorId,
                                                         @PathVariable @Positive Long participationId) {
-        log.info("Возвращение пользователю с ИД {} его заявки с ИД {} на участие в отборе.", requestorId, participationId);
+        log.info("Возвращение пользователю с ИД {} его заявки с ИД {} на участие в отборе.",
+                requestorId, participationId);
         return service.getParticipationById(requestorId, participationId);
     }
 
