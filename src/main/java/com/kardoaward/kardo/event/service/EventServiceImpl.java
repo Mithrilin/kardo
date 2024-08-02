@@ -4,14 +4,23 @@ import com.kardoaward.kardo.event.mapper.EventMapper;
 import com.kardoaward.kardo.event.model.Event;
 import com.kardoaward.kardo.event.model.dto.EventDto;
 import com.kardoaward.kardo.event.model.dto.NewEventRequest;
+import com.kardoaward.kardo.event.model.params.EventRequestParams;
 import com.kardoaward.kardo.event.repository.EventRepository;
 import com.kardoaward.kardo.event.service.helper.EventValidationHelper;
+import com.kardoaward.kardo.event.service.specification.EventSpecifications;
 import com.kardoaward.kardo.offline_competition.model.OfflineCompetition;
 import com.kardoaward.kardo.offline_competition.service.helper.OfflineCompetitionValidationHelper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -50,5 +59,27 @@ public class EventServiceImpl implements EventService {
         EventDto eventDto = eventMapper.eventToEventDto(event);
         log.info("Мероприятие с ИД {} возвращено.", eventId);
         return eventDto;
+    }
+
+    @Override
+    public List<EventDto> getEventsByParams(EventRequestParams params) {
+        PageRequest pageRequest = params.getPageRequest();
+        List<Specification<Event>> specifications = EventSpecifications.searchEventFilterToSpecifications(params);
+        Page<Event> eventPage = eventRepository.findAll(
+                Objects.requireNonNull(specifications
+                        .stream()
+                        .reduce(Specification::and)
+                        .orElse(null)),
+                pageRequest);
+
+        if (eventPage.isEmpty()) {
+            log.info("Не нашлось мероприятий по заданным параметрам.");
+            return new ArrayList<>();
+        }
+
+        List<Event> events = eventPage.getContent();
+        List<EventDto> eventDtos = eventMapper.eventListToEventDtoList(events);
+        log.info("Список мероприятий с номера {} размером {} возвращён.", params.getFrom(), eventDtos.size());
+        return eventDtos;
     }
 }
