@@ -17,4 +17,6 @@ public interface OfflineSelectionRepository extends JpaRepository<OfflineSelecti
                            "AND pr.status = 'CONFIRMED') " +
             "ORDER BY s.id", nativeQuery = true)
     Page<OfflineSelection> findAllByRequestorId(Long requestorId, PageRequest pageRequest);
+
+    Page<OfflineSelection> findByCompetition_Id(Long competitionId, PageRequest pageRequest);
 }
