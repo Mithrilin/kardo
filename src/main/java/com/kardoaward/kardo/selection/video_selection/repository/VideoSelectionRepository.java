@@ -1,12 +1,12 @@
-package com.kardoaward.kardo.selection.repository;
+package com.kardoaward.kardo.selection.video_selection.repository;
 
-import com.kardoaward.kardo.selection.model.Selection;
+import com.kardoaward.kardo.selection.video_selection.model.VideoSelection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface SelectionRepository extends JpaRepository<Selection, Long> {
+public interface VideoSelectionRepository extends JpaRepository<VideoSelection, Long> {
 
     @Query(value =
             "SELECT * " +
@@ -18,5 +18,5 @@ public interface SelectionRepository extends JpaRepository<Selection, Long> {
             "ORDER BY s.id", nativeQuery = true)
     Page<Selection> findAllByRequestorId(Long requestorId, PageRequest pageRequest);
 
-    Page<Selection> findByCompetition_Id(Long competitionId, PageRequest pageRequest);
+    Page<VideoSelection> findByCompetition_Id(Long competitionId, PageRequest pageRequest);
 }
