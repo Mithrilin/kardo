@@ -4,6 +4,7 @@ import com.kardoaward.kardo.event.mapper.EventMapper;
 import com.kardoaward.kardo.event.model.Event;
 import com.kardoaward.kardo.event.model.dto.EventDto;
 import com.kardoaward.kardo.event.model.dto.NewEventRequest;
+import com.kardoaward.kardo.event.model.dto.UpdateEventRequest;
 import com.kardoaward.kardo.event.model.params.EventRequestParams;
 import com.kardoaward.kardo.event.repository.EventRepository;
 import com.kardoaward.kardo.event.service.helper.EventValidationHelper;
@@ -81,5 +82,17 @@ public class EventServiceImpl implements EventService {
         List<EventDto> eventDtos = eventMapper.eventListToEventDtoList(events);
         log.info("Список мероприятий с номера {} размером {} возвращён.", params.getFrom(), eventDtos.size());
         return eventDtos;
+    }
+
+    @Override
+    @Transactional
+    public EventDto updateEventById(Long eventId, UpdateEventRequest request) {
+        Event event = eventValidationHelper.isEventPresent(eventId);
+        eventValidationHelper.isUpdateEventDateValid(event, request);
+        eventMapper.updateEvent(request, event);
+        Event updatedEvent = eventRepository.save(event);
+        EventDto eventDto = eventMapper.eventToEventDto(updatedEvent);
+        log.info("Мероприятие с ID {} обновлено.", eventId);
+        return eventDto;
     }
 }
