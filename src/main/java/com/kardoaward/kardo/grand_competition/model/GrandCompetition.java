@@ -1,4 +1,4 @@
-package com.kardoaward.kardo.offline_competition.model;
+package com.kardoaward.kardo.grand_competition.model;
 
 import com.kardoaward.kardo.enums.Status;
 import com.kardoaward.kardo.enums.Field;
@@ -25,13 +25,13 @@ import java.util.List;
 import static com.kardoaward.kardo.enums.Status.UPCOMING;
 
 @Entity
-@Table(name = "offline_competitions")
+@Table(name = "grand_competitions")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-public class OfflineCompetition {
+public class GrandCompetition {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,8 +46,8 @@ public class OfflineCompetition {
     private Status status = UPCOMING;
     private String location;
     @ElementCollection
-    @CollectionTable(name="offline_competition_fields",
-            joinColumns=@JoinColumn(name="offline_competition_id"))
+    @CollectionTable(name="grand_competition_fields",
+            joinColumns=@JoinColumn(name="grand_competition_id"))
     @Column(name="field")
     @Enumerated(EnumType.STRING)
     private List<Field> fields;

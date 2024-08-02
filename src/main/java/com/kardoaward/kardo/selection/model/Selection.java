@@ -2,7 +2,7 @@ package com.kardoaward.kardo.selection.model;
 
 import com.kardoaward.kardo.enums.Field;
 import com.kardoaward.kardo.enums.Status;
-import com.kardoaward.kardo.offline_competition.model.OfflineCompetition;
+import com.kardoaward.kardo.grand_competition.model.GrandCompetition;
 import com.kardoaward.kardo.selection.model.enums.SelectionType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -48,7 +48,7 @@ public class Selection {
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinColumn(name = "competition_id")
-    private OfflineCompetition competition;
+    private GrandCompetition competition;
     @Column(name = "selection_start")
     private LocalDate selectionStart;
     @Column(name = "selection_end")

@@ -1,4 +1,4 @@
-package com.kardoaward.kardo.offline_competition.model.dto;
+package com.kardoaward.kardo.grand_competition.model.dto;
 
 import com.kardoaward.kardo.enums.Status;
 import com.kardoaward.kardo.enums.Field;
@@ -12,7 +12,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class OfflineCompetitionDto {
+public class GrandCompetitionDto {
 
     private Long id;
     private String title;

@@ -1,4 +1,4 @@
-package com.kardoaward.kardo.offline_competition.model.dto;
+package com.kardoaward.kardo.grand_competition.model.dto;
 
 import com.kardoaward.kardo.enums.Status;
 import com.kardoaward.kardo.enums.Field;
@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class UpdateOfflineCompetitionRequest {
+public class UpdateGrandCompetitionRequest {
 
     @Size(min = 2, max = 250, message = "Длина title должна быть в диапазоне от 2 до 250 символов.")
     private String title;

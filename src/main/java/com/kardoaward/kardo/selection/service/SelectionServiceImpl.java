@@ -1,7 +1,7 @@
 package com.kardoaward.kardo.selection.service;
 
-import com.kardoaward.kardo.offline_competition.model.OfflineCompetition;
-import com.kardoaward.kardo.offline_competition.service.helper.OfflineCompetitionValidationHelper;
+import com.kardoaward.kardo.grand_competition.model.GrandCompetition;
+import com.kardoaward.kardo.grand_competition.service.helper.GrandCompetitionValidationHelper;
 import com.kardoaward.kardo.selection.mapper.SelectionMapper;
 import com.kardoaward.kardo.selection.model.Selection;
 import com.kardoaward.kardo.selection.model.dto.NewSelectionRequest;
@@ -32,13 +32,13 @@ public class SelectionServiceImpl implements SelectionService {
 
     private final SelectionValidationHelper selectionValidationHelper;
     private final UserValidationHelper userValidationHelper;
-    private final OfflineCompetitionValidationHelper offlineValidationHelper;
+    private final GrandCompetitionValidationHelper offlineValidationHelper;
 
     @Override
     @Transactional
     public SelectionDto addSelection(NewSelectionRequest newSelectionRequest) {
-        OfflineCompetition competition = offlineValidationHelper
-                .isOfflineCompetitionPresent(newSelectionRequest.getCompetitionId());
+        GrandCompetition competition = offlineValidationHelper
+                .isGrandCompetitionPresent(newSelectionRequest.getCompetitionId());
         Selection selection = selectionMapper.newSelectionRequestToSelection(newSelectionRequest, competition);
         Selection returnedSelection = selectionRepository.save(selection);
         SelectionDto selectionDto = selectionMapper.selectionToSelectionDto(returnedSelection);
@@ -114,7 +114,7 @@ public class SelectionServiceImpl implements SelectionService {
 
     @Override
     public List<SelectionDto> getSelectionsByOfflineCompetitionId(Long competitionId, int from, int size) {
-        offlineValidationHelper.isOfflineCompetitionPresent(competitionId);
+        offlineValidationHelper.isGrandCompetitionPresent(competitionId);
         int page = from / size;
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
