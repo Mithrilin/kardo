@@ -7,6 +7,7 @@ import com.kardoaward.kardo.selection.offline_selection.model.OfflineSelection;
 import com.kardoaward.kardo.selection.offline_selection.model.dto.NewOfflineSelectionRequest;
 import com.kardoaward.kardo.selection.offline_selection.model.dto.OfflineSelectionDto;
 import com.kardoaward.kardo.selection.offline_selection.repository.OfflineSelectionRepository;
+import com.kardoaward.kardo.selection.offline_selection.service.helper.OfflineSelectionValidationHelper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ public class OfflineSelectionServiceImpl implements OfflineSelectionService {
 
     private final OfflineSelectionMapper offlineSelectionMapper;
 
+    private final OfflineSelectionValidationHelper offlineSelectionValidationHelper;
     private final GrandCompetitionValidationHelper grandCompetitionValidationHelper;
 
     @Override
@@ -35,5 +37,13 @@ public class OfflineSelectionServiceImpl implements OfflineSelectionService {
                 .offlineSelectionToOfflineSelectionDto(returnedOfflineSelection);
         log.info("Оффлайн-отбор с ID = {} создан.", offlineSelectionDto.getId());
         return offlineSelectionDto;
+    }
+
+    @Override
+    @Transactional
+    public void deleteOfflineSelection(Long selectionId) {
+        offlineSelectionValidationHelper.isOfflineSelectionPresent(selectionId);
+        offlineSelectionRepository.deleteById(selectionId);
+        log.info("Оффлайн-отбор с ID {} удалён.", selectionId);
     }
 }

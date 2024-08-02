@@ -6,4 +6,6 @@ import com.kardoaward.kardo.selection.offline_selection.model.dto.OfflineSelecti
 public interface OfflineSelectionService {
 
     OfflineSelectionDto addOfflineSelection(NewOfflineSelectionRequest newOfflineSelectionRequest);
+
+    void deleteOfflineSelection(Long selectionId);
 }
