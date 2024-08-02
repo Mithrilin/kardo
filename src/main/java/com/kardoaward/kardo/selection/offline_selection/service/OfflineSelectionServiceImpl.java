@@ -11,7 +11,13 @@ import com.kardoaward.kardo.selection.offline_selection.service.helper.OfflineSe
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -54,5 +60,24 @@ public class OfflineSelectionServiceImpl implements OfflineSelectionService {
                 .offlineSelectionToOfflineSelectionDto(offlineSelection);
         log.info("Оффлайн-отбор с ИД {} возвращен.", selectionId);
         return offlineSelectionDto;
+    }
+
+    @Override
+    public List<OfflineSelectionDto> getOfflineSelections(int from, int size) {
+        int page = from / size;
+        Sort sort = Sort.by(Sort.Direction.ASC, "id");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+        Page<OfflineSelection> selectionsPage = offlineSelectionRepository.findAll(pageRequest);
+
+        if (selectionsPage.isEmpty()) {
+            log.info("Не нашлось оффлайн-отборов по заданным параметрам.");
+            return new ArrayList<>();
+        }
+
+        List<OfflineSelection> offlineSelections = selectionsPage.getContent();
+        List<OfflineSelectionDto> offlineSelectionDtos = offlineSelectionMapper
+                .offlineSelectionListToOfflineSelectionDtoList(offlineSelections);
+        log.info("Список оффлайн-отборов с номера {} размером {} возвращён.", from, offlineSelectionDtos.size());
+        return offlineSelectionDtos;
     }
 }
