@@ -2,7 +2,7 @@ package com.kardoaward.kardo.participation_request.model;
 
 import com.kardoaward.kardo.enums.Field;
 import com.kardoaward.kardo.enums.RequestStatus;
-import com.kardoaward.kardo.selection.model.Selection;
+import com.kardoaward.kardo.selection.offline_selection.model.OfflineSelection;
 import com.kardoaward.kardo.user.model.User;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -45,7 +45,7 @@ public class ParticipationRequest {
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinColumn(name = "selection_id")
-    private Selection selection;
+    private OfflineSelection selection;
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinColumn(name = "requester_id")

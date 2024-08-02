@@ -9,6 +9,7 @@ import com.kardoaward.kardo.selection.offline_selection.model.dto.OfflineSelecti
 import com.kardoaward.kardo.selection.offline_selection.model.dto.UpdateOfflineSelectionRequest;
 import com.kardoaward.kardo.selection.offline_selection.repository.OfflineSelectionRepository;
 import com.kardoaward.kardo.selection.offline_selection.service.helper.OfflineSelectionValidationHelper;
+import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,7 @@ public class OfflineSelectionServiceImpl implements OfflineSelectionService {
 
     private final OfflineSelectionValidationHelper offlineSelectionValidationHelper;
     private final GrandCompetitionValidationHelper grandCompetitionValidationHelper;
+    private final UserValidationHelper userValidationHelper;
 
     @Override
     @Transactional
@@ -93,5 +95,26 @@ public class OfflineSelectionServiceImpl implements OfflineSelectionService {
                 .offlineSelectionToOfflineSelectionDto(updatedOfflineSelection);
         log.info("Оффлайн-отбор с ID {} обновлён.", selectionId);
         return offlineSelectionDto;
+    }
+
+    @Override
+    public List<OfflineSelectionDto> getOfflineSelectionsByRequestorId(Long requestorId, int from, int size) {
+        userValidationHelper.isUserPresent(requestorId);
+        int page = from / size;
+        Sort sort = Sort.by(Sort.Direction.ASC, "id");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+        Page<OfflineSelection> selectionsPage = offlineSelectionRepository.findAllByRequestorId(requestorId, pageRequest);
+
+        if (selectionsPage.isEmpty()) {
+            log.info("Не нашлось оффлайн-отборов по заданным параметрам.");
+            return new ArrayList<>();
+        }
+
+        List<OfflineSelection> selections = selectionsPage.getContent();
+        List<OfflineSelectionDto> selectionDtos = offlineSelectionMapper
+                .offlineSelectionListToOfflineSelectionDtoList(selections);
+        log.info("Список оффлайн-отборов с участием пользователя с ИД {} с номера {} размером {} возвращён.",
+                requestorId, from, selectionDtos.size());
+        return selectionDtos;
     }
 }

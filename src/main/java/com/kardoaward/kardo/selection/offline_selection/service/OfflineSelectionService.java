@@ -17,4 +17,6 @@ public interface OfflineSelectionService {
     List<OfflineSelectionDto> getOfflineSelections(int from, int size);
 
     OfflineSelectionDto updateOfflineSelectionById(Long selectionId, UpdateOfflineSelectionRequest request);
+
+    List<OfflineSelectionDto> getOfflineSelectionsByRequestorId(Long requestorId, int from, int size);
 }

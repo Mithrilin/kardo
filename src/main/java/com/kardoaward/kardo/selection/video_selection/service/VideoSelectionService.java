@@ -18,7 +18,5 @@ public interface VideoSelectionService {
 
     VideoSelectionDto updateVideoSelectionById(Long selectionId, UpdateSelectionRequest request);
 
-//    List<VideoSelectionDto> getVideoSelectionsByRequestorId(Long requestorId, int from, int size);
-
     List<VideoSelectionDto> getVideoSelectionsByGrandCompetitionId(Long competitionId, int from, int size);
 }

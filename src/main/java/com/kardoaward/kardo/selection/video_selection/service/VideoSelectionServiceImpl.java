@@ -9,7 +9,6 @@ import com.kardoaward.kardo.selection.video_selection.model.dto.NewVideoSelectio
 import com.kardoaward.kardo.selection.video_selection.model.dto.VideoSelectionDto;
 import com.kardoaward.kardo.selection.video_selection.repository.VideoSelectionRepository;
 import com.kardoaward.kardo.selection.video_selection.service.helper.VideoSelectionValidationHelper;
-import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +30,6 @@ public class VideoSelectionServiceImpl implements VideoSelectionService {
     private final VideoSelectionMapper videoSelectionMapper;
 
     private final VideoSelectionValidationHelper videoSelectionValidationHelper;
-    private final UserValidationHelper userValidationHelper;
     private final GrandCompetitionValidationHelper grandCompetitionValidationHelper;
 
     @Override
@@ -94,13 +92,6 @@ public class VideoSelectionServiceImpl implements VideoSelectionService {
                 .videoSelectionToVideoSelectionDto(updatedVideoSelection);
         log.info("Видео-отбор с ID {} обновлён.", selectionId);
         return videoSelectionDto;
-    }
-
-        List<Selection> selections = selectionsPage.getContent();
-        List<SelectionDto> selectionDtos = selectionMapper.selectionListToSelectionDtoList(selections);
-        log.info("Список отборов с участием пользователя с ИД {} с номера {} размером {} возвращён.", requestorId,
-                from, selectionDtos.size());
-        return selectionDtos;
     }
 
     @Override
