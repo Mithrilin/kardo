@@ -8,4 +8,6 @@ public interface OfflineSelectionService {
     OfflineSelectionDto addOfflineSelection(NewOfflineSelectionRequest newOfflineSelectionRequest);
 
     void deleteOfflineSelection(Long selectionId);
+
+    OfflineSelectionDto getOfflineSelectionById(Long selectionId);
 }

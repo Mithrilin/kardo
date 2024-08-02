@@ -46,4 +46,13 @@ public class OfflineSelectionServiceImpl implements OfflineSelectionService {
         offlineSelectionRepository.deleteById(selectionId);
         log.info("Оффлайн-отбор с ID {} удалён.", selectionId);
     }
+
+    @Override
+    public OfflineSelectionDto getOfflineSelectionById(Long selectionId) {
+        OfflineSelection offlineSelection = offlineSelectionValidationHelper.isOfflineSelectionPresent(selectionId);
+        OfflineSelectionDto offlineSelectionDto = offlineSelectionMapper
+                .offlineSelectionToOfflineSelectionDto(offlineSelection);
+        log.info("Оффлайн-отбор с ИД {} возвращен.", selectionId);
+        return offlineSelectionDto;
+    }
 }
