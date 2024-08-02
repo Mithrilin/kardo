@@ -2,6 +2,8 @@ package com.kardoaward.kardo.selection.offline_selection.controller;
 
 import com.kardoaward.kardo.selection.offline_selection.model.dto.OfflineSelectionDto;
 import com.kardoaward.kardo.selection.offline_selection.service.OfflineSelectionService;
+import com.kardoaward.kardo.user.model.dto.UserShortDto;
+import com.kardoaward.kardo.user.service.UserService;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -23,6 +25,7 @@ import java.util.List;
 public class OfflineSelectionController {
 
     private final OfflineSelectionService offlineSelectionService;
+    private final UserService userService;
 
     @GetMapping("/{selectionId}")
     public OfflineSelectionDto getOfflineSelectionById(@PathVariable @Positive Long selectionId) {
@@ -36,4 +39,20 @@ public class OfflineSelectionController {
         log.info("Возвращение списка оффлайн-отборов.");
         return offlineSelectionService.getOfflineSelections(from, size);
     }
+
+    @GetMapping("/{selectionId}/contestants")
+    public List<UserShortDto> getContestantsByOfflineSelectionId(@PathVariable @Positive Long selectionId,
+                                                                 @RequestParam(defaultValue = "0") @Min(0) int from,
+                                                                 @RequestParam(defaultValue = "10") @Positive int size) {
+        log.info("Возвращение списка участников оффлайн-отбора с ИД {}.", selectionId);
+        return userService.getContestantsByOfflineSelectionId(selectionId, from, size);
+    }
+
+//    @GetMapping("/contestants/users")
+//    public List<VideoSelectionDto> getVideoSelectionsByRequestorId(@RequestHeader("X-Requestor-Id") Long requestorId,
+//                                                                   @RequestParam(defaultValue = "0") @Min(0) int from,
+//                                                                   @RequestParam(defaultValue = "10") @Positive int size) {
+//        log.info("Возвращение списка видео-отборов с участием пользователя с ИД {}.", requestorId);
+//        return videoSelectionService.getVideoSelectionsByRequestorId(requestorId, from, size);
+//    }
 }
