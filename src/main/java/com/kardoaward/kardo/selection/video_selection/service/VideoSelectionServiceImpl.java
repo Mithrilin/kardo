@@ -110,7 +110,7 @@ public class VideoSelectionServiceImpl implements VideoSelectionService {
         List<VideoSelection> selections = selectionsPage.getContent();
         List<VideoSelectionDto> selectionDtos = videoSelectionMapper
                 .videoSelectionListToVideoSelectionDtoList(selections);
-        log.info("Список видео-отборов к оффлайн-соревнованию с ИД {} с номера {} размером {} возвращён.",
+        log.info("Список видео-отборов к гранд-соревнованию с ИД {} с номера {} размером {} возвращён.",
                 competitionId, from, selectionDtos.size());
         return selectionDtos;
     }

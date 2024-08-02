@@ -117,4 +117,26 @@ public class OfflineSelectionServiceImpl implements OfflineSelectionService {
                 requestorId, from, selectionDtos.size());
         return selectionDtos;
     }
+
+    @Override
+    public List<OfflineSelectionDto> getOfflineSelectionsByGrandCompetitionId(Long competitionId, int from, int size) {
+        grandCompetitionValidationHelper.isGrandCompetitionPresent(competitionId);
+        int page = from / size;
+        Sort sort = Sort.by(Sort.Direction.ASC, "id");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+        Page<OfflineSelection> selectionsPage = offlineSelectionRepository
+                .findByCompetition_Id(competitionId, pageRequest);
+
+        if (selectionsPage.isEmpty()) {
+            log.info("Не нашлось оффлайн-отборов по заданным параметрам.");
+            return new ArrayList<>();
+        }
+
+        List<OfflineSelection> selections = selectionsPage.getContent();
+        List<OfflineSelectionDto> selectionDtos = offlineSelectionMapper
+                .offlineSelectionListToOfflineSelectionDtoList(selections);
+        log.info("Список оффлайн-отборов к гранд-соревнованию с ИД {} с номера {} размером {} возвращён.",
+                competitionId, from, selectionDtos.size());
+        return selectionDtos;
+    }
 }

@@ -49,7 +49,7 @@ public class OfflineSelectionController {
         return userService.getContestantsByOfflineSelectionId(selectionId, from, size);
     }
 
-    @GetMapping("/contestants/users")
+    @GetMapping("/contestants")
     public List<OfflineSelectionDto> getOfflineSelectionsByRequestorId(@RequestHeader("X-Requestor-Id")
                                                                        Long requestorId,
                                                                        @RequestParam(defaultValue = "0")
@@ -58,5 +58,16 @@ public class OfflineSelectionController {
                                                                        @Positive int size) {
         log.info("Возвращение списка оффлайн-отборов с участием пользователя с ИД {}.", requestorId);
         return offlineSelectionService.getOfflineSelectionsByRequestorId(requestorId, from, size);
+    }
+
+    @GetMapping("/competitions/{competitionId}")
+    public List<OfflineSelectionDto> getOfflineSelectionsByGrandCompetitionId(@PathVariable
+                                                                              @Positive Long competitionId,
+                                                                              @RequestParam(defaultValue = "0")
+                                                                              @Min(0) int from,
+                                                                              @RequestParam(defaultValue = "10")
+                                                                              @Positive int size) {
+        log.info("Возвращение списка оффлайн-отборов к гранд-соревнованию с ИД {}.", competitionId);
+        return offlineSelectionService.getOfflineSelectionsByGrandCompetitionId(competitionId, from, size);
     }
 }
