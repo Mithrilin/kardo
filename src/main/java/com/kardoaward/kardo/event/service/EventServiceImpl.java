@@ -43,4 +43,12 @@ public class EventServiceImpl implements EventService {
         eventRepository.deleteById(eventId);
         log.info("Мероприятие с ID {} удалено.", eventId);
     }
+
+    @Override
+    public EventDto getEventById(Long eventId) {
+        Event event = eventValidationHelper.isEventPresent(eventId);
+        EventDto eventDto = eventMapper.eventToEventDto(event);
+        log.info("Мероприятие с ИД {} возвращено.", eventId);
+        return eventDto;
+    }
 }

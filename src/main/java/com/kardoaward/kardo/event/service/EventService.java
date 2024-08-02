@@ -8,4 +8,6 @@ public interface EventService {
     EventDto addEvent(NewEventRequest newEventRequest);
 
     void deleteEventById(Long eventId);
+
+    EventDto getEventById(Long eventId);
 }
