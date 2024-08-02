@@ -8,6 +8,8 @@ import com.kardoaward.kardo.selection.offline_selection.model.dto.OfflineSelecti
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", uses = GrandCompetitionMapper.class)
 public interface OfflineSelectionMapper {
 
@@ -22,4 +24,6 @@ public interface OfflineSelectionMapper {
 
     @Mapping(source = "returnedOfflineSelection.competition", target = "competitionDto")
     OfflineSelectionDto offlineSelectionToOfflineSelectionDto(OfflineSelection returnedOfflineSelection);
+
+    List<OfflineSelectionDto> offlineSelectionListToOfflineSelectionDtoList(List<OfflineSelection> offlineSelections);
 }
