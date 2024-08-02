@@ -6,6 +6,7 @@ import com.kardoaward.kardo.selection.offline_selection.mapper.OfflineSelectionM
 import com.kardoaward.kardo.selection.offline_selection.model.OfflineSelection;
 import com.kardoaward.kardo.selection.offline_selection.model.dto.NewOfflineSelectionRequest;
 import com.kardoaward.kardo.selection.offline_selection.model.dto.OfflineSelectionDto;
+import com.kardoaward.kardo.selection.offline_selection.model.dto.UpdateOfflineSelectionRequest;
 import com.kardoaward.kardo.selection.offline_selection.repository.OfflineSelectionRepository;
 import com.kardoaward.kardo.selection.offline_selection.service.helper.OfflineSelectionValidationHelper;
 import jakarta.transaction.Transactional;
@@ -79,5 +80,18 @@ public class OfflineSelectionServiceImpl implements OfflineSelectionService {
                 .offlineSelectionListToOfflineSelectionDtoList(offlineSelections);
         log.info("Список оффлайн-отборов с номера {} размером {} возвращён.", from, offlineSelectionDtos.size());
         return offlineSelectionDtos;
+    }
+
+    @Override
+    @Transactional
+    public OfflineSelectionDto updateOfflineSelectionById(Long selectionId, UpdateOfflineSelectionRequest request) {
+        OfflineSelection offlineSelection = offlineSelectionValidationHelper.isOfflineSelectionPresent(selectionId);
+        offlineSelectionValidationHelper.isUpdateOfflineSelectionDateValid(offlineSelection, request);
+        offlineSelectionMapper.updateOfflineSelection(request, offlineSelection);
+        OfflineSelection updatedOfflineSelection = offlineSelectionRepository.save(offlineSelection);
+        OfflineSelectionDto offlineSelectionDto = offlineSelectionMapper
+                .offlineSelectionToOfflineSelectionDto(updatedOfflineSelection);
+        log.info("Оффлайн-отбор с ID {} обновлён.", selectionId);
+        return offlineSelectionDto;
     }
 }

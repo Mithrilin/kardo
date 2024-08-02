@@ -33,22 +33,22 @@ public class VideoSelectionValidationHelper {
         if (request.getSelectionStart() != null
                 && request.getSelectionEnd() != null
                 && request.getSelectionEnd().isBefore(request.getSelectionStart())) {
-            log.error("Дата и время начала видео-отбора не может быть после его конца.");
-            throw new BadRequestException("Дата и время начала видео-отбора не может быть после его конца.");
+            log.error("Дата начала видео-отбора не может быть после его конца.");
+            throw new BadRequestException("Дата начала видео-отбора не может быть после его конца.");
         }
 
         if (request.getSelectionStart() != null
                 && request.getSelectionEnd() == null
                 && request.getSelectionStart().isAfter(selection.getSelectionEnd())) {
-            log.error("Дата и время начала видео-отбора не может быть после его конца.");
-            throw new BadRequestException("Дата и время начала видео-отбора не может быть после его конца.");
+            log.error("Дата начала видео-отбора не может быть после его конца.");
+            throw new BadRequestException("Дата начала видео-отбора не может быть после его конца.");
         }
 
         if (request.getSelectionStart() == null
                 && request.getSelectionEnd() != null
                 && request.getSelectionEnd().isBefore(selection.getSelectionStart())) {
-            log.error("Дата и время конца видео-отбора не может быть раньше его начала.");
-            throw new BadRequestException("Дата и время конца видео-отбора не может быть раньше его начала.");
+            log.error("Дата конца видео-отбора не может быть раньше его начала.");
+            throw new BadRequestException("Дата конца видео-отбора не может быть раньше его начала.");
         }
     }
 }
