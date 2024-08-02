@@ -1,7 +1,9 @@
 package com.kardoaward.kardo.event.service.helper;
 
 import com.kardoaward.kardo.event.model.Event;
+import com.kardoaward.kardo.event.model.dto.UpdateEventRequest;
 import com.kardoaward.kardo.event.repository.EventRepository;
+import com.kardoaward.kardo.exception.BadRequestException;
 import com.kardoaward.kardo.exception.NotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,5 +27,28 @@ public class EventValidationHelper {
         }
 
         return optionalEvent.get();
+    }
+
+    public void isUpdateEventDateValid(Event event, UpdateEventRequest request) {
+        if (request.getEventStart() != null
+                && request.getEventEnd() != null
+                && request.getEventEnd().isBefore(request.getEventStart())) {
+            log.error("Дата и время начала мероприятия не может быть после его конца.");
+            throw new BadRequestException("Дата и время начала мероприятия не может быть после его конца.");
+        }
+
+        if (request.getEventStart() != null
+                && request.getEventEnd() == null
+                && request.getEventStart().isAfter(event.getEventEnd())) {
+            log.error("Дата и время начала мероприятия не может быть после его конца.");
+            throw new BadRequestException("Дата и время начала мероприятия не может быть после его конца.");
+        }
+
+        if (request.getEventStart() == null
+                && request.getEventEnd() != null
+                && request.getEventEnd().isBefore(event.getEventStart())) {
+            log.error("Дата и время конца мероприятия не может быть раньше его начала.");
+            throw new BadRequestException("Дата и время конца мероприятия не может быть раньше его начала.");
+        }
     }
 }
