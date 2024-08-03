@@ -4,6 +4,7 @@ import com.kardoaward.kardo.exception.BadRequestException;
 import com.kardoaward.kardo.exception.NotFoundException;
 import com.kardoaward.kardo.selection.model.dto.UpdateSelectionRequest;
 import com.kardoaward.kardo.selection.video_selection.model.VideoSelection;
+import com.kardoaward.kardo.selection.video_selection.model.dto.NewVideoSelectionRequest;
 import com.kardoaward.kardo.selection.video_selection.repository.VideoSelectionRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +50,13 @@ public class VideoSelectionValidationHelper {
                 && request.getSelectionEnd().isBefore(selection.getSelectionStart())) {
             log.error("Дата конца видео-отбора не может быть раньше его начала.");
             throw new BadRequestException("Дата конца видео-отбора не может быть раньше его начала.");
+        }
+    }
+
+    public void isNewVideoSelectionDateValid(NewVideoSelectionRequest newVideoSelectionRequest) {
+        if (newVideoSelectionRequest.getSelectionEnd().isBefore(newVideoSelectionRequest.getSelectionStart())) {
+            log.error("Дата начала видео-отбора не может быть после его конца.");
+            throw new BadRequestException("Дата начала видео-отбора не может быть после его конца.");
         }
     }
 }

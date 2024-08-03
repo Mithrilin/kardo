@@ -1,6 +1,7 @@
 package com.kardoaward.kardo.spectator_request.event_spectator_request.model;
 
 import com.kardoaward.kardo.event.model.Event;
+import com.kardoaward.kardo.spectator_request.model.SpectatorRequest;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -19,7 +20,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class EventSpectatorRequest {
+public class EventSpectatorRequest extends SpectatorRequest {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
