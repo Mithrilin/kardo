@@ -10,6 +10,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", uses = UserMapper.class)
 public interface VideoClipMapper {
 
@@ -21,4 +23,6 @@ public interface VideoClipMapper {
     VideoClipDto videoClipToVideoClipDto(VideoClip returnedVideoClip);
 
     void updateVideoClip(UpdateVideoClipRequest request, @MappingTarget VideoClip videoClip);
+
+    List<VideoClipDto> videoClipListToVideoClipDtoList(List<VideoClip> videoClips);
 }
