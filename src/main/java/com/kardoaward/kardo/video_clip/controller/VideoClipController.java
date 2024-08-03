@@ -6,7 +6,9 @@ import com.kardoaward.kardo.video_clip.model.dto.VideoClipDto;
 import com.kardoaward.kardo.video_clip.service.VideoClipService;
 import com.kardoaward.kardo.video_clip.service.helper.VideoClipValidationHelper;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
@@ -18,7 +20,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Slf4j
 @AllArgsConstructor
@@ -59,4 +64,13 @@ public class VideoClipController {
         log.info("Обновление пользователем с ИД {} видео-клипа с ИД {}.", requestorId, videoId);
         return videoClipService.updateVideoClipById(requestorId, videoId, request);
     }
+
+    @GetMapping("/search")
+    public List<VideoClipDto> getVideoClipsByHashtag(@RequestParam @Size(min = 2, max = 20) String hashtag,
+                                                     @RequestParam(defaultValue = "0") @Min(0) int from,
+                                                     @RequestParam(defaultValue = "10") @Positive int size) {
+        log.info("Возвращение списка видео-клипов с хештегом {}.", hashtag);
+        return videoClipService.getVideoClipsByHashtag(hashtag, from, size);
+    }
+
 }

@@ -12,7 +12,13 @@ import com.kardoaward.kardo.video_clip.service.helper.VideoClipValidationHelper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -74,5 +80,23 @@ public class VideoClipServiceImpl implements VideoClipService {
         VideoClipDto videoClipDto = videoClipMapper.videoClipToVideoClipDto(updatedVideoClip);
         log.info("Видео-клип с ID {} обновлён.", videoId);
         return videoClipDto;
+    }
+
+    @Override
+    public List<VideoClipDto> getVideoClipsByHashtag(String hashtag, int from, int size) {
+        int page = from / size;
+        Sort sort = Sort.by(Sort.Direction.ASC, "id");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+        Page<VideoClip> videoClipsPage = videoClipRepository.findAllByHashtag(hashtag, pageRequest);
+
+        if (videoClipsPage.isEmpty()) {
+            log.info("Не нашлось видео-клипов по заданным параметрам.");
+            return new ArrayList<>();
+        }
+
+        List<VideoClip> videoClips = videoClipsPage.getContent();
+        List<VideoClipDto> videoClipDtos = videoClipMapper.videoClipListToVideoClipDtoList(videoClips);
+        log.info("Список видео-клипов с номера {} размером {} возвращён.", from, videoClipDtos.size());
+        return videoClipDtos;
     }
 }
