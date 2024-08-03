@@ -10,4 +10,6 @@ public interface VideoClipService {
     void deleteVideoClipById(Long requestorId, Long videoId);
 
     void deleteVideoClipByIdByAdmin(Long videoId);
+
+    VideoClipDto getVideoClipsById(Long videoId);
 }

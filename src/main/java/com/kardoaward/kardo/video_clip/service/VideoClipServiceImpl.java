@@ -54,4 +54,12 @@ public class VideoClipServiceImpl implements VideoClipService {
         videoClipRepository.deleteById(videoId);
         log.info("Видео-клип с ID {} удалён администратором.", videoId);
     }
+
+    @Override
+    public VideoClipDto getVideoClipsById(Long videoId) {
+        VideoClip videoClip = videoClipValidationHelper.isVideoClipPresent(videoId);
+        VideoClipDto videoClipDto = videoClipMapper.videoClipToVideoClipDto(videoClip);
+        log.info("Видео-клип с ИД {} возвращен.", videoId);
+        return videoClipDto;
+    }
 }
