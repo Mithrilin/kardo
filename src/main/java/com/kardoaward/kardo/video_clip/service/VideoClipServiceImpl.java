@@ -44,6 +44,14 @@ public class VideoClipServiceImpl implements VideoClipService {
         VideoClip videoClip = videoClipValidationHelper.isVideoClipPresent(videoId);
         videoClipValidationHelper.isRequestorCreatorVideo(requestorId, videoClip.getCreator().getId());
         videoClipRepository.deleteById(videoId);
-        log.info("Видео-клип с ID {} удалён.", videoId);
+        log.info("Видео-клип с ID {} удалён пользователем с ИД {}.", videoId, requestorId);
+    }
+
+    @Override
+    @Transactional
+    public void deleteVideoClipByIdByAdmin(Long videoId) {
+        videoClipValidationHelper.isVideoClipPresent(videoId);
+        videoClipRepository.deleteById(videoId);
+        log.info("Видео-клип с ID {} удалён администратором.", videoId);
     }
 }
