@@ -70,7 +70,8 @@ public class GrandCompetitionServiceImpl implements GrandCompetitionService {
     @Override
     @Transactional
     public GrandCompetition updateGrandCompetition(Long competitionId, UpdateGrandCompetitionRequest request) {
-        GrandCompetition competition = helper.isGrandCompetitionPresent(competitionId);
+        GrandCompetition competition = grandHelper.isGrandCompetitionPresent(competitionId);
+        grandHelper.isUpdateGrandCompetitionDateValid(competition, request);
         mapper.updateGrandCompetition(request, competition);
         GrandCompetition updatedCompetition = repository.save(competition);
         log.info("Гранд-соревнование с ID {} обновлено.", competitionId);
