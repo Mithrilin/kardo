@@ -1,8 +1,7 @@
 package com.kardoaward.kardo.spectator_request.model.dto;
 
 import com.kardoaward.kardo.enums.RequestStatus;
-import com.kardoaward.kardo.event.model.Event;
-import com.kardoaward.kardo.user.model.User;
+import com.kardoaward.kardo.user.model.dto.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +15,6 @@ public class SpectatorRequestDto {
 
     private Long id;
     private LocalDateTime creationTime;
-    private Event event;
-    private User requester;
+    private UserDto requesterDto;
     private RequestStatus status;
 }

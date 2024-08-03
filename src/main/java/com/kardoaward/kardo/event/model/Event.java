@@ -3,7 +3,7 @@ package com.kardoaward.kardo.event.model;
 import com.kardoaward.kardo.enums.Field;
 import com.kardoaward.kardo.enums.Status;
 import com.kardoaward.kardo.event.model.enums.EventProgram;
-import com.kardoaward.kardo.offline_competition.model.OfflineCompetition;
+import com.kardoaward.kardo.grand_competition.model.GrandCompetition;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -44,7 +44,7 @@ public class Event {
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinColumn(name = "competition_id")
-    private OfflineCompetition competition;
+    private GrandCompetition competition;
     @Column(name = "event_start")
     private LocalDateTime eventStart;
     @Column(name = "event_end")

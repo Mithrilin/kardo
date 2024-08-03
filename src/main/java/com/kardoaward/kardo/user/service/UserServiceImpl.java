@@ -1,6 +1,6 @@
 package com.kardoaward.kardo.user.service;
 
-import com.kardoaward.kardo.selection.service.helper.SelectionValidationHelper;
+import com.kardoaward.kardo.selection.offline_selection.service.helper.OfflineSelectionValidationHelper;
 import com.kardoaward.kardo.user.mapper.UserMapper;
 import com.kardoaward.kardo.user.model.User;
 import com.kardoaward.kardo.user.model.dto.UpdateUserRequest;
@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     private final UserValidationHelper userValidationHelper;
-    private final SelectionValidationHelper selectionValidationHelper;
+    private final OfflineSelectionValidationHelper offlineSelectionValidationHelper;
 
     @Override
     @Transactional
@@ -86,8 +86,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserShortDto> getContestantsBySelectionId(Long selectionId, int from, int size) {
-        selectionValidationHelper.isSelectionPresent(selectionId);
+    public List<UserShortDto> getContestantsByOfflineSelectionId(Long selectionId, int from, int size) {
+        offlineSelectionValidationHelper.isOfflineSelectionPresent(selectionId);
         int page = from / size;
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
@@ -100,7 +100,8 @@ public class UserServiceImpl implements UserService {
 
         List<User> users = usersPage.getContent();
         List<UserShortDto> userShortDtos = userMapper.userListToUserShortDtoList(users);
-        log.info("Список участников отбора с ИД {} с номера {} размером {} возвращён.", selectionId, from, users.size());
+        log.info("Список участников оффлайн-отбора с ИД {} с номера {} размером {} возвращён.",
+                selectionId, from, users.size());
         return userShortDtos;
     }
 }

@@ -18,5 +18,5 @@ public interface UserService {
 
     User updateUser(Long userId, UpdateUserRequest request);
 
-    List<UserShortDto> getContestantsBySelectionId(Long selectionId, int from, int size);
+    List<UserShortDto> getContestantsByOfflineSelectionId(Long selectionId, int from, int size);
 }
