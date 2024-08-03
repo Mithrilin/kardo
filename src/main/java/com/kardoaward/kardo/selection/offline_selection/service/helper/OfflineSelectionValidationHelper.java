@@ -3,6 +3,7 @@ package com.kardoaward.kardo.selection.offline_selection.service.helper;
 import com.kardoaward.kardo.exception.BadRequestException;
 import com.kardoaward.kardo.exception.NotFoundException;
 import com.kardoaward.kardo.selection.offline_selection.model.OfflineSelection;
+import com.kardoaward.kardo.selection.offline_selection.model.dto.NewOfflineSelectionRequest;
 import com.kardoaward.kardo.selection.offline_selection.model.dto.UpdateOfflineSelectionRequest;
 import com.kardoaward.kardo.selection.offline_selection.repository.OfflineSelectionRepository;
 import lombok.AllArgsConstructor;
@@ -50,6 +51,13 @@ public class OfflineSelectionValidationHelper {
                 && request.getSelectionEnd().isBefore(offlineSelection.getSelectionStart())) {
             log.error("Дата конца оффлайн-отбора не может быть раньше его начала.");
             throw new BadRequestException("Дата конца оффлайн-отбора не может быть раньше его начала.");
+        }
+    }
+
+    public void isNewOfflineSelectionDateValid(NewOfflineSelectionRequest newOfflineSelectionRequest) {
+        if (newOfflineSelectionRequest.getSelectionEnd().isBefore(newOfflineSelectionRequest.getSelectionStart())) {
+            log.error("Дата начала оффлайн-отбора не может быть после его конца.");
+            throw new BadRequestException("Дата начала оффлайн-отбора не может быть после его конца.");
         }
     }
 }

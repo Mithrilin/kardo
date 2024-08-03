@@ -1,10 +1,10 @@
 package com.kardoaward.kardo.selection.offline_selection.controller.admin;
 
-import com.kardoaward.kardo.exception.BadRequestException;
 import com.kardoaward.kardo.selection.offline_selection.model.dto.NewOfflineSelectionRequest;
 import com.kardoaward.kardo.selection.offline_selection.model.dto.OfflineSelectionDto;
 import com.kardoaward.kardo.selection.offline_selection.model.dto.UpdateOfflineSelectionRequest;
 import com.kardoaward.kardo.selection.offline_selection.service.OfflineSelectionService;
+import com.kardoaward.kardo.selection.offline_selection.service.helper.OfflineSelectionValidationHelper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -27,16 +27,13 @@ public class OfflineSelectionAdminController {
 
     private final OfflineSelectionService offlineSelectionService;
 
+    private final OfflineSelectionValidationHelper offlineSelectionValidationHelper;
+
     @PostMapping
     public OfflineSelectionDto createOfflineSelection(@RequestBody @Valid
                                                       NewOfflineSelectionRequest newOfflineSelectionRequest) {
-
-        if (newOfflineSelectionRequest.getSelectionEnd().isBefore(newOfflineSelectionRequest.getSelectionStart())) {
-            log.error("Дата начала оффлайн-отбора не может быть после его конца.");
-            throw new BadRequestException("Дата начала оффлайн-отбора не может быть после его конца.");
-        }
-
         log.info("Добавление администратором нового оффлайн-отбора {}.", newOfflineSelectionRequest);
+        offlineSelectionValidationHelper.isNewOfflineSelectionDateValid(newOfflineSelectionRequest);
         return offlineSelectionService.addOfflineSelection(newOfflineSelectionRequest);
     }
 
