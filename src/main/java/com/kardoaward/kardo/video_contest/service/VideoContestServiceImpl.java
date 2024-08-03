@@ -27,7 +27,7 @@ public class VideoContestServiceImpl implements VideoContestService {
 
     private final VideoContestMapper mapper;
 
-    private final VideoContestValidationHelper helper;
+    private final VideoContestValidationHelper videoHelper;
 
     @Override
     @Transactional
@@ -42,14 +42,14 @@ public class VideoContestServiceImpl implements VideoContestService {
     @Override
     @Transactional
     public void deleteVideoContest(Long contestId) {
-        helper.isVideoContestPresent(contestId);
+        videoHelper.isVideoContestPresent(contestId);
         repository.deleteById(contestId);
         log.info("Видео-конкурс с ID {} удалён.", contestId);
     }
 
     @Override
     public VideoContestDto getVideoContestById(Long contestId) {
-        VideoContest contest = helper.isVideoContestPresent(contestId);
+        VideoContest contest = videoHelper.isVideoContestPresent(contestId);
         VideoContestDto contestDto = mapper.videoContestToVideoContestDto(contest);
         log.info("Видео-конкурс с ИД {} возвращён.", contestId);
         return contestDto;
@@ -76,7 +76,8 @@ public class VideoContestServiceImpl implements VideoContestService {
     @Override
     @Transactional
     public VideoContestDto updateVideoContest(Long contestId, UpdateVideoContestRequest request) {
-        VideoContest contest = helper.isVideoContestPresent(contestId);
+        VideoContest contest = videoHelper.isVideoContestPresent(contestId);
+        videoHelper.isUpdateVideoContestDateValid(contest, request);
         mapper.updateVideoContest(request, contest);
         VideoContest updatedContest = repository.save(contest);
         VideoContestDto contestDto = mapper.videoContestToVideoContestDto(updatedContest);

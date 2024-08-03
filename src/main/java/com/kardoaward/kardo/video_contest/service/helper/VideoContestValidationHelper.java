@@ -4,6 +4,7 @@ import com.kardoaward.kardo.exception.BadRequestException;
 import com.kardoaward.kardo.exception.NotFoundException;
 import com.kardoaward.kardo.video_contest.model.VideoContest;
 import com.kardoaward.kardo.video_contest.model.dto.NewVideoContestRequest;
+import com.kardoaward.kardo.video_contest.model.dto.UpdateVideoContestRequest;
 import com.kardoaward.kardo.video_contest.repository.VideoContestRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,30 @@ public class VideoContestValidationHelper {
         if (newVideoContest.getContestEnd().isBefore(newVideoContest.getContestStart())) {
             log.error("Дата начала видео-конкурса не может быть после его конца.");
             throw new BadRequestException("Дата начала видео-конкурса не может быть после его конца.");
+        }
+    }
+
+    public void isUpdateVideoContestDateValid(VideoContest contest,
+                                              UpdateVideoContestRequest request) {
+        if (request.getContestStart() != null
+                && request.getContestEnd() != null
+                && request.getContestEnd().isBefore(request.getContestStart())) {
+            log.error("Дата начала видео-конкурса не может быть после его конца.");
+            throw new BadRequestException("Дата начала видео-конкурса не может быть после его конца.");
+        }
+
+        if (request.getContestStart() != null
+                && request.getContestEnd() == null
+                && request.getContestStart().isAfter(contest.getContestEnd())) {
+            log.error("Дата начала видео-конкурса не может быть после его конца.");
+            throw new BadRequestException("Дата начала видео-конкурса не может быть после его конца.");
+        }
+
+        if (request.getContestStart() == null
+                && request.getContestEnd() != null
+                && request.getContestEnd().isBefore(contest.getContestStart())) {
+            log.error("Дата конца видео-конкурса не может быть раньше его начала.");
+            throw new BadRequestException("Дата конца видео-конкурса не может быть раньше его начала.");
         }
     }
 }
