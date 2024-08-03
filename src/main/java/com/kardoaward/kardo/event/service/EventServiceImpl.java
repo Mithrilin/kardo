@@ -9,8 +9,8 @@ import com.kardoaward.kardo.event.model.params.EventRequestParams;
 import com.kardoaward.kardo.event.repository.EventRepository;
 import com.kardoaward.kardo.event.service.helper.EventValidationHelper;
 import com.kardoaward.kardo.event.service.specification.EventSpecifications;
-import com.kardoaward.kardo.offline_competition.model.OfflineCompetition;
-import com.kardoaward.kardo.offline_competition.service.helper.OfflineCompetitionValidationHelper;
+import com.kardoaward.kardo.grand_competition.model.GrandCompetition;
+import com.kardoaward.kardo.grand_competition.service.helper.GrandCompetitionValidationHelper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,13 +33,13 @@ public class EventServiceImpl implements EventService {
     private final EventMapper eventMapper;
 
     private final EventValidationHelper eventValidationHelper;
-    private final OfflineCompetitionValidationHelper helper;
+    private final GrandCompetitionValidationHelper grandHelper;
 
     @Override
     @Transactional
     public EventDto addEvent(NewEventRequest newEventRequest) {
-        OfflineCompetition offlineCompetition = helper.isOfflineCompetitionPresent(newEventRequest.getCompetitionId());
-        Event event = eventMapper.newEventRequestToEvent(newEventRequest, offlineCompetition);
+        GrandCompetition grandCompetition = grandHelper.isGrandCompetitionPresent(newEventRequest.getCompetitionId());
+        Event event = eventMapper.newEventRequestToEvent(newEventRequest, grandCompetition);
         Event returnedEvent = eventRepository.save(event);
         EventDto eventDto = eventMapper.eventToEventDto(returnedEvent);
         log.info("Мероприятие с ID = {} создано.", eventDto.getId());

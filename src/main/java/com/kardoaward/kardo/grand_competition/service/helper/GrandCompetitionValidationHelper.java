@@ -1,7 +1,9 @@
 package com.kardoaward.kardo.grand_competition.service.helper;
 
+import com.kardoaward.kardo.exception.BadRequestException;
 import com.kardoaward.kardo.exception.NotFoundException;
 import com.kardoaward.kardo.grand_competition.model.GrandCompetition;
+import com.kardoaward.kardo.grand_competition.model.dto.NewGrandCompetitionRequest;
 import com.kardoaward.kardo.grand_competition.repository.GrandCompetitionRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,5 +28,12 @@ public class GrandCompetitionValidationHelper {
         }
 
         return optionalGrandCompetition.get();
+    }
+
+    public void isNewGrandCompetitionDateValid(NewGrandCompetitionRequest newCompetition) {
+        if (newCompetition.getCompetitionEnd().isBefore(newCompetition.getCompetitionStart())) {
+            log.error("Дата и время начала гранд-соревнования не может быть после его конца.");
+            throw new BadRequestException("Дата и время начала гранд-соревнования не может быть после его конца.");
+        }
     }
 }

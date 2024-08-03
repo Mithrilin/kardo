@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Data
 public class EventRequestParams {
 
-    private Long offlineCompetitionId;
+    private Long grandCompetitionId;
     private LocalDate day;
     private EventProgram program;
     private Field field;
@@ -21,13 +21,13 @@ public class EventRequestParams {
     private Sort sort;
     private PageRequest pageRequest;
 
-    public EventRequestParams(Long offlineCompetitionId,
+    public EventRequestParams(Long grandCompetitionId,
                               LocalDate day,
                               EventProgram program,
                               Field field,
                               Integer from,
                               Integer size) {
-        this.offlineCompetitionId = offlineCompetitionId;
+        this.grandCompetitionId = grandCompetitionId;
         this.day = day;
         this.program = program;
         this.field = field;

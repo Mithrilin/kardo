@@ -4,7 +4,7 @@ import com.kardoaward.kardo.event.model.dto.EventDto;
 import com.kardoaward.kardo.event.model.dto.NewEventRequest;
 import com.kardoaward.kardo.event.model.dto.UpdateEventRequest;
 import com.kardoaward.kardo.event.service.EventService;
-import com.kardoaward.kardo.exception.BadRequestException;
+import com.kardoaward.kardo.event.service.helper.EventValidationHelper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -27,16 +27,13 @@ public class EventAdminController {
 
     private final EventService eventService;
 
+    private final EventValidationHelper eventValidationHelper;
+
     @PostMapping
     public EventDto createEvent(@RequestBody @Valid NewEventRequest newEventRequest) {
-
-        if (newEventRequest.getEventEnd().isBefore(newEventRequest.getEventStart())) {
-            log.error("Дата и время начала мероприятия не может быть после его конца.");
-            throw new BadRequestException("Дата и время начала мероприятия не может быть после его конца.");
-        }
-
         log.info("Добавление администратором нового мероприятия к гранд-соревнованию с ИД {}.",
                 newEventRequest.getCompetitionId());
+        eventValidationHelper.isNewEventDateValid(newEventRequest);
         return eventService.addEvent(newEventRequest);
     }
 

@@ -35,14 +35,14 @@ public class EventController {
     }
 
     @GetMapping
-    public List<EventDto> getEventsByParams(@RequestParam(required = false) Long offlineCompetitionId,
+    public List<EventDto> getEventsByParams(@RequestParam(required = false) Long grandCompetitionId,
                                             @RequestParam(required = false) LocalDate day,
                                             @RequestParam(required = false) EventProgram program,
                                             @RequestParam(required = false) Field field,
                                             @RequestParam(defaultValue = "0") @Min(0) int from,
                                             @RequestParam(defaultValue = "10") @Positive int size) {
         EventRequestParams eventRequestParams = new EventRequestParams(
-                offlineCompetitionId, day, program, field, from, size
+                grandCompetitionId, day, program, field, from, size
         );
         log.info("Возвращение списка мероприятий по заданным параметрам.");
         return eventService.getEventsByParams(eventRequestParams);
