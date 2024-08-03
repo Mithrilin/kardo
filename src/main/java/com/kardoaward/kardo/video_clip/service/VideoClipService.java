@@ -6,4 +6,6 @@ import com.kardoaward.kardo.video_clip.model.dto.VideoClipDto;
 public interface VideoClipService {
 
     VideoClipDto addVideoClip(Long requestorId, NewVideoClipRequest request);
+
+    void deleteVideoClipById(Long requestorId, Long videoId);
 }
