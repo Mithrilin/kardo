@@ -1,6 +1,7 @@
 package com.kardoaward.kardo.video_clip.service;
 
 import com.kardoaward.kardo.video_clip.model.dto.NewVideoClipRequest;
+import com.kardoaward.kardo.video_clip.model.dto.UpdateVideoClipRequest;
 import com.kardoaward.kardo.video_clip.model.dto.VideoClipDto;
 
 public interface VideoClipService {
@@ -12,4 +13,6 @@ public interface VideoClipService {
     void deleteVideoClipByIdByAdmin(Long videoId);
 
     VideoClipDto getVideoClipsById(Long videoId);
+
+    VideoClipDto updateVideoClipById(Long requestorId, Long videoId, UpdateVideoClipRequest request);
 }

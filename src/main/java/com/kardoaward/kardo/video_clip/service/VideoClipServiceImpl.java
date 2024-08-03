@@ -5,6 +5,7 @@ import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import com.kardoaward.kardo.video_clip.mapper.VideoClipMapper;
 import com.kardoaward.kardo.video_clip.model.VideoClip;
 import com.kardoaward.kardo.video_clip.model.dto.NewVideoClipRequest;
+import com.kardoaward.kardo.video_clip.model.dto.UpdateVideoClipRequest;
 import com.kardoaward.kardo.video_clip.model.dto.VideoClipDto;
 import com.kardoaward.kardo.video_clip.repository.VideoClipRepository;
 import com.kardoaward.kardo.video_clip.service.helper.VideoClipValidationHelper;
@@ -29,7 +30,6 @@ public class VideoClipServiceImpl implements VideoClipService {
     @Transactional
     public VideoClipDto addVideoClip(Long requestorId, NewVideoClipRequest request) {
         User user = userValidationHelper.isUserPresent(requestorId);
-        videoClipValidationHelper.isRequestorCreatorVideo(requestorId, request.getCreatorId());
         VideoClip videoClip = videoClipMapper.newVideoClipRequestToVideoClip(request, user);
         VideoClip returnedVideoClip = videoClipRepository.save(videoClip);
         VideoClipDto videoClipDto = videoClipMapper.videoClipToVideoClipDto(returnedVideoClip);
@@ -60,6 +60,19 @@ public class VideoClipServiceImpl implements VideoClipService {
         VideoClip videoClip = videoClipValidationHelper.isVideoClipPresent(videoId);
         VideoClipDto videoClipDto = videoClipMapper.videoClipToVideoClipDto(videoClip);
         log.info("Видео-клип с ИД {} возвращен.", videoId);
+        return videoClipDto;
+    }
+
+    @Override
+    @Transactional
+    public VideoClipDto updateVideoClipById(Long requestorId, Long videoId, UpdateVideoClipRequest request) {
+        userValidationHelper.isUserPresent(requestorId);
+        VideoClip videoClip = videoClipValidationHelper.isVideoClipPresent(videoId);
+        videoClipValidationHelper.isRequestorCreatorVideo(requestorId, videoClip.getCreator().getId());
+        videoClipMapper.updateVideoClip(request, videoClip);
+        VideoClip updatedVideoClip = videoClipRepository.save(videoClip);
+        VideoClipDto videoClipDto = videoClipMapper.videoClipToVideoClipDto(updatedVideoClip);
+        log.info("Видео-клип с ID {} обновлён.", videoId);
         return videoClipDto;
     }
 }
