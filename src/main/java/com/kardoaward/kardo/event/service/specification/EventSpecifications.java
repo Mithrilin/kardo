@@ -19,15 +19,15 @@ public class EventSpecifications {
 
     public static List<Specification<Event>> searchEventFilterToSpecifications(EventRequestParams params) {
         List<Specification<Event>> specifications = new ArrayList<>();
-        specifications.add(params.getOfflineCompetitionId() == null ? null : offlineCompetitionIdEqual(
-                params.getOfflineCompetitionId()));
+        specifications.add(params.getGrandCompetitionId() == null ? null : grandCompetitionIdEqual(
+                params.getGrandCompetitionId()));
         specifications.add(params.getDay() == null ? null : dayEqual(params.getDay()));
         specifications.add(params.getProgram() == null ? null : programEqual(params.getProgram()));
         specifications.add(params.getField() == null ? null : fieldEqual(params.getField()));
         return specifications.stream().filter(Objects::nonNull).collect(Collectors.toList());
     }
 
-    private static Specification<Event> offlineCompetitionIdEqual(Long values) {
+    private static Specification<Event> grandCompetitionIdEqual(Long values) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("competition").get("id"), values);
     }
 

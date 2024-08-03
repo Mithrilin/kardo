@@ -1,6 +1,7 @@
 package com.kardoaward.kardo.event.service.helper;
 
 import com.kardoaward.kardo.event.model.Event;
+import com.kardoaward.kardo.event.model.dto.NewEventRequest;
 import com.kardoaward.kardo.event.model.dto.UpdateEventRequest;
 import com.kardoaward.kardo.event.repository.EventRepository;
 import com.kardoaward.kardo.exception.BadRequestException;
@@ -49,6 +50,13 @@ public class EventValidationHelper {
                 && request.getEventEnd().isBefore(event.getEventStart())) {
             log.error("Дата и время конца мероприятия не может быть раньше его начала.");
             throw new BadRequestException("Дата и время конца мероприятия не может быть раньше его начала.");
+        }
+    }
+
+    public void isNewEventDateValid(NewEventRequest newEventRequest) {
+        if (newEventRequest.getEventEnd().isBefore(newEventRequest.getEventStart())) {
+            log.error("Дата и время начала мероприятия не может быть после его конца.");
+            throw new BadRequestException("Дата и время начала мероприятия не может быть после его конца.");
         }
     }
 }
