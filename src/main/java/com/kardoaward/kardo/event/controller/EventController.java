@@ -28,7 +28,7 @@ public class EventController {
 
     private final EventService eventService;
 
-    @GetMapping("/{selectionId}")
+    @GetMapping("/{eventId}")
     public EventDto getEventById(@PathVariable @Positive Long eventId) {
         log.info("Возвращение мероприятия с ИД {}.", eventId);
         return eventService.getEventById(eventId);

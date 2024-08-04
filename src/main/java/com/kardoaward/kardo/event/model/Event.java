@@ -52,23 +52,17 @@ public class Event {
     private String location;
     @Enumerated(EnumType.STRING)
     private Status status = UPCOMING;
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name="event_programs",
             joinColumns=@JoinColumn(name="event_id"))
     @Column(name="program")
     @Enumerated(EnumType.STRING)
-/*  ToDo
-     После добавления контроллера проверить сохраняются/возвращаются ли значения в этом поле.
- */
     private List<EventProgram> programs;
     @ElementCollection
     @CollectionTable(name="event_fields",
             joinColumns=@JoinColumn(name="event_id"))
     @Column(name="field")
     @Enumerated(EnumType.STRING)
-/*  ToDo
-     После добавления контроллера проверить сохраняются/возвращаются ли значения в этом поле.
- */
     private List<Field> fields;
     private String logo;
     @Column(name="is_main_event")

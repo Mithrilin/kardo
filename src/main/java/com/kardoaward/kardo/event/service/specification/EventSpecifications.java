@@ -17,6 +17,9 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class EventSpecifications {
 
+    /*  ToDo
+         Метод не работает.
+     */
     public static List<Specification<Event>> searchEventFilterToSpecifications(EventRequestParams params) {
         List<Specification<Event>> specifications = new ArrayList<>();
         specifications.add(params.getGrandCompetitionId() == null ? null : grandCompetitionIdEqual(
@@ -32,9 +35,13 @@ public class EventSpecifications {
     }
 
     private static Specification<Event> dayEqual(LocalDate values) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("eventStart").get("date"), values);
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("eventStart").as(LocalDate.class),
+                values);
     }
 
+    /*  ToDo
+         Метод не работает.
+     */
     private static Specification<Event> programEqual(EventProgram values) {
         return (root, query, criteriaBuilder) -> {
             Join<EventProgram, Event> programEventJoin = root.join("programs");
@@ -42,6 +49,9 @@ public class EventSpecifications {
         };
     }
 
+    /*  ToDo
+         Метод не работает.
+     */
     private static Specification<Event> fieldEqual(Field values) {
         return (root, query, criteriaBuilder) -> {
             Join<Field, Event> fieldEventJoin = root.join("fields");
