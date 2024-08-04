@@ -17,9 +17,6 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class EventSpecifications {
 
-    /*  ToDo
-         Метод не работает.
-     */
     public static List<Specification<Event>> searchEventFilterToSpecifications(EventRequestParams params) {
         List<Specification<Event>> specifications = new ArrayList<>();
         specifications.add(params.getGrandCompetitionId() == null ? null : grandCompetitionIdEqual(
@@ -30,32 +27,27 @@ public class EventSpecifications {
         return specifications.stream().filter(Objects::nonNull).collect(Collectors.toList());
     }
 
-    private static Specification<Event> grandCompetitionIdEqual(Long values) {
-        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("competition").get("id"), values);
+    private static Specification<Event> grandCompetitionIdEqual(Long value) {
+        return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("competition").get("id"), value);
     }
 
-    private static Specification<Event> dayEqual(LocalDate values) {
+    private static Specification<Event> dayEqual(LocalDate value) {
         return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("eventStart").as(LocalDate.class),
-                values);
+                value);
     }
 
-    /*  ToDo
-         Метод не работает.
-     */
-    private static Specification<Event> programEqual(EventProgram values) {
+    private static Specification<Event> programEqual(EventProgram value) {
         return (root, query, criteriaBuilder) -> {
             Join<EventProgram, Event> programEventJoin = root.join("programs");
-            return criteriaBuilder.equal(programEventJoin.get("program"), values);
+            return criteriaBuilder.equal(programEventJoin, value);
         };
+
     }
 
-    /*  ToDo
-         Метод не работает.
-     */
-    private static Specification<Event> fieldEqual(Field values) {
+    private static Specification<Event> fieldEqual(Field value) {
         return (root, query, criteriaBuilder) -> {
             Join<Field, Event> fieldEventJoin = root.join("fields");
-            return criteriaBuilder.equal(fieldEventJoin.get("field"), values);
+            return criteriaBuilder.equal(fieldEventJoin, value);
         };
     }
 }

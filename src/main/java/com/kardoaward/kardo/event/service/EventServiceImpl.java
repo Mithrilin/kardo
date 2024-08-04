@@ -62,9 +62,6 @@ public class EventServiceImpl implements EventService {
         return eventDto;
     }
 
-    /*  ToDo
-         Метод не работает. Разобраться со спецификациями или переделать по другому принципу.
-     */
     @Override
     public List<EventDto> getEventsByParams(EventRequestParams params) {
         PageRequest pageRequest = params.getPageRequest();
