@@ -1,8 +1,7 @@
-//package com.kardoaward.kardo.selection.model.dto;
+//package com.kardoaward.kardo.offline_competition.model.dto;
 //
-//import com.kardoaward.kardo.enums.Field;
 //import com.kardoaward.kardo.enums.Status;
-//import com.kardoaward.kardo.selection.model.enums.SelectionType;
+//import com.kardoaward.kardo.enums.Field;
 //import jakarta.validation.constraints.Future;
 //import jakarta.validation.constraints.Size;
 //import lombok.AllArgsConstructor;
@@ -15,17 +14,18 @@
 //@Data
 //@AllArgsConstructor
 //@NoArgsConstructor
-//public class UpdateSelectionRequest {
+//public class UpdateOfflineCompetitionRequest {
 //
 //    @Size(min = 2, max = 250, message = "Длина title должна быть в диапазоне от 2 до 250 символов.")
 //    private String title;
-//    private SelectionType selectionType;
-//    @Future(message = "SelectionStart должен быть в будущем.")
-//    private LocalDate selectionStart;
-//    @Future(message = "SelectionEnd должен быть в будущем.")
-//    private LocalDate selectionEnd;
+//    @Future(message = "CompetitionStart должен быть в будущем.")
+//    private LocalDate competitionStart;
+//    @Future(message = "CompetitionEnd должен быть в будущем.")
+//    private LocalDate competitionEnd;
 //    private Status status;
-//    private List<Field> fields;
 //    @Size(min = 2, max = 250, message = "Длина location должна быть в диапазоне от 2 до 250 символов.")
 //    private String location;
+//    private List<Field> fields;
+//    @Size(min = 2, max = 10000, message = "Длина Description должна быть в диапазоне от 2 до 10000 символов.")
+//    private String description;
 //}

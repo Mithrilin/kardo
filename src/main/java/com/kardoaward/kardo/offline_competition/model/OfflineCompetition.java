@@ -1,21 +1,17 @@
-//package com.kardoaward.kardo.participation_request.model;
+//package com.kardoaward.kardo.offline_competition.model;
 //
+//import com.kardoaward.kardo.enums.Status;
 //import com.kardoaward.kardo.enums.Field;
-//import com.kardoaward.kardo.enums.RequestStatus;
-//import com.kardoaward.kardo.selection.model.Selection;
-//import com.kardoaward.kardo.user.model.User;
 //import jakarta.persistence.CollectionTable;
 //import jakarta.persistence.Column;
 //import jakarta.persistence.ElementCollection;
 //import jakarta.persistence.Entity;
 //import jakarta.persistence.EnumType;
 //import jakarta.persistence.Enumerated;
-//import jakarta.persistence.FetchType;
 //import jakarta.persistence.GeneratedValue;
 //import jakarta.persistence.GenerationType;
 //import jakarta.persistence.Id;
 //import jakarta.persistence.JoinColumn;
-//import jakarta.persistence.ManyToOne;
 //import jakarta.persistence.Table;
 //import lombok.AllArgsConstructor;
 //import lombok.Getter;
@@ -23,42 +19,40 @@
 //import lombok.Setter;
 //import lombok.ToString;
 //
-//import java.time.LocalDateTime;
+//import java.time.LocalDate;
 //import java.util.List;
 //
-//import static com.kardoaward.kardo.enums.RequestStatus.PENDING;
+//import static com.kardoaward.kardo.enums.Status.UPCOMING;
 //
 //@Entity
-//@Table(name = "participation_requests")
+//@Table(name = "offline_competitions")
 //@AllArgsConstructor
 //@NoArgsConstructor
 //@Getter
 //@Setter
 //@ToString
-//public class ParticipationRequest {
+//public class OfflineCompetition {
 //
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    private Long id;
-//    @Column(name = "creation_time")
-//    private LocalDateTime creationTime = LocalDateTime.now();
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @ToString.Exclude
-//    @JoinColumn(name = "selection_id")
-//    private Selection selection;
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @ToString.Exclude
-//    @JoinColumn(name = "requester_id")
-//    private User requester;
+//    private String title;
+//    private String hashtag;
+//    @Column(name = "competition_start")
+//    private LocalDate competitionStart;
+//    @Column(name = "competition_end")
+//    private LocalDate competitionEnd;
 //    @Enumerated(EnumType.STRING)
-//    private RequestStatus status = PENDING;
+//    private Status status = UPCOMING;
+//    private String location;
 //    @ElementCollection
-//    @CollectionTable(name="participation_request_fields",
-//            joinColumns=@JoinColumn(name="participation_request_id"))
+//    @CollectionTable(name="offline_competition_fields",
+//            joinColumns=@JoinColumn(name="offline_competition_id"))
 //    @Column(name="field")
 //    @Enumerated(EnumType.STRING)
 ///*  ToDo
 //     После добавления контроллера проверить сохраняются/возвращаются ли значения в этом поле.
 // */
 //    private List<Field> fields;
+//    private String description;
 //}
