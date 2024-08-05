@@ -37,30 +37,30 @@ public class User {
     private Long id;
     @Column(unique = true)
     private String email;
-//    private String name;
-//    private String surname;
-//    private String patronymic;
-//    private LocalDate birthday;
-//    private String country;
-//    private String region;
-//    private String city;
-//    @Column(name = "phone_number")
-//    private String phoneNumber;
-//    @Enumerated(EnumType.STRING)
-//    private Gender gender;
-//    private String citizenship;
-//    @Column(name = "profile_photo")
-//    private String profilePhoto;
-//    private String portfolio;
-//    @Column(name = "about_me")
-//    private String aboutMe;
-////    @ElementCollection
-////    @CollectionTable(name="user_networks",
-////            joinColumns=@JoinColumn(name="user_id"))
-/////*  ToDo
-////     Не происходит запись в список, если поменять на "networks" и добавить аннотацию @Column(name="network"). Почему?
-//// */
-////    private Set<String> network;
+    private String name;
+    private String surname;
+    private String patronymic;
+    private LocalDate birthday;
+    private String country;
+    private String region;
+    private String city;
+    @Column(name = "phone_number")
+    private String phoneNumber;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+    private String citizenship;
+    @Column(name = "profile_photo")
+    private String profilePhoto;
+    private String portfolio;
+    @Column(name = "about_me")
+    private String aboutMe;
+//    @ElementCollection
+//    @CollectionTable(name="user_networks",
+//            joinColumns=@JoinColumn(name="user_id"))
+///*  ToDo
+//     Не происходит запись в список, если поменять на "networks" и добавить аннотацию @Column(name="network"). Почему?
+// */
+//    private Set<String> network;
     @Enumerated(EnumType.STRING)
     private Role role;
     private String password;
