@@ -22,28 +22,29 @@ public class NewUserRequest {
     @NotBlank(message = "Email не может быть пустым.")
     @Size(min = 6, max = 250, message = "Длина email должна быть в диапазоне от 6 до 250 символов.")
     private String email;
-    @NotBlank(message = "Name не может быть пустым.")
-    @Size(min = 2, max = 250, message = "Длина name должна быть в диапазоне от 2 до 250 символов.")
-    private String name;
-    @NotBlank(message = "Surname не может быть пустым.")
-    @Size(min = 2, max = 250, message = "Длина surname должна быть в диапазоне от 2 до 250 символов.")
-    private String surname;
-    @Size(min = 2, max = 250, message = "Длина patronymic должна быть в диапазоне от 2 до 250 символов.")
-    private String patronymic;
-    @NotNull(message = "Birthday не может быть null.")
-    @Past(message = "Birthday должен быть в прошлом.")
-    private LocalDate birthday;
-    @NotBlank(message = "Country не может быть пустым.")
-    @Size(min = 2, max = 250, message = "Длина country должна быть в диапазоне от 2 до 250 символов.")
-    private String country;
-    @NotBlank(message = "Region не может быть пустым.")
-    @Size(min = 2, max = 250, message = "Длина region должна быть в диапазоне от 2 до 250 символов.")
-    private String region;
-    @NotBlank(message = "City не может быть пустым.")
-    @Size(min = 2, max = 250, message = "Длина city должна быть в диапазоне от 2 до 250 символов.")
-    private String city;
-    private Set<String> network;
+//    @NotBlank(message = "Name не может быть пустым.")
+//    @Size(min = 2, max = 250, message = "Длина name должна быть в диапазоне от 2 до 250 символов.")
+//    private String name;
+//    @NotBlank(message = "Surname не может быть пустым.")
+//    @Size(min = 2, max = 250, message = "Длина surname должна быть в диапазоне от 2 до 250 символов.")
+//    private String surname;
+//    @Size(min = 2, max = 250, message = "Длина patronymic должна быть в диапазоне от 2 до 250 символов.")
+//    private String patronymic;
+//    @NotNull(message = "Birthday не может быть null.")
+//    @Past(message = "Birthday должен быть в прошлом.")
+//    private LocalDate birthday;
+//    @NotBlank(message = "Country не может быть пустым.")
+//    @Size(min = 2, max = 250, message = "Длина country должна быть в диапазоне от 2 до 250 символов.")
+//    private String country;
+//    @NotBlank(message = "Region не может быть пустым.")
+//    @Size(min = 2, max = 250, message = "Длина region должна быть в диапазоне от 2 до 250 символов.")
+//    private String region;
+//    @NotBlank(message = "City не может быть пустым.")
+//    @Size(min = 2, max = 250, message = "Длина city должна быть в диапазоне от 2 до 250 символов.")
+//    private String city;
+////    private Set<String> network;
     @NotNull(message = "Role не может быть null.")
     private Role role;
+    @NotNull
     private String password;
 }

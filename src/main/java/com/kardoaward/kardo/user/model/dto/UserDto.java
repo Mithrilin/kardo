@@ -31,6 +31,6 @@ public class UserDto {
     private String aboutMe;
     //ToDo Исправить на список. В БД это поле отсутствует.
     private String network;
-    private String roles;
+    private Role roles;
     private String password;
 }

@@ -1,16 +1,21 @@
 package com.kardoaward.kardo.config;
 
+import com.kardoaward.kardo.user.repository.UserRepository;
 import com.kardoaward.kardo.user.service.MyUserDetailsService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractAuthenticationFilterConfigurer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -18,20 +23,57 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+    private final UserRepository repository;
 
     @Bean
     public UserDetailsService userDetailsService() {
         return new MyUserDetailsService();
     }
 
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+//        return http.csrf(AbstractHttpConfigurer::disable)
+//                .authorizeHttpRequests(auth -> auth.requestMatchers("/users", "/users/reg").permitAll()
+//                        .requestMatchers("/users/**").authenticated())
+//                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
+//                .build();
+//    }
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        return http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth.requestMatchers("/users", "/users/reg").permitAll()
-                        .requestMatchers("/users/**").authenticated())
-                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll)
-                .build();
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+
+        // Setting up registration rule
+        http.csrf(AbstractHttpConfigurer::disable);
+//                .authorizeHttpRequests(requestMatcherRegistry -> requestMatcherRegistry
+//                        .requestMatchers("/users/reg")
+//                        .permitAll()
+//                );
+
+        // Configure authorization rules
+        http.authorizeHttpRequests(requestMatcherRegistry ->
+                requestMatcherRegistry
+                        .requestMatchers("/users/reg")
+                        .permitAll()
+                        .anyRequest()
+                        .authenticated()
+        );
+
+        // Configure form-based login
+        http.formLogin(Customizer.withDefaults());
+
+        // Configure logout functionality
+        http.logout(logoutConfigurer ->
+                logoutConfigurer
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .logoutUrl("/logout")
+                        .permitAll()
+        );
+
+        return http.build();
     }
 
     @Bean

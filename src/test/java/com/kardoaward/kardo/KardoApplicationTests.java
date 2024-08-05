@@ -9,5 +9,4 @@ class KardoApplicationTests {
 	@Test
 	void contextLoads() {
 	}
-
 }

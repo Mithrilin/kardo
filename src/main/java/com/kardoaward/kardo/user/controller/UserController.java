@@ -2,27 +2,21 @@ package com.kardoaward.kardo.user.controller;
 
 import com.kardoaward.kardo.exception.BadRequestException;
 import com.kardoaward.kardo.user.mapper.UserMapper;
-import com.kardoaward.kardo.user.model.dto.NewUserRequest;
 import com.kardoaward.kardo.user.model.User;
-import com.kardoaward.kardo.user.model.dto.UserDto;
+import com.kardoaward.kardo.user.model.dto.NewUserRequest;
 import com.kardoaward.kardo.user.model.dto.UpdateUserRequest;
 import com.kardoaward.kardo.user.model.dto.UserDto;
+import com.kardoaward.kardo.user.repository.UserRepository;
 import com.kardoaward.kardo.user.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Slf4j
 @AllArgsConstructor
@@ -32,12 +26,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
-
+    private UserRepository repository;
     private final UserMapper userMapper;
 
     /*TODO тестовый эндпроит для незарегистрированных юзеров. Должен вести на какую-то стартовую страницу
     *  обсудить с фронтами, куда будет выводить*/
-    @GetMapping()
+    @GetMapping("/welcome")
     public String welcome() {
         return "Добро пожаловать на сайт Kardo";
     }
@@ -48,6 +42,27 @@ public class UserController {
     public String authorized() {
         return "Это страница Kardo для авторизованных пользователей";
     }
+
+    @GetMapping("/admin")
+    public List<User> getUsers() {
+        User first = new User();
+        User second = new User();
+        User third = new User();
+
+        List<User> users = List.of(first, second, third);
+        return users;
+    }
+
+    @GetMapping("/admin/{id}")
+    public String getUsersEmail(@PathVariable long id) {
+        return repository.findUserById(id).getEmail();
+    }
+
+    @GetMapping("/user/{id}")
+    public User getUserById(@PathVariable long id) {
+        return repository.findUserById(id);
+    }
+
 
     @PostMapping("/reg")
     @ResponseStatus(HttpStatus.CREATED)
