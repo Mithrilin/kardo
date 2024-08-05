@@ -7,7 +7,6 @@ import com.kardoaward.kardo.user.model.User;
 import com.kardoaward.kardo.user.model.dto.NewUserRequest;
 import com.kardoaward.kardo.user.model.dto.UpdateUserRequest;
 import com.kardoaward.kardo.user.model.dto.UserDto;
-import com.kardoaward.kardo.user.repository.UserRepository;
 import com.kardoaward.kardo.user.service.UserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
@@ -18,8 +17,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Slf4j
 @AllArgsConstructor
 @RestController
@@ -28,7 +25,6 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private UserRepository repository;
     private final UserMapper userMapper;
 
     @PostMapping("/reg")

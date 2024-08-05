@@ -18,8 +18,8 @@ CREATE TABLE users (
   password VARCHAR NOT NULL
 );
 
---CREATE TABLE user_networks (
---  user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
---  network VARCHAR(250) NOT NULL,
---  PRIMARY KEY (user_id, network)
---);
+CREATE TABLE user_networks (
+  user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  network VARCHAR(250) NOT NULL,
+  PRIMARY KEY (user_id, network)
+);
