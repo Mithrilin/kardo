@@ -145,7 +145,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
         }
 
         repository.saveAll(updatedRequests);
-        log.info("Статуса заявок на участие в оффлайн-отборе с ИД {} у {} заявок и не обновился у {} заявок.",
+        log.info("Статуса заявок на участие в оффлайн-отборе с ИД {} обновился у {} заявок и не обновился у {} заявок.",
                 selectionId, result.getUpdatedRequests().size(), result.getNotUpdatedRequests().size());
         return result;
     }

@@ -1,7 +1,11 @@
 package com.kardoaward.kardo.spectator_request.selection_spectator_request.service;
 
+import com.kardoaward.kardo.enums.RequestStatus;
+import com.kardoaward.kardo.enums.UpdateRequestStatus;
 import com.kardoaward.kardo.selection.offline_selection.model.OfflineSelection;
 import com.kardoaward.kardo.selection.offline_selection.service.helper.OfflineSelectionValidationHelper;
+import com.kardoaward.kardo.spectator_request.model.dto.update.SpectatorRequestStatusUpdateRequest;
+import com.kardoaward.kardo.spectator_request.model.dto.update.SpectatorRequestStatusUpdateResult;
 import com.kardoaward.kardo.spectator_request.selection_spectator_request.mapper.SelectionSpectatorRequestMapper;
 import com.kardoaward.kardo.spectator_request.selection_spectator_request.model.SelectionSpectatorRequest;
 import com.kardoaward.kardo.spectator_request.selection_spectator_request.model.dto.NewSelectionSpectatorRequest;
@@ -100,5 +104,39 @@ public class SelectionSpectatorRequestServiceImpl implements SelectionSpectatorR
         log.info("Список заявок зрителей к отбору с ИД {} с номера {} размером {} возвращён.", selectionId, from,
                 spectatorRequestDtos.size());
         return spectatorRequestDtos;
+    }
+
+    @Override
+    public SpectatorRequestStatusUpdateResult updateSelectionSpectatorRequestStatusBySelectionId(
+            Long selectionId, SpectatorRequestStatusUpdateRequest request) {
+
+        offlineSelectionValidationHelper.isOfflineSelectionPresent(selectionId);
+        List<Long> ids = request.getRequestIds();
+        List<SelectionSpectatorRequest> spectatorRequests = repository.findAllById(ids);
+        SpectatorRequestStatusUpdateResult result = new SpectatorRequestStatusUpdateResult();
+        List<SelectionSpectatorRequest> updatedRequests = new ArrayList<>();
+
+        for (SelectionSpectatorRequest spectatorRequest : spectatorRequests) {
+            SelectionSpectatorRequestDto spectatorRequestDto = mapper
+                    .spectatorRequestToSpectatorRequestDto(spectatorRequest);
+
+            if (spectatorRequest.getStatus() == RequestStatus.PENDING) {
+
+                if (request.getStatus() == UpdateRequestStatus.CONFIRMED) {
+                    spectatorRequest.setStatus(RequestStatus.CONFIRMED);
+                } else {
+                    spectatorRequest.setStatus(RequestStatus.CANCELED);
+                }
+                updatedRequests.add(spectatorRequest);
+                result.getUpdatedRequests().add(spectatorRequestDto);
+            } else {
+                result.getNotUpdatedRequests().add(spectatorRequestDto);
+            }
+        }
+
+        repository.saveAll(updatedRequests);
+        log.info("Статуса заявок зрителей к отбору с ИД {} обновился у {} заявок и не обновился у {} заявок.",
+                selectionId, result.getUpdatedRequests().size(), result.getNotUpdatedRequests().size());
+        return result;
     }
 }
