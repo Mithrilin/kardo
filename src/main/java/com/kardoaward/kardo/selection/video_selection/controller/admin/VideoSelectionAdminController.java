@@ -1,10 +1,10 @@
 package com.kardoaward.kardo.selection.video_selection.controller.admin;
 
-import com.kardoaward.kardo.exception.BadRequestException;
 import com.kardoaward.kardo.selection.model.dto.UpdateSelectionRequest;
 import com.kardoaward.kardo.selection.video_selection.model.dto.NewVideoSelectionRequest;
 import com.kardoaward.kardo.selection.video_selection.model.dto.VideoSelectionDto;
 import com.kardoaward.kardo.selection.video_selection.service.VideoSelectionService;
+import com.kardoaward.kardo.selection.video_selection.service.helper.VideoSelectionValidationHelper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -27,16 +27,13 @@ public class VideoSelectionAdminController {
 
     private final VideoSelectionService videoSelectionService;
 
+    private final VideoSelectionValidationHelper videoSelectionValidationHelper;
+
     @PostMapping
     public VideoSelectionDto createVideoSelection(@RequestBody @Valid
                                                   NewVideoSelectionRequest newVideoSelectionRequest) {
-
-        if (newVideoSelectionRequest.getSelectionEnd().isBefore(newVideoSelectionRequest.getSelectionStart())) {
-            log.error("Дата начала видео-отбора не может быть после его конца.");
-            throw new BadRequestException("Дата начала видео-отбора не может быть после его конца.");
-        }
-
         log.info("Добавление администратором нового видео-отбора {}.", newVideoSelectionRequest);
+        videoSelectionValidationHelper.isNewVideoSelectionDateValid(newVideoSelectionRequest);
         return videoSelectionService.addVideoSelection(newVideoSelectionRequest);
     }
 

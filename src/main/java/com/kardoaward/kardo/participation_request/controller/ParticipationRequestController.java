@@ -4,6 +4,7 @@ import com.kardoaward.kardo.participation_request.model.dto.NewParticipationRequ
 import com.kardoaward.kardo.participation_request.model.dto.ParticipationRequestDto;
 import com.kardoaward.kardo.participation_request.model.dto.update.UpdateParticipationRequest;
 import com.kardoaward.kardo.participation_request.service.ParticipationRequestService;
+import com.kardoaward.kardo.participation_request.service.helper.ParticipationRequestValidationHelper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -28,12 +29,15 @@ public class ParticipationRequestController {
 
     private final ParticipationRequestService service;
 
+    private final ParticipationRequestValidationHelper participationHelper;
+
     @PostMapping
     public ParticipationRequestDto createParticipation(@RequestHeader("X-Requestor-Id") Long requestorId,
                                                        @RequestBody @Valid
                                                        NewParticipationRequest newParticipationRequest) {
         log.info("Добавление пользователем с ИД {} новой заявки на участие в отборе с ИД {}.", requestorId,
                 newParticipationRequest.getSelectionId());
+        participationHelper.isUserRequester(requestorId, newParticipationRequest.getRequesterId());
         return service.addParticipation(requestorId, newParticipationRequest);
     }
 

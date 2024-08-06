@@ -35,7 +35,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
 
     private final ParticipationRequestMapper mapper;
 
-    private final ParticipationRequestValidationHelper helper;
+    private final ParticipationRequestValidationHelper participationHelper;
     private final UserValidationHelper userValidationHelper;
     private final OfflineSelectionValidationHelper offlineSelectionValidationHelper;
 
@@ -58,8 +58,8 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
     @Transactional
     public void deleteParticipationById(Long requestorId, Long participationId) {
         User user = userValidationHelper.isUserPresent(requestorId);
-        ParticipationRequest request = helper.isParticipationRequestPresent(participationId);
-        helper.isUserRequester(user, request);
+        ParticipationRequest request = participationHelper.isParticipationRequestPresent(participationId);
+        participationHelper.isUserRequester(requestorId, request.getRequester().getId());
         repository.deleteById(participationId);
         log.info("Заявка с ИД {} пользователя с ИД {} удалена.", participationId, requestorId);
     }
@@ -67,8 +67,8 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
     @Override
     public ParticipationRequestDto getParticipationById(Long requestorId, Long participationId) {
         User user = userValidationHelper.isUserPresent(requestorId);
-        ParticipationRequest request = helper.isParticipationRequestPresent(participationId);
-        helper.isUserRequester(user, request);
+        ParticipationRequest request = participationHelper.isParticipationRequestPresent(participationId);
+        participationHelper.isUserRequester(user.getId(), request.getRequester().getId());
         ParticipationRequestDto requestDto = mapper.participationRequestToParticipationRequestDto(request);
         log.info("Заявка с ИД {} пользователя с ИД {} возвращена.", participationId, requestorId);
         return requestDto;
@@ -76,7 +76,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
 
     @Override
     public ParticipationRequestDto getParticipationByIdByAdmin(Long participationId) {
-        ParticipationRequest request = helper.isParticipationRequestPresent(participationId);
+        ParticipationRequest request = participationHelper.isParticipationRequestPresent(participationId);
         ParticipationRequestDto requestDto = mapper.participationRequestToParticipationRequestDto(request);
         log.info("Заявка с ИД {} возвращена администратору.", participationId);
         return requestDto;
@@ -108,7 +108,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
     public ParticipationRequestDto updateParticipationById(Long requestorId, Long participationId,
                                                            UpdateParticipationRequest updateRequest) {
         userValidationHelper.isUserPresent(requestorId);
-        ParticipationRequest request = helper.isParticipationRequestPresent(participationId);
+        ParticipationRequest request = participationHelper.isParticipationRequestPresent(participationId);
         mapper.updateParticipation(updateRequest, request);
         ParticipationRequest updatedRequest = repository.save(request);
         ParticipationRequestDto participationDto = mapper.participationRequestToParticipationRequestDto(updatedRequest);

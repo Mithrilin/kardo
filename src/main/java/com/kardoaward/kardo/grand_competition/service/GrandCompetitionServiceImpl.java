@@ -25,7 +25,7 @@ public class GrandCompetitionServiceImpl implements GrandCompetitionService {
 
     private final GrandCompetitionMapper mapper;
 
-    private final GrandCompetitionValidationHelper helper;
+    private final GrandCompetitionValidationHelper grandHelper;
 
     @Override
     @Transactional
@@ -38,14 +38,14 @@ public class GrandCompetitionServiceImpl implements GrandCompetitionService {
     @Override
     @Transactional
     public void deleteGrandCompetition(Long competitionId) {
-        helper.isGrandCompetitionPresent(competitionId);
+        grandHelper.isGrandCompetitionPresent(competitionId);
         repository.deleteById(competitionId);
         log.info("Гранд-соревнование с ID {} удалено.", competitionId);
     }
 
     @Override
     public GrandCompetition getGrandCompetitionById(Long competitionId) {
-        GrandCompetition competition = helper.isGrandCompetitionPresent(competitionId);
+        GrandCompetition competition = grandHelper.isGrandCompetitionPresent(competitionId);
         log.info("Гранд-соревнование с ИД {} возвращено.", competitionId);
         return competition;
     }
@@ -70,7 +70,8 @@ public class GrandCompetitionServiceImpl implements GrandCompetitionService {
     @Override
     @Transactional
     public GrandCompetition updateGrandCompetition(Long competitionId, UpdateGrandCompetitionRequest request) {
-        GrandCompetition competition = helper.isGrandCompetitionPresent(competitionId);
+        GrandCompetition competition = grandHelper.isGrandCompetitionPresent(competitionId);
+        grandHelper.isUpdateGrandCompetitionDateValid(competition, request);
         mapper.updateGrandCompetition(request, competition);
         GrandCompetition updatedCompetition = repository.save(competition);
         log.info("Гранд-соревнование с ID {} обновлено.", competitionId);

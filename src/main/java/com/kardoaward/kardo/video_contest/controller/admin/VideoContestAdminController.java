@@ -4,6 +4,7 @@ import com.kardoaward.kardo.video_contest.model.dto.NewVideoContestRequest;
 import com.kardoaward.kardo.video_contest.model.dto.VideoContestDto;
 import com.kardoaward.kardo.video_contest.model.dto.UpdateVideoContestRequest;
 import com.kardoaward.kardo.video_contest.service.VideoContestService;
+import com.kardoaward.kardo.video_contest.service.helper.VideoContestValidationHelper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -26,9 +27,12 @@ public class VideoContestAdminController {
 
     private final VideoContestService service;
 
+    private final VideoContestValidationHelper videoHelper;
+
     @PostMapping
     public VideoContestDto createVideoContest(@RequestBody @Valid NewVideoContestRequest newContest) {
         log.info("Добавление администратором нового видео-конкурса {}.", newContest);
+        videoHelper.isNewVideoContestDateValid(newContest);
         return service.createVideoContest(newContest);
     }
 

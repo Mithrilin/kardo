@@ -6,6 +6,7 @@ import com.kardoaward.kardo.grand_competition.model.dto.NewGrandCompetitionReque
 import com.kardoaward.kardo.grand_competition.model.dto.GrandCompetitionDto;
 import com.kardoaward.kardo.grand_competition.model.dto.UpdateGrandCompetitionRequest;
 import com.kardoaward.kardo.grand_competition.service.GrandCompetitionService;
+import com.kardoaward.kardo.grand_competition.service.helper.GrandCompetitionValidationHelper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -30,9 +31,12 @@ public class GrandCompetitionAdminController {
 
     private final GrandCompetitionMapper mapper;
 
+    private final GrandCompetitionValidationHelper grandHelper;
+
     @PostMapping
     public GrandCompetitionDto createGrandCompetition(@RequestBody @Valid NewGrandCompetitionRequest newCompetition) {
         log.info("Добавление администратором нового гранд-соревнования {}.", newCompetition);
+        grandHelper.isNewGrandCompetitionDateValid(newCompetition);
         GrandCompetition competition = mapper.newGrandCompetitionRequestToGrandCompetition(newCompetition);
         GrandCompetition returnedCompetition = service.addGrandCompetition(competition);
         return mapper.grandCompetitionToGrandCompetitionDto(returnedCompetition);
