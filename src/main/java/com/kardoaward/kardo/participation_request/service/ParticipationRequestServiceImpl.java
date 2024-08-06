@@ -66,9 +66,9 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
 
     @Override
     public ParticipationRequestDto getParticipationById(Long requestorId, Long participationId) {
-        User user = userValidationHelper.isUserPresent(requestorId);
+        userValidationHelper.isUserPresent(requestorId);
         ParticipationRequest request = participationHelper.isParticipationRequestPresent(participationId);
-        participationHelper.isUserRequester(user.getId(), request.getRequester().getId());
+        participationHelper.isUserRequester(requestorId, request.getRequester().getId());
         ParticipationRequestDto requestDto = mapper.participationRequestToParticipationRequestDto(request);
         log.info("Заявка с ИД {} пользователя с ИД {} возвращена.", participationId, requestorId);
         return requestDto;

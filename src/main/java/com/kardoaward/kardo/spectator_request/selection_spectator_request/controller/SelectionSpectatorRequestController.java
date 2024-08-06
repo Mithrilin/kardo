@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,5 +44,13 @@ public class SelectionSpectatorRequestController {
                                                     @PathVariable @Positive Long spectatorId) {
         log.info("Удаление пользователем с ИД {} своей заявки зрителя отбора с ИД {}.", requestorId, spectatorId);
         service.deleteSelectionSpectatorRequestById(requestorId, spectatorId);
+    }
+
+    @GetMapping("/{spectatorId}")
+    public SelectionSpectatorRequestDto getSelectionSpectatorRequestById(@RequestHeader("X-Requestor-Id")
+                                                                         Long requestorId,
+                                                                         @PathVariable @Positive Long spectatorId) {
+        log.info("Возвращение пользователю с ИД {} его заявки зрителя отбора с ИД {}.", requestorId, spectatorId);
+        return service.getSelectionSpectatorRequestById(requestorId, spectatorId);
     }
 }

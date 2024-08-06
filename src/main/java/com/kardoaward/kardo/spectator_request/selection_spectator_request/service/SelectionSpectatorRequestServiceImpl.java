@@ -53,4 +53,15 @@ public class SelectionSpectatorRequestServiceImpl implements SelectionSpectatorR
         repository.deleteById(spectatorId);
         log.info("Заявка зрителя с ИД {} пользователя с ИД {} удалена.", spectatorId, requestorId);
     }
+
+    @Override
+    public SelectionSpectatorRequestDto getSelectionSpectatorRequestById(Long requestorId, Long spectatorId) {
+        userValidationHelper.isUserPresent(requestorId);
+        SelectionSpectatorRequest spectatorRequest = helper.isSpectatorRequestPresent(spectatorId);
+        helper.isUserRequester(requestorId, spectatorRequest.getRequester().getId());
+        SelectionSpectatorRequestDto spectatorRequestDto = mapper
+                .spectatorRequestToSpectatorRequestDto(spectatorRequest);
+        log.info("Заявка зрителя с ИД {} пользователя с ИД {} возвращена.", spectatorId, requestorId);
+        return spectatorRequestDto;
+    }
 }
