@@ -9,5 +9,8 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface LikeMapper {
 
-
+    @Mapping(target = "id", constant = "0L")
+    @Mapping(source = "user", target = "creator")
+    @Mapping(source = "videoClip", target = "videoClip")
+    Like toLike(User user, VideoClip videoClip);
 }
