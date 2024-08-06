@@ -2,11 +2,14 @@ package com.kardoaward.kardo.video_clip.service;
 
 import com.kardoaward.kardo.user.model.User;
 import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
+import com.kardoaward.kardo.video_clip.mapper.LikeMapper;
 import com.kardoaward.kardo.video_clip.mapper.VideoClipMapper;
 import com.kardoaward.kardo.video_clip.model.VideoClip;
 import com.kardoaward.kardo.video_clip.model.dto.NewVideoClipRequest;
 import com.kardoaward.kardo.video_clip.model.dto.UpdateVideoClipRequest;
 import com.kardoaward.kardo.video_clip.model.dto.VideoClipDto;
+import com.kardoaward.kardo.video_clip.model.like.Like;
+import com.kardoaward.kardo.video_clip.repository.LikeRepository;
 import com.kardoaward.kardo.video_clip.repository.VideoClipRepository;
 import com.kardoaward.kardo.video_clip.service.helper.VideoClipValidationHelper;
 import jakarta.transaction.Transactional;
@@ -26,8 +29,10 @@ import java.util.List;
 public class VideoClipServiceImpl implements VideoClipService {
 
     private final VideoClipRepository videoClipRepository;
+    private final LikeRepository likeRepository;
 
     private final VideoClipMapper videoClipMapper;
+    private final LikeMapper likeMapper;
 
     private final VideoClipValidationHelper videoClipValidationHelper;
     private final UserValidationHelper userValidationHelper;
@@ -98,5 +103,18 @@ public class VideoClipServiceImpl implements VideoClipService {
         List<VideoClipDto> videoClipDtos = videoClipMapper.videoClipListToVideoClipDtoList(videoClips);
         log.info("Список видео-клипов с номера {} размером {} возвращён.", from, videoClipDtos.size());
         return videoClipDtos;
+    }
+
+    @Override
+    public VideoClipDto addLikeByVideoClipId(Long requestorId, Long videoId) {
+        User user = userValidationHelper.isUserPresent(requestorId);
+        VideoClip videoClip = videoClipValidationHelper.isVideoClipPresent(videoId);
+        videoClipValidationHelper.isRequestorNotCreatorVideo(requestorId, videoClip.getCreator().getId());
+        Like like = likeMapper.toLike(user, videoClip);
+        likeRepository.save(like);
+        videoClip.setLikesCount(videoClip.getLikesCount() + 1);
+        VideoClipDto videoClipDto = videoClipMapper.videoClipToVideoClipDto(videoClip);
+        log.info("Лайк пользователя с ID {} к видео-клипу с ИД {} добавлен.", requestorId, videoId);
+        return videoClipDto;
     }
 }

@@ -73,4 +73,10 @@ public class VideoClipController {
         return videoClipService.getVideoClipsByHashtag(hashtag, from, size);
     }
 
+    @PostMapping("/{videoId}/likes")
+    public VideoClipDto addLikeByVideoClipId(@RequestHeader("X-Requestor-Id") Long requestorId,
+                                             @PathVariable @Positive Long videoId) {
+        log.info("Добавление пользователем с ИД {} лайка к видео-клипу с ИД {}.", requestorId, videoId);
+        return videoClipService.addLikeByVideoClipId(requestorId, videoId);
+    }
 }

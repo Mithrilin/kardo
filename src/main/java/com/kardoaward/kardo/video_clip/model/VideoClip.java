@@ -12,12 +12,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.hibernate.annotations.Formula;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -40,16 +40,15 @@ public class VideoClip {
     @CollectionTable(name="video_clip_hashtags",
             joinColumns=@JoinColumn(name="video_clip_id"))
     @Column(name="hashtag")
-/*  ToDo
-     После добавления контроллера проверить сохраняются/возвращаются ли значения в этом поле.
- */
     private Set<String> hashtags;
     @ManyToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinColumn(name = "creator_id")
     private User creator;
-    @Transient
-    private Integer likesCount = 0;
+    @Formula("(SELECT COUNT(l.id) " +
+              "FROM likes AS l " +
+              "WHERE l.video_clip_id = id)")
+    private Integer likesCount;
     @Column(name="video_link")
     private String videoLink;
 }
