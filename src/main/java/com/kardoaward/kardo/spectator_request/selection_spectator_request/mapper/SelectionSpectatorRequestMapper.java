@@ -9,6 +9,8 @@ import com.kardoaward.kardo.user.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", uses = {UserMapper.class, OfflineSelectionMapper.class})
 public interface SelectionSpectatorRequestMapper {
 
@@ -20,4 +22,6 @@ public interface SelectionSpectatorRequestMapper {
     @Mapping(source = "spectatorRequest.selection", target = "selectionDto")
     @Mapping(source = "spectatorRequest.requester", target = "requesterDto")
     SelectionSpectatorRequestDto spectatorRequestToSpectatorRequestDto(SelectionSpectatorRequest spectatorRequest);
+
+    List<SelectionSpectatorRequestDto> spectatorRequestListToSpectatorRequestDtoList(List<SelectionSpectatorRequest> spectatorRequests);
 }
