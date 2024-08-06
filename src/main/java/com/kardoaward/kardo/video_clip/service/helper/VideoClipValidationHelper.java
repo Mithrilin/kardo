@@ -6,10 +6,12 @@ import com.kardoaward.kardo.video_clip.model.VideoClip;
 import com.kardoaward.kardo.video_clip.repository.VideoClipRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Slf4j
+@Service
 @AllArgsConstructor
 public class VideoClipValidationHelper {
 
@@ -30,6 +32,14 @@ public class VideoClipValidationHelper {
         if (!requestorId.equals(creatorId)) {
             log.error("Пользователь с ИД {} не является создателем видео.", requestorId);
             throw new BadRequestException(String.format("Пользователь с ИД %d не является создателем видео.",
+                    requestorId));
+        }
+    }
+
+    public void isRequestorNotCreatorVideo(Long requestorId, Long creatorId) {
+        if (requestorId.equals(creatorId)) {
+            log.error("Пользователь с ИД {} является создателем видео.", requestorId);
+            throw new BadRequestException(String.format("Пользователь с ИД %d является создателем видео.",
                     requestorId));
         }
     }
