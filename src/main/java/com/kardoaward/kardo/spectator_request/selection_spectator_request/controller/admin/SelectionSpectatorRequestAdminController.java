@@ -2,6 +2,7 @@ package com.kardoaward.kardo.spectator_request.selection_spectator_request.contr
 
 import com.kardoaward.kardo.spectator_request.selection_spectator_request.model.dto.SelectionSpectatorRequestDto;
 import com.kardoaward.kardo.spectator_request.selection_spectator_request.service.SelectionSpectatorRequestService;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,7 +10,10 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Slf4j
 @AllArgsConstructor
@@ -25,5 +29,16 @@ public class SelectionSpectatorRequestAdminController {
                                                                                 Long spectatorId) {
         log.info("Возвращение администратору заявки зрителя отбора с ИД {}.", spectatorId);
         return service.getSelectionSpectatorRequestByIdByAdmin(spectatorId);
+    }
+
+    @GetMapping("/selections/{selectionId}")
+    public List<SelectionSpectatorRequestDto> getSelectionSpectatorRequestByEventId(@PathVariable @Positive
+                                                                                    Long selectionId,
+                                                                                    @RequestParam(defaultValue = "0")
+                                                                                    @Min(0) int from,
+                                                                                    @RequestParam(defaultValue = "10")
+                                                                                    @Positive int size) {
+        log.info("Возвращение администратору списка заявок зрителей к отбору с ИД {}.", selectionId);
+        return service.getSelectionSpectatorRequestByEventId(selectionId, from, size);
     }
 }

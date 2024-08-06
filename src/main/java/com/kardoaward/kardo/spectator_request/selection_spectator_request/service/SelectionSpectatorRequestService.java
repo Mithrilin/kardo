@@ -3,6 +3,8 @@ package com.kardoaward.kardo.spectator_request.selection_spectator_request.servi
 import com.kardoaward.kardo.spectator_request.selection_spectator_request.model.dto.NewSelectionSpectatorRequest;
 import com.kardoaward.kardo.spectator_request.selection_spectator_request.model.dto.SelectionSpectatorRequestDto;
 
+import java.util.List;
+
 public interface SelectionSpectatorRequestService {
 
     SelectionSpectatorRequestDto addSelectionSpectatorRequest(Long requestorId, NewSelectionSpectatorRequest request);
@@ -12,4 +14,6 @@ public interface SelectionSpectatorRequestService {
     SelectionSpectatorRequestDto getSelectionSpectatorRequestById(Long requestorId, Long spectatorId);
 
     SelectionSpectatorRequestDto getSelectionSpectatorRequestByIdByAdmin(Long spectatorId);
+
+    List<SelectionSpectatorRequestDto> getSelectionSpectatorRequestByEventId(Long selectionId, int from, int size);
 }
