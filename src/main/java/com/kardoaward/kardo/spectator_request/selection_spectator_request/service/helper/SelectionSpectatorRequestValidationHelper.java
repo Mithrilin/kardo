@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @AllArgsConstructor
-public class SelectionSpectatorRequestServiceHelper {
+public class SelectionSpectatorRequestValidationHelper {
 
     public void isUserRequester(Long userId, Long requesterId) {
         if (!userId.equals(requesterId)) {
