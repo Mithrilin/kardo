@@ -7,6 +7,7 @@ import com.kardoaward.kardo.spectator_request.selection_spectator_request.model.
 import com.kardoaward.kardo.spectator_request.selection_spectator_request.model.dto.NewSelectionSpectatorRequest;
 import com.kardoaward.kardo.spectator_request.selection_spectator_request.model.dto.SelectionSpectatorRequestDto;
 import com.kardoaward.kardo.spectator_request.selection_spectator_request.repository.SelectionSpectatorRequestRepository;
+import com.kardoaward.kardo.spectator_request.selection_spectator_request.service.helper.SelectionSpectatorRequestValidationHelper;
 import com.kardoaward.kardo.user.model.User;
 import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import jakarta.transaction.Transactional;
@@ -25,6 +26,7 @@ public class SelectionSpectatorRequestServiceImpl implements SelectionSpectatorR
 
     private final UserValidationHelper userValidationHelper;
     private final OfflineSelectionValidationHelper offlineSelectionValidationHelper;
+    private final SelectionSpectatorRequestValidationHelper helper;
 
     @Override
     @Transactional
@@ -40,5 +42,15 @@ public class SelectionSpectatorRequestServiceImpl implements SelectionSpectatorR
                 .spectatorRequestToSpectatorRequestDto(returnedSpectatorRequest);
         log.info("Заявка зрителя с ИД {} пользователя с ИД {} создана.", spectatorRequestDto, requestorId);
         return spectatorRequestDto;
+    }
+
+    @Override
+    @Transactional
+    public void deleteSelectionSpectatorRequestById(Long requestorId, Long spectatorId) {
+        userValidationHelper.isUserPresent(requestorId);
+        SelectionSpectatorRequest spectatorRequest = helper.isSpectatorRequestPresent(spectatorId);
+        helper.isUserRequester(requestorId, spectatorRequest.getRequester().getId());
+        repository.deleteById(spectatorId);
+        log.info("Заявка зрителя с ИД {} пользователя с ИД {} удалена.", spectatorId, requestorId);
     }
 }

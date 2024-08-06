@@ -57,7 +57,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
     @Override
     @Transactional
     public void deleteParticipationById(Long requestorId, Long participationId) {
-        User user = userValidationHelper.isUserPresent(requestorId);
+        userValidationHelper.isUserPresent(requestorId);
         ParticipationRequest request = participationHelper.isParticipationRequestPresent(participationId);
         participationHelper.isUserRequester(requestorId, request.getRequester().getId());
         repository.deleteById(participationId);

@@ -6,4 +6,6 @@ import com.kardoaward.kardo.spectator_request.selection_spectator_request.model.
 public interface SelectionSpectatorRequestService {
 
     SelectionSpectatorRequestDto addSelectionSpectatorRequest(Long requestorId, NewSelectionSpectatorRequest request);
+
+    void deleteSelectionSpectatorRequestById(Long requestorId, Long spectatorId);
 }
