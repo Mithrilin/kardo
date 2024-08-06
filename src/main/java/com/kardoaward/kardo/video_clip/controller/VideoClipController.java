@@ -79,4 +79,11 @@ public class VideoClipController {
         log.info("Добавление пользователем с ИД {} лайка к видео-клипу с ИД {}.", requestorId, videoId);
         return videoClipService.addLikeByVideoClipId(requestorId, videoId);
     }
+
+    @DeleteMapping("/{videoId}/likes")
+    public VideoClipDto deleteLikeByVideoClipId(@RequestHeader("X-Requestor-Id") Long requestorId,
+                                                @PathVariable @Positive Long videoId) {
+        log.info("Удаление пользователем с ИД {} своего лайка к видео-клипу с ИД {}.", requestorId, videoId);
+        return videoClipService.deleteLikeByVideoClipId(requestorId, videoId);
+    }
 }

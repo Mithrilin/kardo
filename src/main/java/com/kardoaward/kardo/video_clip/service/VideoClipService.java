@@ -21,4 +21,6 @@ public interface VideoClipService {
     List<VideoClipDto> getVideoClipsByHashtag(String hashtag, int from, int size);
 
     VideoClipDto addLikeByVideoClipId(Long requestorId, Long videoId);
+
+    VideoClipDto deleteLikeByVideoClipId(Long requestorId, Long videoId);
 }

@@ -112,9 +112,23 @@ public class VideoClipServiceImpl implements VideoClipService {
         videoClipValidationHelper.isRequestorNotCreatorVideo(requestorId, videoClip.getCreator().getId());
         Like like = likeMapper.toLike(user, videoClip);
         likeRepository.save(like);
-        videoClip.setLikesCount(videoClip.getLikesCount() + 1);
+        Integer likesCount = videoClip.getLikesCount();
+        videoClip.setLikesCount(++likesCount);
         VideoClipDto videoClipDto = videoClipMapper.videoClipToVideoClipDto(videoClip);
         log.info("Лайк пользователя с ID {} к видео-клипу с ИД {} добавлен.", requestorId, videoId);
+        return videoClipDto;
+    }
+
+    @Override
+    public VideoClipDto deleteLikeByVideoClipId(Long requestorId, Long videoId) {
+        userValidationHelper.isUserPresent(requestorId);
+        VideoClip videoClip = videoClipValidationHelper.isVideoClipPresent(videoId);
+        Like like = videoClipValidationHelper.isRequestorLikedVideoClip(requestorId, videoId);
+        likeRepository.delete(like);
+        Integer likesCount = videoClip.getLikesCount();
+        videoClip.setLikesCount(--likesCount);
+        VideoClipDto videoClipDto = videoClipMapper.videoClipToVideoClipDto(videoClip);
+        log.info("Лайк пользователя с ID {} к видео-клипу с ИД {} удалён.", requestorId, videoId);
         return videoClipDto;
     }
 }
