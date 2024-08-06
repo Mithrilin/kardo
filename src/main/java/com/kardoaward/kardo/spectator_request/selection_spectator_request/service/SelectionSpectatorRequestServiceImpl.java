@@ -40,7 +40,7 @@ public class SelectionSpectatorRequestServiceImpl implements SelectionSpectatorR
         SelectionSpectatorRequest returnedSpectatorRequest = repository.save(spectatorRequest);
         SelectionSpectatorRequestDto spectatorRequestDto = mapper
                 .spectatorRequestToSpectatorRequestDto(returnedSpectatorRequest);
-        log.info("Заявка зрителя с ИД {} пользователя с ИД {} создана.", spectatorRequestDto, requestorId);
+        log.info("Заявка зрителя отбора с ИД {} пользователя с ИД {} создана.", spectatorRequestDto, requestorId);
         return spectatorRequestDto;
     }
 
@@ -51,7 +51,7 @@ public class SelectionSpectatorRequestServiceImpl implements SelectionSpectatorR
         SelectionSpectatorRequest spectatorRequest = helper.isSpectatorRequestPresent(spectatorId);
         helper.isUserRequester(requestorId, spectatorRequest.getRequester().getId());
         repository.deleteById(spectatorId);
-        log.info("Заявка зрителя с ИД {} пользователя с ИД {} удалена.", spectatorId, requestorId);
+        log.info("Заявка зрителя отбора с ИД {} пользователя с ИД {} удалена.", spectatorId, requestorId);
     }
 
     @Override
@@ -61,7 +61,16 @@ public class SelectionSpectatorRequestServiceImpl implements SelectionSpectatorR
         helper.isUserRequester(requestorId, spectatorRequest.getRequester().getId());
         SelectionSpectatorRequestDto spectatorRequestDto = mapper
                 .spectatorRequestToSpectatorRequestDto(spectatorRequest);
-        log.info("Заявка зрителя с ИД {} пользователя с ИД {} возвращена.", spectatorId, requestorId);
+        log.info("Заявка зрителя отбора с ИД {} пользователя с ИД {} возвращена.", spectatorId, requestorId);
+        return spectatorRequestDto;
+    }
+
+    @Override
+    public SelectionSpectatorRequestDto getSelectionSpectatorRequestByIdByAdmin(Long spectatorId) {
+        SelectionSpectatorRequest spectatorRequest = helper.isSpectatorRequestPresent(spectatorId);
+        SelectionSpectatorRequestDto spectatorRequestDto = mapper
+                .spectatorRequestToSpectatorRequestDto(spectatorRequest);
+        log.info("Заявка зрителя отбора с ИД {} возвращена.", spectatorId);
         return spectatorRequestDto;
     }
 }

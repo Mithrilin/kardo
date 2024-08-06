@@ -10,4 +10,6 @@ public interface SelectionSpectatorRequestService {
     void deleteSelectionSpectatorRequestById(Long requestorId, Long spectatorId);
 
     SelectionSpectatorRequestDto getSelectionSpectatorRequestById(Long requestorId, Long spectatorId);
+
+    SelectionSpectatorRequestDto getSelectionSpectatorRequestByIdByAdmin(Long spectatorId);
 }
