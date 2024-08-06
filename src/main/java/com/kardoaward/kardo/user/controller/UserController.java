@@ -30,7 +30,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
-
+    /* ToDo
+        Перенести все мапперы в сервисы!
+     */
     private final UserMapper userMapper;
 
     @PostMapping

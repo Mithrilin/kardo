@@ -28,7 +28,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class GrandCompetitionAdminController {
 
     private final GrandCompetitionService service;
-
+    /* ToDo
+        Перенести все мапперы в сервисы!
+     */
     private final GrandCompetitionMapper mapper;
 
     private final GrandCompetitionValidationHelper grandHelper;

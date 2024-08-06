@@ -25,7 +25,9 @@ import java.util.List;
 public class GrandCompetitionController {
 
     private final GrandCompetitionService service;
-
+    /* ToDo
+        Перенести все мапперы в сервисы!
+     */
     private final GrandCompetitionMapper mapper;
 
     @GetMapping("/{competitionId}")

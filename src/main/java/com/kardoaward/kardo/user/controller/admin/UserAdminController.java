@@ -27,7 +27,9 @@ import java.util.List;
 public class UserAdminController {
 
     private final UserService userService;
-
+    /* ToDo
+        Перенести все мапперы в сервисы!
+     */
     private final UserMapper userMapper;
 
     @DeleteMapping("/{userId}")
