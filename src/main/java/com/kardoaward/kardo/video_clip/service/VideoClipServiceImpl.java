@@ -106,6 +106,7 @@ public class VideoClipServiceImpl implements VideoClipService {
     }
 
     @Override
+    @Transactional
     public VideoClipDto addLikeByVideoClipId(Long requestorId, Long videoId) {
         User user = userValidationHelper.isUserPresent(requestorId);
         VideoClip videoClip = videoClipValidationHelper.isVideoClipPresent(videoId);
@@ -120,6 +121,7 @@ public class VideoClipServiceImpl implements VideoClipService {
     }
 
     @Override
+    @Transactional
     public VideoClipDto deleteLikeByVideoClipId(Long requestorId, Long videoId) {
         userValidationHelper.isUserPresent(requestorId);
         VideoClip videoClip = videoClipValidationHelper.isVideoClipPresent(videoId);
