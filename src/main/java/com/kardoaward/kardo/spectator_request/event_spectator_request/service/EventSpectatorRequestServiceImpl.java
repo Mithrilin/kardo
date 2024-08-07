@@ -1,5 +1,7 @@
 package com.kardoaward.kardo.spectator_request.event_spectator_request.service;
 
+import com.kardoaward.kardo.enums.RequestStatus;
+import com.kardoaward.kardo.enums.UpdateRequestStatus;
 import com.kardoaward.kardo.event.model.Event;
 import com.kardoaward.kardo.event.service.helper.EventValidationHelper;
 import com.kardoaward.kardo.spectator_request.event_spectator_request.mapper.EventSpectatorRequestMapper;
@@ -8,6 +10,8 @@ import com.kardoaward.kardo.spectator_request.event_spectator_request.model.dto.
 import com.kardoaward.kardo.spectator_request.event_spectator_request.model.dto.NewEventSpectatorRequest;
 import com.kardoaward.kardo.spectator_request.event_spectator_request.repository.EventSpectatorRequestRepository;
 import com.kardoaward.kardo.spectator_request.event_spectator_request.service.helper.EventSpectatorRequestValidationHelper;
+import com.kardoaward.kardo.spectator_request.model.dto.update.SpectatorRequestStatusUpdateRequest;
+import com.kardoaward.kardo.spectator_request.model.dto.update.SpectatorRequestStatusUpdateResult;
 import com.kardoaward.kardo.user.model.User;
 import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import jakarta.transaction.Transactional;
@@ -97,5 +101,39 @@ public class EventSpectatorRequestServiceImpl implements EventSpectatorRequestSe
         log.info("Список заявок зрителей к мероприятию с ИД {} с номера {} размером {} возвращён.", eventId, from,
                 spectatorRequestDtos.size());
         return spectatorRequestDtos;
+    }
+
+    @Override
+    public SpectatorRequestStatusUpdateResult updateEventSpectatorRequestStatusByEventId(
+            Long eventId, SpectatorRequestStatusUpdateRequest request) {
+
+        eventValidationHelper.isEventPresent(eventId);
+        List<Long> ids = request.getRequestIds();
+        List<EventSpectatorRequest> spectatorRequests = repository.findAllById(ids);
+        SpectatorRequestStatusUpdateResult result = new SpectatorRequestStatusUpdateResult();
+        List<EventSpectatorRequest> updatedRequests = new ArrayList<>();
+
+        for (EventSpectatorRequest spectatorRequest : spectatorRequests) {
+            EventSpectatorRequestDto spectatorRequestDto = mapper
+                    .spectatorRequestToSpectatorRequestDto(spectatorRequest);
+
+            if (spectatorRequest.getStatus() == RequestStatus.PENDING) {
+
+                if (request.getStatus() == UpdateRequestStatus.CONFIRMED) {
+                    spectatorRequest.setStatus(RequestStatus.CONFIRMED);
+                } else {
+                    spectatorRequest.setStatus(RequestStatus.CANCELED);
+                }
+                updatedRequests.add(spectatorRequest);
+                result.getUpdatedRequests().add(spectatorRequestDto);
+            } else {
+                result.getNotUpdatedRequests().add(spectatorRequestDto);
+            }
+        }
+
+        repository.saveAll(updatedRequests);
+        log.info("Статуса заявок зрителей к мероприятию с ИД {} обновился у {} заявок и не обновился у {} заявок.",
+                eventId, result.getUpdatedRequests().size(), result.getNotUpdatedRequests().size());
+        return result;
     }
 }
