@@ -15,6 +15,7 @@ import java.util.List;
 public interface SelectionSpectatorRequestMapper {
 
     @Mapping(target = "id", constant = "0L")
+    @Mapping(target = "status", constant = "PENDING")
     @Mapping(source = "user", target = "requester")
     @Mapping(source = "offlineSelection", target = "selection")
     SelectionSpectatorRequest newSpectatorRequestToSpectatorRequest(OfflineSelection offlineSelection, User user);

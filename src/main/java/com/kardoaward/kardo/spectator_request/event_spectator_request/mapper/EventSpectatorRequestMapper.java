@@ -15,6 +15,7 @@ import java.util.List;
 public interface EventSpectatorRequestMapper {
 
     @Mapping(target = "id", constant = "0L")
+    @Mapping(target = "status", constant = "PENDING")
     @Mapping(source = "user", target = "requester")
     @Mapping(source = "event", target = "event")
     EventSpectatorRequest newSpectatorRequestToSpectatorRequest(Event event, User user);

@@ -1,7 +1,5 @@
 package com.kardoaward.kardo.user.controller.admin;
 
-import com.kardoaward.kardo.user.mapper.UserMapper;
-import com.kardoaward.kardo.user.model.User;
 import com.kardoaward.kardo.user.model.dto.UserDto;
 import com.kardoaward.kardo.user.model.dto.UserShortDto;
 import com.kardoaward.kardo.user.service.UserService;
@@ -27,22 +25,17 @@ import java.util.List;
 public class UserAdminController {
 
     private final UserService userService;
-    /* ToDo
-        Перенести все мапперы в сервисы!
-     */
-    private final UserMapper userMapper;
 
     @DeleteMapping("/{userId}")
-    public void deleteUser(@PathVariable @Positive Long userId) {
+    public void deleteUserByAdmin(@PathVariable @Positive Long userId) {
         log.info("Удаление администратором пользователя с ИД {}.", userId);
         userService.deleteUser(userId);
     }
 
     @GetMapping("/{userId}")
-    public UserDto getUserById(@PathVariable @Positive Long userId) {
+    public UserDto getUserByIdByAdmin(@PathVariable @Positive Long userId) {
         log.info("Возвращение администратору информации о пользователе с ИД {}.", userId);
-        User returnedUser = userService.getUserById(userId);
-        return userMapper.userToUserDto(returnedUser);
+        return userService.getUserById(userId);
     }
 
     @GetMapping
@@ -50,7 +43,6 @@ public class UserAdminController {
                                             @RequestParam(defaultValue = "0") @Min(0) int from,
                                             @RequestParam(defaultValue = "10") @Positive int size) {
         log.info("Возвращение администратору списка пользователей.");
-        List<User> users = userService.getUsersByIds(ids, from, size);
-        return userMapper.userListToUserShortDtoList(users);
+        return userService.getUsersByIds(ids, from, size);
     }
 }

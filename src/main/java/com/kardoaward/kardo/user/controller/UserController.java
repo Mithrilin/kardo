@@ -1,12 +1,10 @@
 package com.kardoaward.kardo.user.controller;
 
-import com.kardoaward.kardo.exception.BadRequestException;
-import com.kardoaward.kardo.user.mapper.UserMapper;
 import com.kardoaward.kardo.user.model.dto.NewUserRequest;
-import com.kardoaward.kardo.user.model.User;
 import com.kardoaward.kardo.user.model.dto.UpdateUserRequest;
 import com.kardoaward.kardo.user.model.dto.UserDto;
 import com.kardoaward.kardo.user.service.UserService;
+import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -30,32 +28,21 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     private final UserService userService;
-    /* ToDo
-        Перенести все мапперы в сервисы!
-     */
-    private final UserMapper userMapper;
+
+    private final UserValidationHelper userValidationHelper;
 
     @PostMapping
     public UserDto createUser(@RequestBody @Valid NewUserRequest newUserRequest) {
         log.info("Добавление нового пользователь {}.", newUserRequest);
-        User user = userMapper.newUserRequestToUser(newUserRequest);
-        User returnedUser = userService.addUser(user);
-        return userMapper.userToUserDto(returnedUser);
+        return userService.addUser(newUserRequest);
     }
 
     @GetMapping("/{userId}")
     public UserDto getUserById(@RequestHeader("X-Requestor-Id") Long requestorId,
                                @PathVariable @Positive Long userId) {
         log.info("Получение пользователем с ИД {} своих данных.", userId);
-
-        if (!userId.equals(requestorId)) {
-            log.error("Пользователь с ИД {} не может просматривать профиль пользователя с ИД {}.", requestorId, userId);
-            throw new BadRequestException(String.format("Пользователь с ИД %d не может просматривать " +
-                    "профиль пользователя с ИД %d.", requestorId, userId));
-        }
-
-        User returnedUser = userService.getUserById(userId);
-        return userMapper.userToUserDto(returnedUser);
+        userValidationHelper.isUserOwner(requestorId, userId);
+        return userService.getUserById(userId);
     }
 
     @DeleteMapping
@@ -68,7 +55,6 @@ public class UserController {
     public UserDto updateUser(@RequestHeader("X-Requestor-Id") Long requestorId,
                               @RequestBody @Valid UpdateUserRequest request) {
         log.info("Обновление пользователем с ИД {} своих данных.", requestorId);
-        User updatedUser = userService.updateUser(requestorId, request);
-        return userMapper.userToUserDto(updatedUser);
+        return userService.updateUser(requestorId, request);
     }
 }

@@ -3,7 +3,9 @@ package com.kardoaward.kardo.user.service;
 import com.kardoaward.kardo.selection.offline_selection.service.helper.OfflineSelectionValidationHelper;
 import com.kardoaward.kardo.user.mapper.UserMapper;
 import com.kardoaward.kardo.user.model.User;
+import com.kardoaward.kardo.user.model.dto.NewUserRequest;
 import com.kardoaward.kardo.user.model.dto.UpdateUserRequest;
+import com.kardoaward.kardo.user.model.dto.UserDto;
 import com.kardoaward.kardo.user.model.dto.UserShortDto;
 import com.kardoaward.kardo.user.repository.UserRepository;
 import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
@@ -32,17 +34,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public User addUser(User user) {
+    public UserDto addUser(NewUserRequest newUserRequest) {
+        User user = userMapper.newUserRequestToUser(newUserRequest);
         User returnedUser = userRepository.save(user);
-        log.info("Пользователь с ID = {} создан.", returnedUser.getId());
-        return returnedUser;
+        UserDto userDto = userMapper.userToUserDto(returnedUser);
+        log.info("Пользователь с ID = {} создан.", userDto.getId());
+        return userDto;
     }
 
     @Override
-    public User getUserById(Long userId) {
+    public UserDto getUserById(Long userId) {
         User user = userValidationHelper.isUserPresent(userId);
+        UserDto userDto = userMapper.userToUserDto(user);
         log.info("Пользователь с ИД {} возвращен.", userId);
-        return user;
+        return userDto;
     }
 
     @Override
@@ -54,7 +59,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getUsersByIds(List<Long> ids, int from, int size) {
+    public List<UserShortDto> getUsersByIds(List<Long> ids, int from, int size) {
         int page = from / size;
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
@@ -71,18 +76,20 @@ public class UserServiceImpl implements UserService {
         }
 
         List<User> users = usersPage.getContent();
+        List<UserShortDto> userShortDtos = userMapper.userListToUserShortDtoList(users);
         log.info("Список пользователей с номера {} размером {} возвращён.", from, users.size());
-        return users;
+        return userShortDtos;
     }
 
     @Override
     @Transactional
-    public User updateUser(Long userId, UpdateUserRequest request) {
+    public UserDto updateUser(Long userId, UpdateUserRequest request) {
         User user = userValidationHelper.isUserPresent(userId);
         userMapper.updateUser(request, user);
         User updatedUser = userRepository.save(user);
+        UserDto userDto = userMapper.userToUserDto(updatedUser);
         log.info("Пользователь с ID {} обновлён.", userId);
-        return updatedUser;
+        return userDto;
     }
 
     @Override
