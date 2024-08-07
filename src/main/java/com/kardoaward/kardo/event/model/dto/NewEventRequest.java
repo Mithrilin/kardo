@@ -43,6 +43,6 @@ public class NewEventRequest {
     @NotNull(message = "IsMainEvent не может быть null.")
     private Boolean isMainEvent;
     @NotBlank(message = "Description не может быть пустым.")
-    @Size(min = 2, max = 5000, message = "Длина Description должна быть в диапазоне от 2 до 5000 символов.")
+    @Size(min = 2, max = 1000, message = "Длина Description должна быть в диапазоне от 2 до 1000 символов.")
     private String description;
 }

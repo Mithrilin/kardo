@@ -28,6 +28,6 @@ public class NewVideoContestRequest {
     @Future(message = "ContestEnd должен быть в будущем.")
     private LocalDate contestEnd;
     @NotBlank(message = "Description не может быть пустым.")
-    @Size(min = 2, max = 10000, message = "Длина Description должна быть в диапазоне от 2 до 10000 символов.")
+    @Size(min = 2, max = 1000, message = "Длина Description должна быть в диапазоне от 2 до 1000 символов.")
     private String description;
 }
