@@ -14,7 +14,13 @@ import com.kardoaward.kardo.video_clip.service.helper.VideoClipValidationHelper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -78,5 +84,24 @@ public class CommentServiceImpl implements CommentService {
         CommentDto commentDto = commentMapper.commentToCommentDto(updatedComment);
         log.info("Комментарий с ID {} обновлён.", commentId);
         return commentDto;
+    }
+
+    @Override
+    public List<CommentDto> getCommentsByVideoId(Long videoId, int from, int size) {
+        videoClipValidationHelper.isVideoClipPresent(videoId);
+        int page = from / size;
+        Sort sort = Sort.by(Sort.Direction.ASC, "id");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+        Page<Comment> commentPage = commentRepository.findByVideoClip_Id(videoId, pageRequest);
+
+        if (commentPage.isEmpty()) {
+            log.info("Не нашлось комментариев по заданным параметрам.");
+            return new ArrayList<>();
+        }
+
+        List<Comment> comments = commentPage.getContent();
+        List<CommentDto> commentDtos = commentMapper.commentListToCommentDtoList(comments);
+        log.info("Список комментариев с номера {} размером {} возвращён.", from, commentDtos.size());
+        return commentDtos;
     }
 }

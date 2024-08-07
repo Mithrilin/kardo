@@ -6,6 +6,7 @@ import com.kardoaward.kardo.comment.model.dto.UpdateCommentRequest;
 import com.kardoaward.kardo.comment.service.CommentService;
 import com.kardoaward.kardo.comment.service.helper.CommentValidationHelper;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +19,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @Slf4j
 @AllArgsConstructor
@@ -59,5 +63,12 @@ public class CommentController {
                                         @RequestBody @Valid UpdateCommentRequest request) {
         log.info("Обновление пользователем с ИД {} своего комментария с ИД {}.", requestorId, commentId);
         return commentService.updateCommentById(requestorId, commentId, request);
+    }
+
+    @GetMapping("/videos/{videoId}")
+    public List<CommentDto> getCommentsByVideoId(@PathVariable @Positive Long videoId,
+                                                 @RequestParam(defaultValue = "0") @Min(0) int from,
+                                                 @RequestParam(defaultValue = "10") @Positive int size) {
+        return commentService.getCommentsByVideoId(videoId, from, size);
     }
 }
