@@ -9,6 +9,8 @@ import com.kardoaward.kardo.user.model.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", uses = {UserMapper.class, EventMapper.class})
 public interface EventSpectatorRequestMapper {
 
@@ -20,4 +22,6 @@ public interface EventSpectatorRequestMapper {
     @Mapping(source = "spectatorRequest.event", target = "eventDto")
     @Mapping(source = "spectatorRequest.requester", target = "requesterDto")
     EventSpectatorRequestDto spectatorRequestToSpectatorRequestDto(EventSpectatorRequest spectatorRequest);
+
+    List<EventSpectatorRequestDto> spectatorRequestListToSpectatorRequestDtoList(List<EventSpectatorRequest> spectatorRequests);
 }
