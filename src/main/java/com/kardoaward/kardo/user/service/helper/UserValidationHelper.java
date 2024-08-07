@@ -1,5 +1,6 @@
 package com.kardoaward.kardo.user.service.helper;
 
+import com.kardoaward.kardo.exception.BadRequestException;
 import com.kardoaward.kardo.exception.NotFoundException;
 import com.kardoaward.kardo.user.model.User;
 import com.kardoaward.kardo.user.repository.UserRepository;
@@ -25,5 +26,13 @@ public class UserValidationHelper {
         }
 
         return optionalUser.get();
+    }
+
+    public void isUserOwner(Long requestorId, Long userId) {
+        if (!userId.equals(requestorId)) {
+            log.error("Пользователь с ИД {} не может просматривать профиль пользователя с ИД {}.", requestorId, userId);
+            throw new BadRequestException(String.format("Пользователь с ИД %d не может просматривать " +
+                    "профиль пользователя с ИД %d.", requestorId, userId));
+        }
     }
 }

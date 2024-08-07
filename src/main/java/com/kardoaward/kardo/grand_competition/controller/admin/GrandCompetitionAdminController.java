@@ -1,12 +1,9 @@
 package com.kardoaward.kardo.grand_competition.controller.admin;
 
-import com.kardoaward.kardo.grand_competition.mapper.GrandCompetitionMapper;
-import com.kardoaward.kardo.grand_competition.model.GrandCompetition;
 import com.kardoaward.kardo.grand_competition.model.dto.NewGrandCompetitionRequest;
 import com.kardoaward.kardo.grand_competition.model.dto.GrandCompetitionDto;
 import com.kardoaward.kardo.grand_competition.model.dto.UpdateGrandCompetitionRequest;
 import com.kardoaward.kardo.grand_competition.service.GrandCompetitionService;
-import com.kardoaward.kardo.grand_competition.service.helper.GrandCompetitionValidationHelper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -29,17 +26,10 @@ public class GrandCompetitionAdminController {
 
     private final GrandCompetitionService service;
 
-    private final GrandCompetitionMapper mapper;
-
-    private final GrandCompetitionValidationHelper grandHelper;
-
     @PostMapping
     public GrandCompetitionDto createGrandCompetition(@RequestBody @Valid NewGrandCompetitionRequest newCompetition) {
         log.info("Добавление администратором нового гранд-соревнования {}.", newCompetition);
-        grandHelper.isNewGrandCompetitionDateValid(newCompetition);
-        GrandCompetition competition = mapper.newGrandCompetitionRequestToGrandCompetition(newCompetition);
-        GrandCompetition returnedCompetition = service.addGrandCompetition(competition);
-        return mapper.grandCompetitionToGrandCompetitionDto(returnedCompetition);
+        return service.addGrandCompetition(newCompetition);
     }
 
     @DeleteMapping("/{competitionId}")
@@ -52,7 +42,6 @@ public class GrandCompetitionAdminController {
     public GrandCompetitionDto updateGrandCompetition(@PathVariable @Positive Long competitionId,
                                                       @RequestBody @Valid UpdateGrandCompetitionRequest request) {
         log.info("Обновление администратором гранд-соревнования с ИД {}.", competitionId);
-        GrandCompetition updatedCompetition = service.updateGrandCompetition(competitionId, request);
-        return mapper.grandCompetitionToGrandCompetitionDto(updatedCompetition);
+        return service.updateGrandCompetition(competitionId, request);
     }
 }

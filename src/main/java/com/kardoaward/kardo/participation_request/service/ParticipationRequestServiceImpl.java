@@ -57,7 +57,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
     @Override
     @Transactional
     public void deleteParticipationById(Long requestorId, Long participationId) {
-        User user = userValidationHelper.isUserPresent(requestorId);
+        userValidationHelper.isUserPresent(requestorId);
         ParticipationRequest request = participationHelper.isParticipationRequestPresent(participationId);
         participationHelper.isUserRequester(requestorId, request.getRequester().getId());
         repository.deleteById(participationId);
@@ -66,9 +66,9 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
 
     @Override
     public ParticipationRequestDto getParticipationById(Long requestorId, Long participationId) {
-        User user = userValidationHelper.isUserPresent(requestorId);
+        userValidationHelper.isUserPresent(requestorId);
         ParticipationRequest request = participationHelper.isParticipationRequestPresent(participationId);
-        participationHelper.isUserRequester(user.getId(), request.getRequester().getId());
+        participationHelper.isUserRequester(requestorId, request.getRequester().getId());
         ParticipationRequestDto requestDto = mapper.participationRequestToParticipationRequestDto(request);
         log.info("Заявка с ИД {} пользователя с ИД {} возвращена.", participationId, requestorId);
         return requestDto;
@@ -145,7 +145,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
         }
 
         repository.saveAll(updatedRequests);
-        log.info("Статуса заявок на участие в оффлайн-отборе с ИД {} у {} заявок и не обновился у {} заявок.",
+        log.info("Статуса заявок на участие в оффлайн-отборе с ИД {} обновился у {} заявок и не обновился у {} заявок.",
                 selectionId, result.getUpdatedRequests().size(), result.getNotUpdatedRequests().size());
         return result;
     }

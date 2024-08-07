@@ -1,7 +1,5 @@
 package com.kardoaward.kardo.grand_competition.controller;
 
-import com.kardoaward.kardo.grand_competition.mapper.GrandCompetitionMapper;
-import com.kardoaward.kardo.grand_competition.model.GrandCompetition;
 import com.kardoaward.kardo.grand_competition.model.dto.GrandCompetitionDto;
 import com.kardoaward.kardo.grand_competition.service.GrandCompetitionService;
 import jakarta.validation.constraints.Min;
@@ -26,20 +24,16 @@ public class GrandCompetitionController {
 
     private final GrandCompetitionService service;
 
-    private final GrandCompetitionMapper mapper;
-
     @GetMapping("/{competitionId}")
     public GrandCompetitionDto getGrandCompetitionById(@PathVariable @Positive Long competitionId) {
         log.info("Возвращение гранд-соревнования с ИД {}.", competitionId);
-        GrandCompetition returnedGrandCompetition = service.getGrandCompetitionById(competitionId);
-        return mapper.grandCompetitionToGrandCompetitionDto(returnedGrandCompetition);
+        return service.getGrandCompetitionById(competitionId);
     }
 
     @GetMapping
     public List<GrandCompetitionDto> getGrandCompetitions(@RequestParam(defaultValue = "0") @Min(0) int from,
                                                           @RequestParam(defaultValue = "10") @Positive int size) {
         log.info("Возвращение списка гранд-соревнований.");
-        List<GrandCompetition> competitions = service.getGrandCompetitions(from, size);
-        return mapper.grandCompetitionListToGrandCompetitionDtoList(competitions);
+        return service.getGrandCompetitions(from, size);
     }
 }
