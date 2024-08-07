@@ -50,7 +50,8 @@ public class SelectionSpectatorRequestServiceImpl implements SelectionSpectatorR
         SelectionSpectatorRequest returnedSpectatorRequest = repository.save(spectatorRequest);
         SelectionSpectatorRequestDto spectatorRequestDto = mapper
                 .spectatorRequestToSpectatorRequestDto(returnedSpectatorRequest);
-        log.info("Заявка зрителя отбора с ИД {} пользователя с ИД {} создана.", spectatorRequestDto, requestorId);
+        log.info("Заявка зрителя отбора с ИД {} пользователя с ИД {} создана.", spectatorRequestDto.getId(),
+                requestorId);
         return spectatorRequestDto;
     }
 
