@@ -12,6 +12,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring", uses = {UserMapper.class, VideoClipMapper.class})
 public interface CommentMapper {
 
@@ -25,4 +27,6 @@ public interface CommentMapper {
     CommentDto commentToCommentDto(Comment comment);
 
     void updateComment(UpdateCommentRequest request, @MappingTarget Comment comment);
+
+    List<CommentDto> commentListToCommentDtoList(List<Comment> comments);
 }
