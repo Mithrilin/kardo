@@ -62,4 +62,13 @@ public class EventSpectatorRequestServiceImpl implements EventSpectatorRequestSe
         log.info("Заявка зрителя мероприятия с ИД {} пользователя с ИД {} возвращена.", spectatorId, requestorId);
         return spectatorRequestDto;
     }
+
+    @Override
+    public EventSpectatorRequestDto getEventSpectatorRequestByIdByAdmin(Long spectatorId) {
+        EventSpectatorRequest eventSpectatorRequest = helper.isSpectatorRequestPresent(spectatorId);
+        EventSpectatorRequestDto spectatorRequestDto = mapper
+                .spectatorRequestToSpectatorRequestDto(eventSpectatorRequest);
+        log.info("Заявка зрителя мероприятия с ИД {} возвращена.", spectatorId);
+        return spectatorRequestDto;
+    }
 }
