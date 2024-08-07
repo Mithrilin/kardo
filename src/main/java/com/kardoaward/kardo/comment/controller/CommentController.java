@@ -2,6 +2,7 @@ package com.kardoaward.kardo.comment.controller;
 
 import com.kardoaward.kardo.comment.model.dto.CommentDto;
 import com.kardoaward.kardo.comment.model.dto.NewCommentRequest;
+import com.kardoaward.kardo.comment.model.dto.UpdateCommentRequest;
 import com.kardoaward.kardo.comment.service.CommentService;
 import com.kardoaward.kardo.comment.service.helper.CommentValidationHelper;
 import jakarta.validation.Valid;
@@ -11,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,5 +51,13 @@ public class CommentController {
     public CommentDto getCommentById(@PathVariable @Positive Long commentId) {
         log.info("Возвращение комментария с ИД {}.", commentId);
         return commentService.getCommentById(commentId);
+    }
+
+    @PatchMapping("/{commentId}")
+    public CommentDto updateCommentById(@RequestHeader("X-Requestor-Id") Long requestorId,
+                                        @PathVariable @Positive Long commentId,
+                                        @RequestBody @Valid UpdateCommentRequest request) {
+        log.info("Обновление пользователем с ИД {} своего комментария с ИД {}.", requestorId, commentId);
+        return commentService.updateCommentById(requestorId, commentId, request);
     }
 }

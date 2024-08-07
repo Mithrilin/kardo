@@ -2,6 +2,7 @@ package com.kardoaward.kardo.comment.service;
 
 import com.kardoaward.kardo.comment.model.dto.CommentDto;
 import com.kardoaward.kardo.comment.model.dto.NewCommentRequest;
+import com.kardoaward.kardo.comment.model.dto.UpdateCommentRequest;
 
 public interface CommentService {
 
@@ -12,4 +13,6 @@ public interface CommentService {
     void deleteCommentByIdByAdmin(Long commentId);
 
     CommentDto getCommentById(Long commentId);
+
+    CommentDto updateCommentById(Long requestorId, Long commentId, UpdateCommentRequest request);
 }

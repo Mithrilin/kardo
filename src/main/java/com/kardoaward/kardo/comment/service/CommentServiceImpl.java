@@ -4,6 +4,7 @@ import com.kardoaward.kardo.comment.mapper.CommentMapper;
 import com.kardoaward.kardo.comment.model.Comment;
 import com.kardoaward.kardo.comment.model.dto.CommentDto;
 import com.kardoaward.kardo.comment.model.dto.NewCommentRequest;
+import com.kardoaward.kardo.comment.model.dto.UpdateCommentRequest;
 import com.kardoaward.kardo.comment.repository.CommentRepository;
 import com.kardoaward.kardo.comment.service.helper.CommentValidationHelper;
 import com.kardoaward.kardo.user.model.User;
@@ -64,6 +65,18 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = commentValidationHelper.isCommentPresent(commentId);
         CommentDto commentDto = commentMapper.commentToCommentDto(comment);
         log.info("Возвращение комментария с ИД {}.", commentId);
+        return commentDto;
+    }
+
+    @Override
+    @Transactional
+    public CommentDto updateCommentById(Long requestorId, Long commentId, UpdateCommentRequest request) {
+        userValidationHelper.isUserPresent(requestorId);
+        Comment comment = commentValidationHelper.isCommentPresent(commentId);
+        commentMapper.updateComment(request, comment);
+        Comment updatedComment = commentRepository.save(comment);
+        CommentDto commentDto = commentMapper.commentToCommentDto(updatedComment);
+        log.info("Комментарий с ID {} обновлён.", commentId);
         return commentDto;
     }
 }
