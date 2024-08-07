@@ -45,7 +45,7 @@ public class UpdateUserRequest {
     private String profilePhoto;
     @URL(message = "Portfolio должен быть ссылкой.")
     private String portfolio;
-    @Size(min = 2, max = 10000, message = "Длина aboutMe должна быть в диапазоне от 2 до 10000 символов.")
+    @Size(min = 2, max = 1000, message = "Длина aboutMe должна быть в диапазоне от 2 до 1000 символов.")
     private String aboutMe;
     private Set<String> network;
 }

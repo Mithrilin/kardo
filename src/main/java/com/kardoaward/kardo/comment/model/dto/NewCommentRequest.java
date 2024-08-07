@@ -15,6 +15,6 @@ public class NewCommentRequest {
     @NotNull(message = "AuthorId не может быть null.")
     private Long authorId;
     @NotBlank(message = "Text не может быть пустым.")
-    @Size(min = 2, max = 7000, message = "Длина Text должна быть в диапазоне от 2 до 7000 символов.")
+    @Size(min = 2, max = 500, message = "Длина Text должна быть в диапазоне от 2 до 500 символов.")
     private String text;
 }

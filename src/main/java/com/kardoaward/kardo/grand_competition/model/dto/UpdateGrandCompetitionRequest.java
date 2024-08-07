@@ -26,6 +26,6 @@ public class UpdateGrandCompetitionRequest {
     @Size(min = 2, max = 250, message = "Длина location должна быть в диапазоне от 2 до 250 символов.")
     private String location;
     private List<Field> fields;
-    @Size(min = 2, max = 10000, message = "Длина Description должна быть в диапазоне от 2 до 10000 символов.")
+    @Size(min = 2, max = 1000, message = "Длина Description должна быть в диапазоне от 2 до 1000 символов.")
     private String description;
 }
