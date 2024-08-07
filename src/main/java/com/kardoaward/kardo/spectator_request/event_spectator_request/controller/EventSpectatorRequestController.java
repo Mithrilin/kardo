@@ -5,9 +5,12 @@ import com.kardoaward.kardo.spectator_request.event_spectator_request.model.dto.
 import com.kardoaward.kardo.spectator_request.event_spectator_request.service.EventSpectatorRequestService;
 import com.kardoaward.kardo.spectator_request.event_spectator_request.service.helper.EventSpectatorRequestValidationHelper;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -31,5 +34,12 @@ public class EventSpectatorRequestController {
         log.info("Добавление пользователем с ИД {} новой заявки зрителя мероприятия {}.", requestorId, request);
         helper.isUserRequester(requestorId, request.getRequesterId());
         return service.addEventSpectatorRequest(requestorId, request);
+    }
+
+    @DeleteMapping("/{spectatorId}")
+    public void deleteEventSpectatorRequestById(@RequestHeader("X-Requestor-Id") Long requestorId,
+                                                @PathVariable @Positive Long spectatorId) {
+        log.info("Удаление пользователем с ИД {} своей заявки зрителя мероприятия с ИД {}.", requestorId, spectatorId);
+        service.deleteEventSpectatorRequestById(requestorId, spectatorId);
     }
 }

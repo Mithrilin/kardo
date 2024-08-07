@@ -7,6 +7,7 @@ import com.kardoaward.kardo.spectator_request.event_spectator_request.model.Even
 import com.kardoaward.kardo.spectator_request.event_spectator_request.model.dto.EventSpectatorRequestDto;
 import com.kardoaward.kardo.spectator_request.event_spectator_request.model.dto.NewEventSpectatorRequest;
 import com.kardoaward.kardo.spectator_request.event_spectator_request.repository.EventSpectatorRequestRepository;
+import com.kardoaward.kardo.spectator_request.event_spectator_request.service.helper.EventSpectatorRequestValidationHelper;
 import com.kardoaward.kardo.user.model.User;
 import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import jakarta.transaction.Transactional;
@@ -25,6 +26,7 @@ public class EventSpectatorRequestServiceImpl implements EventSpectatorRequestSe
 
     private final UserValidationHelper userValidationHelper;
     private final EventValidationHelper eventValidationHelper;
+    private final EventSpectatorRequestValidationHelper helper;
 
     @Override
     @Transactional
@@ -38,5 +40,15 @@ public class EventSpectatorRequestServiceImpl implements EventSpectatorRequestSe
         log.info("Заявка зрителя мероприятия с ИД {} пользователя с ИД {} создана.", spectatorRequestDto.getId(),
                 requestorId);
         return spectatorRequestDto;
+    }
+
+    @Override
+    @Transactional
+    public void deleteEventSpectatorRequestById(Long requestorId, Long spectatorId) {
+        userValidationHelper.isUserPresent(requestorId);
+        EventSpectatorRequest eventSpectatorRequest = helper.isSpectatorRequestPresent(spectatorId);
+        helper.isUserRequester(requestorId, eventSpectatorRequest.getRequester().getId());
+        repository.deleteById(spectatorId);
+        log.info("Заявка зрителя мероприятия с ИД {} пользователя с ИД {} удалена.", spectatorId, requestorId);
     }
 }

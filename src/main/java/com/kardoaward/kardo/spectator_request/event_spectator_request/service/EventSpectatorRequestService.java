@@ -6,4 +6,6 @@ import com.kardoaward.kardo.spectator_request.event_spectator_request.model.dto.
 public interface EventSpectatorRequestService {
 
     EventSpectatorRequestDto addEventSpectatorRequest(Long requestorId, NewEventSpectatorRequest request);
+
+    void deleteEventSpectatorRequestById(Long requestorId, Long spectatorId);
 }
