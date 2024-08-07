@@ -8,4 +8,6 @@ public interface CommentService {
     CommentDto addComment(Long requestorId, Long videoId, NewCommentRequest newCommentRequest);
 
     void deleteCommentById(Long requestorId, Long commentId);
+
+    void deleteCommentByIdByAdmin(Long commentId);
 }

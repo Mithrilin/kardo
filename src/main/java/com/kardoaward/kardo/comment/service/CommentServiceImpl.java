@@ -50,4 +50,12 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.deleteById(commentId);
         log.info("Комментарий с ИД {} пользователя с ИД {} удалён.", commentId, requestorId);
     }
+
+    @Override
+    @Transactional
+    public void deleteCommentByIdByAdmin(Long commentId) {
+        commentValidationHelper.isCommentPresent(commentId);
+        commentRepository.deleteById(commentId);
+        log.info("Комментарий с ИД {} удалён.", commentId);
+    }
 }
