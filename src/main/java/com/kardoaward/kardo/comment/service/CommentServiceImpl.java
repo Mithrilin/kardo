@@ -5,6 +5,7 @@ import com.kardoaward.kardo.comment.model.Comment;
 import com.kardoaward.kardo.comment.model.dto.CommentDto;
 import com.kardoaward.kardo.comment.model.dto.NewCommentRequest;
 import com.kardoaward.kardo.comment.repository.CommentRepository;
+import com.kardoaward.kardo.comment.service.helper.CommentValidationHelper;
 import com.kardoaward.kardo.user.model.User;
 import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import com.kardoaward.kardo.video_clip.model.VideoClip;
@@ -25,6 +26,7 @@ public class CommentServiceImpl implements CommentService {
 
     private final UserValidationHelper userValidationHelper;
     private final VideoClipValidationHelper videoClipValidationHelper;
+    private final CommentValidationHelper commentValidationHelper;
 
     @Override
     @Transactional
@@ -37,5 +39,15 @@ public class CommentServiceImpl implements CommentService {
         log.info("Комментарий с ИД {} пользователя с ИД {} к видео-клипу с ИД {} создан.", commentDto.getId(),
                 requestorId, videoId);
         return commentDto;
+    }
+
+    @Override
+    @Transactional
+    public void deleteCommentById(Long requestorId, Long commentId) {
+        userValidationHelper.isUserPresent(requestorId);
+        Comment comment = commentValidationHelper.isCommentPresent(commentId);
+        commentValidationHelper.isUserAuthor(requestorId, comment.getAuthor().getId());
+        commentRepository.deleteById(commentId);
+        log.info("Комментарий с ИД {} пользователя с ИД {} удалён.", commentId, requestorId);
     }
 }
