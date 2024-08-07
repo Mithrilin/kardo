@@ -10,4 +10,6 @@ public interface CommentService {
     void deleteCommentById(Long requestorId, Long commentId);
 
     void deleteCommentByIdByAdmin(Long commentId);
+
+    CommentDto getCommentById(Long commentId);
 }

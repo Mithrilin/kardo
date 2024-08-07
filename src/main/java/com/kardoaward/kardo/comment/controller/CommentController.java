@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,5 +43,11 @@ public class CommentController {
                                   @PathVariable @Positive Long commentId) {
         log.info("Удаление пользователем с ИД {} своего комментария с ИД {}.", requestorId, commentId);
         commentService.deleteCommentById(requestorId, commentId);
+    }
+
+    @GetMapping("/{commentId}")
+    public CommentDto getCommentById(@PathVariable @Positive Long commentId) {
+        log.info("Возвращение комментария с ИД {}.", commentId);
+        return commentService.getCommentById(commentId);
     }
 }

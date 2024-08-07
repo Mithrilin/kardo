@@ -58,4 +58,12 @@ public class CommentServiceImpl implements CommentService {
         commentRepository.deleteById(commentId);
         log.info("Комментарий с ИД {} удалён.", commentId);
     }
+
+    @Override
+    public CommentDto getCommentById(Long commentId) {
+        Comment comment = commentValidationHelper.isCommentPresent(commentId);
+        CommentDto commentDto = commentMapper.commentToCommentDto(comment);
+        log.info("Возвращение комментария с ИД {}.", commentId);
+        return commentDto;
+    }
 }
