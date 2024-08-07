@@ -8,4 +8,6 @@ public interface EventSpectatorRequestService {
     EventSpectatorRequestDto addEventSpectatorRequest(Long requestorId, NewEventSpectatorRequest request);
 
     void deleteEventSpectatorRequestById(Long requestorId, Long spectatorId);
+
+    EventSpectatorRequestDto getEventSpectatorRequestById(Long requestorId, Long spectatorId);
 }

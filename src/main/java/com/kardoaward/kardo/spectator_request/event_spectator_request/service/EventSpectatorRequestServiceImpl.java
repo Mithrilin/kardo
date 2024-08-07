@@ -51,4 +51,15 @@ public class EventSpectatorRequestServiceImpl implements EventSpectatorRequestSe
         repository.deleteById(spectatorId);
         log.info("Заявка зрителя мероприятия с ИД {} пользователя с ИД {} удалена.", spectatorId, requestorId);
     }
+
+    @Override
+    public EventSpectatorRequestDto getEventSpectatorRequestById(Long requestorId, Long spectatorId) {
+        userValidationHelper.isUserPresent(requestorId);
+        EventSpectatorRequest eventSpectatorRequest = helper.isSpectatorRequestPresent(spectatorId);
+        helper.isUserRequester(requestorId, eventSpectatorRequest.getRequester().getId());
+        EventSpectatorRequestDto spectatorRequestDto = mapper
+                .spectatorRequestToSpectatorRequestDto(eventSpectatorRequest);
+        log.info("Заявка зрителя мероприятия с ИД {} пользователя с ИД {} возвращена.", spectatorId, requestorId);
+        return spectatorRequestDto;
+    }
 }
