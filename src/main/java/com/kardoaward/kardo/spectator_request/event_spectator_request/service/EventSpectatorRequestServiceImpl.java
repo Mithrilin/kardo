@@ -13,7 +13,13 @@ import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -70,5 +76,26 @@ public class EventSpectatorRequestServiceImpl implements EventSpectatorRequestSe
                 .spectatorRequestToSpectatorRequestDto(eventSpectatorRequest);
         log.info("Заявка зрителя мероприятия с ИД {} возвращена.", spectatorId);
         return spectatorRequestDto;
+    }
+
+    @Override
+    public List<EventSpectatorRequestDto> getEventSpectatorRequestByEventId(Long eventId, int from, int size) {
+        eventValidationHelper.isEventPresent(eventId);
+        int page = from / size;
+        Sort sort = Sort.by(Sort.Direction.ASC, "id");
+        PageRequest pageRequest = PageRequest.of(page, size, sort);
+        Page<EventSpectatorRequest> spectatorRequestsPage = repository.findByEvent_Id(eventId, pageRequest);
+
+        if (spectatorRequestsPage.isEmpty()) {
+            log.info("Не нашлось заявок зрителей мероприятий по заданным параметрам.");
+            return new ArrayList<>();
+        }
+
+        List<EventSpectatorRequest> spectatorRequests = spectatorRequestsPage.getContent();
+        List<EventSpectatorRequestDto> spectatorRequestDtos = mapper
+                .spectatorRequestListToSpectatorRequestDtoList(spectatorRequests);
+        log.info("Список заявок зрителей к мероприятию с ИД {} с номера {} размером {} возвращён.", eventId, from,
+                spectatorRequestDtos.size());
+        return spectatorRequestDtos;
     }
 }
