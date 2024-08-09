@@ -4,6 +4,7 @@ import com.kardoaward.kardo.user.model.dto.NewUserRequest;
 import com.kardoaward.kardo.user.model.dto.UpdateUserRequest;
 import com.kardoaward.kardo.user.model.dto.UserDto;
 import com.kardoaward.kardo.user.model.dto.UserShortDto;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -20,4 +21,10 @@ public interface UserService {
     UserDto updateUser(Long userId, UpdateUserRequest request);
 
     List<UserShortDto> getContestantsByOfflineSelectionId(Long selectionId, int from, int size);
+
+    void uploadAvatar(Long requestorId, MultipartFile file);
+
+    void deleteAvatar(Long requestorId);
+
+    byte[] downloadAvatarByUserId(Long userId);
 }

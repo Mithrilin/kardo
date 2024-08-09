@@ -26,7 +26,8 @@ public class UserDto {
     private String phoneNumber;
     private Gender gender;
     private String citizenship;
-    private String profilePhoto;
+    //ToDo Нужно ли возвращать ссылку на аватарку?
+    private String avatarPhoto;
     private String portfolio;
     private String aboutMe;
     private Set<String> network;

@@ -42,6 +42,7 @@ public class NewUserRequest {
     @NotBlank(message = "City не может быть пустым.")
     @Size(min = 2, max = 250, message = "Длина city должна быть в диапазоне от 2 до 250 символов.")
     private String city;
+    //ToDo Добавить валидацию списка ссылок
     private Set<String> network;
     @NotNull(message = "Role не может быть null.")
     private Role role;

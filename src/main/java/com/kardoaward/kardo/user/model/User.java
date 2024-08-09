@@ -47,17 +47,14 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Gender gender;
     private String citizenship;
-    @Column(name = "profile_photo")
-    private String profilePhoto;
+    @Column(name = "avatar_photo")
+    private String avatarPhoto;
     private String portfolio;
     @Column(name = "about_me")
     private String aboutMe;
     @ElementCollection
     @CollectionTable(name="user_networks",
             joinColumns=@JoinColumn(name="user_id"))
-/*  ToDo
-     Не происходит запись в список, если поменять на "networks" и добавить аннотацию @Column(name="network"). Почему?
- */
     private Set<String> network;
     @Enumerated(EnumType.STRING)
     private Role role;
