@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     private final UserValidationHelper userValidationHelper;
     private final OfflineSelectionValidationHelper offlineSelectionValidationHelper;
 
-    private final String FOLDER_PATH = "C:/Users/Roman/Desktop/test/";
+    private final String FOLDER_PATH = "C:/Users/Roman/Desktop/test/users/";
 
     @Override
     @Transactional
@@ -132,7 +132,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void uploadAvatar(Long requestorId, MultipartFile file) {
         User user = userValidationHelper.isUserPresent(requestorId);
-        File oldAvatarPath = new File(FOLDER_PATH + requestorId + "/avatar/");
+        String path = FOLDER_PATH + requestorId + "/avatar/";
+        File oldAvatarPath = new File(path);
         oldAvatarPath.mkdirs();
 
         try {
@@ -141,7 +142,7 @@ public class UserServiceImpl implements UserService {
             throw new FileContentException("Не удалось очистить директорию: " + oldAvatarPath.getPath());
         }
 
-        String avatarPath = FOLDER_PATH + requestorId + "/avatar/" + file.getOriginalFilename();
+        String avatarPath = path + file.getOriginalFilename();
 
         try {
             file.transferTo(new File(avatarPath));

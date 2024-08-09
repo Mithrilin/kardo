@@ -4,6 +4,7 @@ import com.kardoaward.kardo.event.model.dto.EventDto;
 import com.kardoaward.kardo.event.model.dto.NewEventRequest;
 import com.kardoaward.kardo.event.model.dto.UpdateEventRequest;
 import com.kardoaward.kardo.event.model.params.EventRequestParams;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -18,4 +19,10 @@ public interface EventService {
     List<EventDto> getEventsByParams(EventRequestParams eventRequestParams);
 
     EventDto updateEventById(Long eventId, UpdateEventRequest request);
+
+    void uploadLogo(Long eventId, MultipartFile file);
+
+    void deleteLogo(Long eventId);
+
+    byte[] downloadLogoByEventId(Long eventId);
 }

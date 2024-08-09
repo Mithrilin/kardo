@@ -65,7 +65,7 @@ public class UserController {
 
     @PatchMapping("/avatar")
     public void uploadAvatar(@RequestHeader("X-Requestor-Id") Long requestorId,
-                               @RequestParam("image") MultipartFile file) {
+                             @RequestParam("image") MultipartFile file) {
         log.info("Добавление пользователем с ИД {} аватара.", requestorId);
         userService.uploadAvatar(requestorId, file);
     }
