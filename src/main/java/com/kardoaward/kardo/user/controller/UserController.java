@@ -3,6 +3,7 @@ package com.kardoaward.kardo.user.controller;
 import com.kardoaward.kardo.user.model.dto.NewUserRequest;
 import com.kardoaward.kardo.user.model.dto.UpdateUserRequest;
 import com.kardoaward.kardo.user.model.dto.UserDto;
+import com.kardoaward.kardo.user.model.dto.UserShortDto;
 import com.kardoaward.kardo.user.service.UserService;
 import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import jakarta.validation.Valid;
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @AllArgsConstructor
@@ -32,7 +35,7 @@ public class UserController {
     private final UserValidationHelper userValidationHelper;
 
     @PostMapping
-    public UserDto createUser(@RequestBody @Valid NewUserRequest newUserRequest) {
+    public UserShortDto createUser(@RequestBody @Valid NewUserRequest newUserRequest) {
         log.info("Добавление нового пользователь {}.", newUserRequest);
         return userService.addUser(newUserRequest);
     }
@@ -52,9 +55,22 @@ public class UserController {
     }
 
     @PatchMapping
-    public UserDto updateUser(@RequestHeader("X-Requestor-Id") Long requestorId,
-                              @RequestBody @Valid UpdateUserRequest request) {
+    public UserShortDto updateUser(@RequestHeader("X-Requestor-Id") Long requestorId,
+                                   @RequestBody @Valid UpdateUserRequest request) {
         log.info("Обновление пользователем с ИД {} своих данных.", requestorId);
         return userService.updateUser(requestorId, request);
+    }
+
+    @PatchMapping("/avatar")
+    public UserShortDto uploadAvatar(@RequestHeader("X-Requestor-Id") Long requestorId,
+                                     @RequestParam("image") MultipartFile file) {
+        log.info("Добавление пользователем с ИД {} аватара.", requestorId);
+        return userService.uploadAvatar(requestorId, file);
+    }
+
+    @DeleteMapping("/avatar")
+    public void deleteAvatar(@RequestHeader("X-Requestor-Id") Long requestorId) {
+        log.info("Удаление пользователем с ИД {} аватара.", requestorId);
+        userService.deleteAvatar(requestorId);
     }
 }

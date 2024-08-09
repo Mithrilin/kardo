@@ -48,7 +48,7 @@ public class VideoClip {
     @Formula("(SELECT COUNT(l.id) " +
               "FROM likes AS l " +
               "WHERE l.video_clip_id = id)")
-    private Integer likesCount;
+    private Integer likesCount = 0;
     @Column(name="video_link")
     private String videoLink;
 }

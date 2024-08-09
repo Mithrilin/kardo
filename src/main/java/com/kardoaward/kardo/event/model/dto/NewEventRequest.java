@@ -37,9 +37,6 @@ public class NewEventRequest {
     private List<EventProgram> programs;
     @NotEmpty(message = "Fields не может быть пустым.")
     private List<Field> fields;
-    @NotBlank(message = "Logo не может быть пустым.")
-    @Size(min = 2, max = 250, message = "Длина Logo должна быть в диапазоне от 2 до 250 символов.")
-    private String logo;
     @NotNull(message = "IsMainEvent не может быть null.")
     private Boolean isMainEvent;
     @NotBlank(message = "Description не может быть пустым.")

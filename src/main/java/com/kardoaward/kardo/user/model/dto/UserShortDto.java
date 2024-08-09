@@ -16,5 +16,4 @@ public class UserShortDto {
     private String surname;
     private LocalDate birthday;
     private String country;
-    private String profilePhoto;
 }

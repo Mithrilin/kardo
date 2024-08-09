@@ -2,6 +2,7 @@ package com.kardoaward.kardo.event.mapper;
 
 import com.kardoaward.kardo.event.model.Event;
 import com.kardoaward.kardo.event.model.dto.EventDto;
+import com.kardoaward.kardo.event.model.dto.EventShortDto;
 import com.kardoaward.kardo.event.model.dto.NewEventRequest;
 import com.kardoaward.kardo.event.model.dto.UpdateEventRequest;
 import com.kardoaward.kardo.grand_competition.mapper.GrandCompetitionMapper;
@@ -30,8 +31,11 @@ public interface EventMapper {
     @Mapping(source = "returnedEvent.competition", target = "competitionDto")
     EventDto eventToEventDto(Event returnedEvent);
 
-    List<EventDto> eventListToEventDtoList(List<Event> events);
+    @Mapping(source = "returnedEvent.competition", target = "competitionDto")
+    EventShortDto eventToEventShortDto(Event event);
 
     @BeanMapping(nullValuePropertyMappingStrategy = IGNORE)
     void updateEvent(UpdateEventRequest request, @MappingTarget Event event);
+
+    List<EventShortDto> eventListToEventShortDtoList(List<Event> events);
 }

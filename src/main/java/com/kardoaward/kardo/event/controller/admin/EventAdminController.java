@@ -1,6 +1,8 @@
 package com.kardoaward.kardo.event.controller.admin;
 
+import com.google.gson.Gson;
 import com.kardoaward.kardo.event.model.dto.EventDto;
+import com.kardoaward.kardo.event.model.dto.EventShortDto;
 import com.kardoaward.kardo.event.model.dto.NewEventRequest;
 import com.kardoaward.kardo.event.model.dto.UpdateEventRequest;
 import com.kardoaward.kardo.event.service.EventService;
@@ -16,7 +18,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @AllArgsConstructor
@@ -30,11 +34,13 @@ public class EventAdminController {
     private final EventValidationHelper eventValidationHelper;
 
     @PostMapping
-    public EventDto createEvent(@RequestBody @Valid NewEventRequest newEventRequest) {
+    public EventShortDto createEvent(@RequestParam("text") String json,
+                                     @RequestParam("video") MultipartFile file) {
+        NewEventRequest newEventRequest = new Gson().fromJson(json, NewEventRequest.class);
         log.info("Добавление администратором нового мероприятия к гранд-соревнованию с ИД {}.",
                 newEventRequest.getCompetitionId());
         eventValidationHelper.isNewEventDateValid(newEventRequest);
-        return eventService.addEvent(newEventRequest);
+        return eventService.addEvent(newEventRequest, file);
     }
 
     @DeleteMapping("/{eventId}")

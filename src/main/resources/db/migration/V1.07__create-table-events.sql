@@ -6,7 +6,7 @@ CREATE TABLE events (
   event_end TIMESTAMP WITHOUT TIME ZONE NOT NULL,
   location VARCHAR(250) NOT NULL,
   status VARCHAR(20) NOT NULL,
-  logo VARCHAR(250) NOT NULL,
+  logo VARCHAR(250),
   is_main_event BOOLEAN NOT NULL,
   description VARCHAR(5000) NOT NULL
 );

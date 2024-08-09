@@ -26,8 +26,6 @@ public class UpdateEventRequest {
     private String location;
     private List<EventProgram> programs;
     private List<Field> fields;
-    @Size(min = 2, max = 250, message = "Длина Logo должна быть в диапазоне от 2 до 250 символов.")
-    private String logo;
     private Boolean isMainEvent;
     @Size(min = 2, max = 1000, message = "Длина Description должна быть в диапазоне от 2 до 1000 символов.")
     private String description;

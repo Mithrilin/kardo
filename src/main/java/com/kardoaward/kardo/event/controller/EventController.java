@@ -2,6 +2,7 @@ package com.kardoaward.kardo.event.controller;
 
 import com.kardoaward.kardo.enums.Field;
 import com.kardoaward.kardo.event.model.dto.EventDto;
+import com.kardoaward.kardo.event.model.dto.EventShortDto;
 import com.kardoaward.kardo.event.model.enums.EventProgram;
 import com.kardoaward.kardo.event.model.params.EventRequestParams;
 import com.kardoaward.kardo.event.service.EventService;
@@ -35,12 +36,12 @@ public class EventController {
     }
 
     @GetMapping
-    public List<EventDto> getEventsByParams(@RequestParam(required = false) Long grandCompetitionId,
-                                            @RequestParam(required = false) LocalDate day,
-                                            @RequestParam(required = false) EventProgram program,
-                                            @RequestParam(required = false) Field field,
-                                            @RequestParam(defaultValue = "0") @Min(0) int from,
-                                            @RequestParam(defaultValue = "10") @Positive int size) {
+    public List<EventShortDto> getEventsByParams(@RequestParam(required = false) Long grandCompetitionId,
+                                                 @RequestParam(required = false) LocalDate day,
+                                                 @RequestParam(required = false) EventProgram program,
+                                                 @RequestParam(required = false) Field field,
+                                                 @RequestParam(defaultValue = "0") @Min(0) int from,
+                                                 @RequestParam(defaultValue = "10") @Positive int size) {
         EventRequestParams eventRequestParams = new EventRequestParams(
                 grandCompetitionId, day, program, field, from, size
         );
