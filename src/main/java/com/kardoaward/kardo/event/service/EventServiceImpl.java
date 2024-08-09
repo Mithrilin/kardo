@@ -3,6 +3,7 @@ package com.kardoaward.kardo.event.service;
 import com.kardoaward.kardo.event.mapper.EventMapper;
 import com.kardoaward.kardo.event.model.Event;
 import com.kardoaward.kardo.event.model.dto.EventDto;
+import com.kardoaward.kardo.event.model.dto.EventShortDto;
 import com.kardoaward.kardo.event.model.dto.NewEventRequest;
 import com.kardoaward.kardo.event.model.dto.UpdateEventRequest;
 import com.kardoaward.kardo.event.model.params.EventRequestParams;
@@ -45,19 +46,40 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Transactional
-    public EventDto addEvent(NewEventRequest newEventRequest) {
+    public EventShortDto addEvent(NewEventRequest newEventRequest, MultipartFile file) {
         GrandCompetition grandCompetition = grandHelper.isGrandCompetitionPresent(newEventRequest.getCompetitionId());
         Event event = eventMapper.newEventRequestToEvent(newEventRequest, grandCompetition);
         Event returnedEvent = eventRepository.save(event);
-        EventDto eventDto = eventMapper.eventToEventDto(returnedEvent);
-        log.info("Мероприятие с ID = {} создано.", eventDto.getId());
-        return eventDto;
+        String path = FOLDER_PATH + returnedEvent.getId() + "/logo/";
+        File logoPath = new File(path);
+        logoPath.mkdirs();
+        String newLogoPath = path + file.getOriginalFilename();
+
+        try {
+            file.transferTo(new File(newLogoPath));
+        } catch (IOException e) {
+            throw new FileContentException("Не удалось сохранить файл: " + newLogoPath);
+        }
+
+        event.setLogo(newLogoPath);
+        Event updatedEvent = eventRepository.save(event);
+        EventShortDto eventShortDto = eventMapper.eventToEventShortDto(updatedEvent);
+        log.info("Мероприятие с ID = {} создано.", eventShortDto.getId());
+        return eventShortDto;
     }
 
     @Override
     @Transactional
     public void deleteEventById(Long eventId) {
         eventValidationHelper.isEventPresent(eventId);
+        File eventPath = new File(FOLDER_PATH + eventId);
+
+        try {
+            FileUtils.deleteDirectory(eventPath);
+        } catch (IOException e) {
+            throw new FileContentException("Не удалось удалить директорию: " + eventPath.getPath());
+        }
+
         eventRepository.deleteById(eventId);
         log.info("Мероприятие с ID {} удалено.", eventId);
     }
@@ -66,12 +88,20 @@ public class EventServiceImpl implements EventService {
     public EventDto getEventById(Long eventId) {
         Event event = eventValidationHelper.isEventPresent(eventId);
         EventDto eventDto = eventMapper.eventToEventDto(event);
+        File logo = new File(event.getLogo());
+
+        try {
+            eventDto.setLogo(Files.readAllBytes(logo.toPath()));
+        } catch (IOException e) {
+            throw new FileContentException("Не удалось обработать файл.");
+        }
+
         log.info("Мероприятие с ИД {} возвращено.", eventId);
         return eventDto;
     }
 
     @Override
-    public List<EventDto> getEventsByParams(EventRequestParams params) {
+    public List<EventShortDto> getEventsByParams(EventRequestParams params) {
         PageRequest pageRequest = params.getPageRequest();
         List<Specification<Event>> specifications = EventSpecifications.searchEventFilterToSpecifications(params);
         Page<Event> eventPage = eventRepository.findAll(
@@ -87,9 +117,9 @@ public class EventServiceImpl implements EventService {
         }
 
         List<Event> events = eventPage.getContent();
-        List<EventDto> eventDtos = eventMapper.eventListToEventDtoList(events);
-        log.info("Список мероприятий с номера {} размером {} возвращён.", params.getFrom(), eventDtos.size());
-        return eventDtos;
+        List<EventShortDto> eventShortDtos = eventMapper.eventListToEventShortDtoList(events);
+        log.info("Список мероприятий с номера {} размером {} возвращён.", params.getFrom(), eventShortDtos.size());
+        return eventShortDtos;
     }
 
     @Override
@@ -102,66 +132,5 @@ public class EventServiceImpl implements EventService {
         EventDto eventDto = eventMapper.eventToEventDto(updatedEvent);
         log.info("Мероприятие с ID {} обновлено.", eventId);
         return eventDto;
-    }
-
-    @Override
-    public void uploadLogo(Long eventId, MultipartFile file) {
-        Event event = eventValidationHelper.isEventPresent(eventId);
-        String path = FOLDER_PATH + eventId + "/logo/";
-        File oldLogoPath = new File(path);
-        oldLogoPath.mkdirs();
-
-        try {
-            FileUtils.cleanDirectory(oldLogoPath);
-        } catch (IOException e) {
-            throw new FileContentException("Не удалось очистить директорию: " + oldLogoPath.getPath());
-        }
-
-        String logoPath = path + file.getOriginalFilename();
-
-        try {
-            file.transferTo(new File(logoPath));
-        } catch (IOException e) {
-            throw new FileContentException("Не удалось сохранить файл: " + logoPath);
-        }
-
-        event.setLogo(logoPath);
-        eventRepository.save(event);
-        log.info("Логотип мероприятия с ИД {} успешно добавлен.", eventId);
-    }
-
-    @Override
-    public void deleteLogo(Long eventId) {
-        Event event = eventValidationHelper.isEventPresent(eventId);
-        File oldLogoPath = new File(FOLDER_PATH + eventId + "/logo/");
-
-        try {
-            FileUtils.cleanDirectory(oldLogoPath);
-        } catch (IOException e) {
-            throw new FileContentException("Не удалось очистить директорию: " + oldLogoPath.getPath());
-        }
-
-        event.setLogo(null);
-        eventRepository.save(event);
-        log.info("Логотип мероприятия с ИД {} успешно удалён.", eventId);
-    }
-
-    @Override
-    public byte[] downloadLogoByEventId(Long eventId) {
-        eventValidationHelper.isEventPresent(eventId);
-        File logoPath = new File(FOLDER_PATH + eventId + "/logo/");
-        File[] files = logoPath.listFiles();
-
-        if (files == null) {
-            return null;
-        }
-
-        File file = files[0];
-
-        try {
-            return Files.readAllBytes(file.toPath());
-        } catch (IOException e) {
-            throw new FileContentException("Не удалось обработать файл.");
-        }
     }
 }

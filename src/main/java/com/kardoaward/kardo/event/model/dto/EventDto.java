@@ -25,8 +25,7 @@ public class EventDto {
     private Status status;
     private List<EventProgram> programs;
     private List<Field> fields;
-    //ToDo Нужно ли возвращать ссылку на логотип?
-    private String logo;
+    private byte[] logo;
     private Boolean isMainEvent;
     private String description;
 }

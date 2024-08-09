@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface UserService {
 
-    UserDto addUser(NewUserRequest newUserRequest);
+    UserShortDto addUser(NewUserRequest newUserRequest);
 
     UserDto getUserById(Long userId);
 
@@ -18,13 +18,11 @@ public interface UserService {
 
     List<UserShortDto> getUsersByIds(List<Long> ids, int from, int size);
 
-    UserDto updateUser(Long userId, UpdateUserRequest request);
+    UserShortDto updateUser(Long userId, UpdateUserRequest request);
 
     List<UserShortDto> getContestantsByOfflineSelectionId(Long selectionId, int from, int size);
 
-    void uploadAvatar(Long requestorId, MultipartFile file);
+    UserShortDto uploadAvatar(Long requestorId, MultipartFile file);
 
     void deleteAvatar(Long requestorId);
-
-    byte[] downloadAvatarByUserId(Long userId);
 }

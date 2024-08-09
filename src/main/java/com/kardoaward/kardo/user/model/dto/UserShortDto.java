@@ -16,6 +16,4 @@ public class UserShortDto {
     private String surname;
     private LocalDate birthday;
     private String country;
-    //ToDo Нужно ли возвращать ссылку на аватарку?
-    private String avatarPhoto;
 }

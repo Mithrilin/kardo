@@ -1,7 +1,6 @@
 package com.kardoaward.kardo.user.model.dto;
 
 import com.kardoaward.kardo.user.model.enums.Gender;
-import com.kardoaward.kardo.user.model.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,10 +25,8 @@ public class UserDto {
     private String phoneNumber;
     private Gender gender;
     private String citizenship;
-    //ToDo Нужно ли возвращать ссылку на аватарку?
-    private String avatarPhoto;
+    private byte[] avatarPhoto;
     private String portfolio;
     private String aboutMe;
     private Set<String> network;
-    private Role role;
 }
