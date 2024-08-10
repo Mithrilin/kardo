@@ -1,7 +1,6 @@
 package com.kardoaward.kardo.event.controller.admin;
 
 import com.google.gson.Gson;
-import com.kardoaward.kardo.event.model.dto.EventDto;
 import com.kardoaward.kardo.event.model.dto.EventShortDto;
 import com.kardoaward.kardo.event.model.dto.NewEventRequest;
 import com.kardoaward.kardo.event.model.dto.UpdateEventRequest;
@@ -50,7 +49,7 @@ public class EventAdminController {
     }
 
     @PatchMapping("/{eventId}")
-    public EventDto updateEventById(@PathVariable @Positive Long eventId,
+    public EventShortDto updateEventById(@PathVariable @Positive Long eventId,
                                     @RequestBody @Valid UpdateEventRequest request) {
         log.info("Обновление администратором мероприятия с ИД {}.", eventId);
         return eventService.updateEventById(eventId, request);

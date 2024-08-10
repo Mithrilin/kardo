@@ -12,9 +12,9 @@ import com.kardoaward.kardo.user.model.dto.UserShortDto;
 import com.kardoaward.kardo.user.repository.UserRepository;
 import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -29,7 +29,6 @@ import java.util.List;
 
 @Slf4j
 @Service
-@AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -39,7 +38,19 @@ public class UserServiceImpl implements UserService {
     private final UserValidationHelper userValidationHelper;
     private final OfflineSelectionValidationHelper offlineSelectionValidationHelper;
 
-    private final String FOLDER_PATH = "C:/Users/Roman/Desktop/test/users/";
+    private final String FOLDER_PATH;
+
+    public UserServiceImpl(UserRepository userRepository,
+                           UserMapper userMapper,
+                           UserValidationHelper userValidationHelper,
+                           OfflineSelectionValidationHelper offlineSelectionValidationHelper,
+                           @Value("${folder.path}") String FOLDER_PATH) {
+        this.userRepository = userRepository;
+        this.userMapper = userMapper;
+        this.userValidationHelper = userValidationHelper;
+        this.offlineSelectionValidationHelper = offlineSelectionValidationHelper;
+        this.FOLDER_PATH = FOLDER_PATH;
+    }
 
     @Override
     @Transactional
@@ -54,18 +65,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUserById(Long userId) {
         User user = userValidationHelper.isUserPresent(userId);
-        UserDto userDto = userMapper.userToUserDto(user);
+        byte[] avatar = null;
 
         if (user.getAvatarPhoto() != null) {
             File avatarPath = new File(user.getAvatarPhoto());
 
             try {
-                userDto.setAvatarPhoto(Files.readAllBytes(avatarPath.toPath()));
+                avatar = Files.readAllBytes(avatarPath.toPath());
             } catch (IOException e) {
                 throw new FileContentException("Не удалось обработать файл.");
             }
         }
 
+        UserDto userDto = userMapper.userToUserDto(user, avatar);
         log.info("Пользователь с ИД {} возвращен.", userId);
         return userDto;
     }
@@ -74,7 +86,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void deleteUser(Long userId) {
         userValidationHelper.isUserPresent(userId);
-        File userPath = new File(FOLDER_PATH + userId);
+        File userPath = new File(FOLDER_PATH + "/users/" + userId);
 
         try {
             FileUtils.deleteDirectory(userPath);
@@ -153,7 +165,7 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        String path = FOLDER_PATH + requestorId + "/avatar/";
+        String path = FOLDER_PATH + "/users/" + requestorId + "/avatar/";
         File avatarPath = new File(path);
         avatarPath.mkdirs();
         String newAvatarPath = path + file.getOriginalFilename();

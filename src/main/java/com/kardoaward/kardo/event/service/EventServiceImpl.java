@@ -14,9 +14,9 @@ import com.kardoaward.kardo.exception.FileContentException;
 import com.kardoaward.kardo.grand_competition.model.GrandCompetition;
 import com.kardoaward.kardo.grand_competition.service.helper.GrandCompetitionValidationHelper;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -32,7 +32,6 @@ import java.util.Objects;
 
 @Slf4j
 @Service
-@AllArgsConstructor
 public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
@@ -42,7 +41,19 @@ public class EventServiceImpl implements EventService {
     private final EventValidationHelper eventValidationHelper;
     private final GrandCompetitionValidationHelper grandHelper;
 
-    private final String FOLDER_PATH = "C:/Users/Roman/Desktop/test/events/";
+    private final String FOLDER_PATH;
+
+    public EventServiceImpl(EventRepository eventRepository,
+                            EventMapper eventMapper,
+                            EventValidationHelper eventValidationHelper,
+                            GrandCompetitionValidationHelper grandHelper,
+                            @Value("${folder.path}") String FOLDER_PATH) {
+        this.eventRepository = eventRepository;
+        this.eventMapper = eventMapper;
+        this.eventValidationHelper = eventValidationHelper;
+        this.grandHelper = grandHelper;
+        this.FOLDER_PATH = FOLDER_PATH;
+    }
 
     @Override
     @Transactional
@@ -50,7 +61,7 @@ public class EventServiceImpl implements EventService {
         GrandCompetition grandCompetition = grandHelper.isGrandCompetitionPresent(newEventRequest.getCompetitionId());
         Event event = eventMapper.newEventRequestToEvent(newEventRequest, grandCompetition);
         Event returnedEvent = eventRepository.save(event);
-        String path = FOLDER_PATH + returnedEvent.getId() + "/logo/";
+        String path = FOLDER_PATH + "/events/" + returnedEvent.getId() + "/logo/";
         File logoPath = new File(path);
         logoPath.mkdirs();
         String newLogoPath = path + file.getOriginalFilename();
@@ -72,7 +83,7 @@ public class EventServiceImpl implements EventService {
     @Transactional
     public void deleteEventById(Long eventId) {
         eventValidationHelper.isEventPresent(eventId);
-        File eventPath = new File(FOLDER_PATH + eventId);
+        File eventPath = new File(FOLDER_PATH + "/events/" + eventId);
 
         try {
             FileUtils.deleteDirectory(eventPath);
@@ -87,15 +98,16 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventDto getEventById(Long eventId) {
         Event event = eventValidationHelper.isEventPresent(eventId);
-        EventDto eventDto = eventMapper.eventToEventDto(event);
-        File logo = new File(event.getLogo());
+        byte[] logo;
+        File logoPath = new File(event.getLogo());
 
         try {
-            eventDto.setLogo(Files.readAllBytes(logo.toPath()));
+            logo = Files.readAllBytes(logoPath.toPath());
         } catch (IOException e) {
             throw new FileContentException("Не удалось обработать файл.");
         }
 
+        EventDto eventDto = eventMapper.eventToEventDto(event, logo);
         log.info("Мероприятие с ИД {} возвращено.", eventId);
         return eventDto;
     }
@@ -124,13 +136,13 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Transactional
-    public EventDto updateEventById(Long eventId, UpdateEventRequest request) {
+    public EventShortDto updateEventById(Long eventId, UpdateEventRequest request) {
         Event event = eventValidationHelper.isEventPresent(eventId);
         eventValidationHelper.isUpdateEventDateValid(event, request);
         eventMapper.updateEvent(request, event);
         Event updatedEvent = eventRepository.save(event);
-        EventDto eventDto = eventMapper.eventToEventDto(updatedEvent);
+        EventShortDto eventShortDto = eventMapper.eventToEventShortDto(updatedEvent);
         log.info("Мероприятие с ID {} обновлено.", eventId);
-        return eventDto;
+        return eventShortDto;
     }
 }

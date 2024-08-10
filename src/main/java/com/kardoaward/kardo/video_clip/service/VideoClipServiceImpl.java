@@ -15,9 +15,9 @@ import com.kardoaward.kardo.video_clip.repository.LikeRepository;
 import com.kardoaward.kardo.video_clip.repository.VideoClipRepository;
 import com.kardoaward.kardo.video_clip.service.helper.VideoClipValidationHelper;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -32,7 +32,6 @@ import java.util.List;
 
 @Slf4j
 @Service
-@AllArgsConstructor
 public class VideoClipServiceImpl implements VideoClipService {
 
     private final VideoClipRepository videoClipRepository;
@@ -44,12 +43,29 @@ public class VideoClipServiceImpl implements VideoClipService {
     private final VideoClipValidationHelper videoClipValidationHelper;
     private final UserValidationHelper userValidationHelper;
 
+    private final String FOLDER_PATH;
+
+    public VideoClipServiceImpl(VideoClipRepository videoClipRepository,
+                                LikeRepository likeRepository,
+                                VideoClipMapper videoClipMapper,
+                                LikeMapper likeMapper,
+                                VideoClipValidationHelper videoClipValidationHelper,
+                                UserValidationHelper userValidationHelper,
+                                @Value("${folder.path}") String FOLDER_PATH) {
+        this.videoClipRepository = videoClipRepository;
+        this.likeRepository = likeRepository;
+        this.videoClipMapper = videoClipMapper;
+        this.likeMapper = likeMapper;
+        this.videoClipValidationHelper = videoClipValidationHelper;
+        this.userValidationHelper = userValidationHelper;
+        this.FOLDER_PATH = FOLDER_PATH;
+    }
+
     @Override
     @Transactional
     public VideoClipShortDto addVideoClip(Long requestorId, NewVideoClipRequest request, MultipartFile file) {
         User user = userValidationHelper.isUserPresent(requestorId);
-        String folderPath = "C:/Users/Roman/Desktop/test/users/";
-        String path = folderPath + requestorId + "/videos/";
+        String path = FOLDER_PATH + "/users/" + requestorId + "/videos/";
         File videoPath = new File(path);
         videoPath.mkdirs();
         String newVideoPath = path + file.getOriginalFilename();

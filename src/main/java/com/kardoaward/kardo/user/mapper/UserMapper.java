@@ -7,6 +7,7 @@ import com.kardoaward.kardo.user.model.dto.UserDto;
 import com.kardoaward.kardo.user.model.dto.UserShortDto;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 import java.util.List;
@@ -18,11 +19,10 @@ public interface UserMapper {
 
     User newUserRequestToUser(NewUserRequest newUserRequest);
 
-    UserDto userToUserDto(User user);
+    @Mapping(source = "avatar", target = "avatarPhoto")
+    UserDto userToUserDto(User user, byte[] avatar);
 
     UserShortDto userToUserShortDto(User user);
-
-    List<UserDto> userListToUserDtoList(List<User> userList);
 
     List<UserShortDto> userListToUserShortDtoList(List<User> userList);
 
