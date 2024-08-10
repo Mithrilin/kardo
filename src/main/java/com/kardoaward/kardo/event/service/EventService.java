@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface EventService {
 
-    EventShortDto addEvent(NewEventRequest newEventRequest, MultipartFile file);
+    EventDto addEvent(NewEventRequest newEventRequest, MultipartFile file);
 
     void deleteEventById(Long eventId);
 
@@ -19,5 +19,5 @@ public interface EventService {
 
     List<EventShortDto> getEventsByParams(EventRequestParams eventRequestParams);
 
-    EventShortDto updateEventById(Long eventId, UpdateEventRequest request);
+    EventDto updateEventById(Long eventId, UpdateEventRequest request);
 }

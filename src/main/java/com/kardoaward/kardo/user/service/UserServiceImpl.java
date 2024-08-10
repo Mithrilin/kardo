@@ -1,7 +1,6 @@
 package com.kardoaward.kardo.user.service;
 
 import com.kardoaward.kardo.exception.FileContentException;
-import com.kardoaward.kardo.exception.NotFoundException;
 import com.kardoaward.kardo.selection.offline_selection.service.helper.OfflineSelectionValidationHelper;
 import com.kardoaward.kardo.user.mapper.UserMapper;
 import com.kardoaward.kardo.user.model.User;
@@ -23,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,19 +63,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto getUserById(Long userId) {
         User user = userValidationHelper.isUserPresent(userId);
-        byte[] avatar = null;
-
-        if (user.getAvatarPhoto() != null) {
-            File avatarPath = new File(user.getAvatarPhoto());
-
-            try {
-                avatar = Files.readAllBytes(avatarPath.toPath());
-            } catch (IOException e) {
-                throw new FileContentException("Не удалось обработать файл.");
-            }
-        }
-
-        UserDto userDto = userMapper.userToUserDto(user, avatar);
+        UserDto userDto = userMapper.userToUserDto(user);
         log.info("Пользователь с ИД {} возвращен.", userId);
         return userDto;
     }
@@ -123,13 +109,38 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserShortDto updateUser(Long userId, UpdateUserRequest request) {
+    public UserDto updateUser(Long userId, UpdateUserRequest request, MultipartFile file) {
         User user = userValidationHelper.isUserPresent(userId);
+
+        if (user.getAvatarPhoto() != null) {
+            try {
+                FileUtils.forceDelete(new File(user.getAvatarPhoto()));
+                user.setAvatarPhoto(null);
+            } catch (IOException e) {
+                throw new FileContentException("Не удалось очистить директорию: " + user.getAvatarPhoto());
+            }
+        }
+
+        if (file != null) {
+            String path = FOLDER_PATH + "/users/" + userId + "/avatar/";
+            File avatarPath = new File(path);
+            avatarPath.mkdirs();
+            String newAvatarPath = path + file.getOriginalFilename();
+
+            try {
+                file.transferTo(new File(newAvatarPath));
+            } catch (IOException e) {
+                throw new FileContentException("Не удалось сохранить файл: " + newAvatarPath);
+            }
+
+            user.setAvatarPhoto(newAvatarPath);
+        }
+
         userMapper.updateUser(request, user);
         User updatedUser = userRepository.save(user);
-        UserShortDto userShortDto = userMapper.userToUserShortDto(updatedUser);
+        UserDto userDto = userMapper.userToUserDto(updatedUser);
         log.info("Пользователь с ID {} обновлён.", userId);
-        return userShortDto;
+        return userDto;
     }
 
     @Override
@@ -150,58 +161,5 @@ public class UserServiceImpl implements UserService {
         log.info("Список участников оффлайн-отбора с ИД {} с номера {} размером {} возвращён.",
                 selectionId, from, users.size());
         return userShortDtos;
-    }
-
-    @Override
-    @Transactional
-    public UserShortDto uploadAvatar(Long requestorId, MultipartFile file) {
-        User user = userValidationHelper.isUserPresent(requestorId);
-
-        if (user.getAvatarPhoto() != null) {
-            try {
-                FileUtils.forceDelete(new File(user.getAvatarPhoto()));
-            } catch (IOException e) {
-                throw new FileContentException("Не удалось очистить директорию: " + user.getAvatarPhoto());
-            }
-        }
-
-        String path = FOLDER_PATH + "/users/" + requestorId + "/avatar/";
-        File avatarPath = new File(path);
-        avatarPath.mkdirs();
-        String newAvatarPath = path + file.getOriginalFilename();
-
-        try {
-            file.transferTo(new File(newAvatarPath));
-        } catch (IOException e) {
-            throw new FileContentException("Не удалось сохранить файл: " + newAvatarPath);
-        }
-
-        user.setAvatarPhoto(newAvatarPath);
-        User updatedUser = userRepository.save(user);
-        UserShortDto userShortDto = userMapper.userToUserShortDto(updatedUser);
-        log.info("Аватар пользователем с ИД {} успешно добавлен.", requestorId);
-        return userShortDto;
-    }
-
-    @Override
-    @Transactional
-    public void deleteAvatar(Long requestorId) {
-        User user = userValidationHelper.isUserPresent(requestorId);
-
-        if (user.getAvatarPhoto() == null) {
-            throw new NotFoundException(String.format("У пользователя с ИД %d отсутствует аватар.", requestorId));
-        }
-
-        File avatarPath = new File(user.getAvatarPhoto());
-
-        try {
-            FileUtils.forceDelete(avatarPath);
-        } catch (IOException e) {
-            throw new FileContentException("Не удалось удалить файл: " + avatarPath.getPath());
-        }
-
-        user.setAvatarPhoto(null);
-        userRepository.save(user);
-        log.info("Аватар пользователем с ИД {} успешно удалён.", requestorId);
     }
 }

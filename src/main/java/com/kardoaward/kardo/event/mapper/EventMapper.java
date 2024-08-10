@@ -28,9 +28,8 @@ public interface EventMapper {
     @Mapping(source = "newEventRequest.description", target = "description")
     Event newEventRequestToEvent(NewEventRequest newEventRequest, GrandCompetition grandCompetition);
 
-    @Mapping(source = "returnedEvent.competition", target = "competitionDto")
-    @Mapping(source = "logo", target = "logo")
-    EventDto eventToEventDto(Event returnedEvent, byte[] logo);
+    @Mapping(source = "event.competition", target = "competitionDto")
+    EventDto eventToEventDto(Event event);
 
     @Mapping(source = "event.competition", target = "competitionDto")
     EventShortDto eventToEventShortDto(Event event);

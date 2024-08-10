@@ -25,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -57,7 +56,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Transactional
-    public EventShortDto addEvent(NewEventRequest newEventRequest, MultipartFile file) {
+    public EventDto addEvent(NewEventRequest newEventRequest, MultipartFile file) {
         GrandCompetition grandCompetition = grandHelper.isGrandCompetitionPresent(newEventRequest.getCompetitionId());
         Event event = eventMapper.newEventRequestToEvent(newEventRequest, grandCompetition);
         Event returnedEvent = eventRepository.save(event);
@@ -74,9 +73,9 @@ public class EventServiceImpl implements EventService {
 
         event.setLogo(newLogoPath);
         Event updatedEvent = eventRepository.save(event);
-        EventShortDto eventShortDto = eventMapper.eventToEventShortDto(updatedEvent);
-        log.info("Мероприятие с ID = {} создано.", eventShortDto.getId());
-        return eventShortDto;
+        EventDto eventDto = eventMapper.eventToEventDto(updatedEvent);
+        log.info("Мероприятие с ID = {} создано.", eventDto.getId());
+        return eventDto;
     }
 
     @Override
@@ -98,16 +97,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public EventDto getEventById(Long eventId) {
         Event event = eventValidationHelper.isEventPresent(eventId);
-        byte[] logo;
-        File logoPath = new File(event.getLogo());
-
-        try {
-            logo = Files.readAllBytes(logoPath.toPath());
-        } catch (IOException e) {
-            throw new FileContentException("Не удалось обработать файл.");
-        }
-
-        EventDto eventDto = eventMapper.eventToEventDto(event, logo);
+        EventDto eventDto = eventMapper.eventToEventDto(event);
         log.info("Мероприятие с ИД {} возвращено.", eventId);
         return eventDto;
     }
@@ -136,13 +126,13 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Transactional
-    public EventShortDto updateEventById(Long eventId, UpdateEventRequest request) {
+    public EventDto updateEventById(Long eventId, UpdateEventRequest request) {
         Event event = eventValidationHelper.isEventPresent(eventId);
         eventValidationHelper.isUpdateEventDateValid(event, request);
         eventMapper.updateEvent(request, event);
         Event updatedEvent = eventRepository.save(event);
-        EventShortDto eventShortDto = eventMapper.eventToEventShortDto(updatedEvent);
+        EventDto eventDto = eventMapper.eventToEventDto(updatedEvent);
         log.info("Мероприятие с ID {} обновлено.", eventId);
-        return eventShortDto;
+        return eventDto;
     }
 }

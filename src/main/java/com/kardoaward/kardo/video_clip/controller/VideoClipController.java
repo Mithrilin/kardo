@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.kardoaward.kardo.video_clip.model.dto.NewVideoClipRequest;
 import com.kardoaward.kardo.video_clip.model.dto.UpdateVideoClipRequest;
 import com.kardoaward.kardo.video_clip.model.dto.VideoClipDto;
-import com.kardoaward.kardo.video_clip.model.dto.VideoClipShortDto;
 import com.kardoaward.kardo.video_clip.service.VideoClipService;
 import com.kardoaward.kardo.video_clip.service.helper.VideoClipValidationHelper;
 import jakarta.validation.Valid;
@@ -40,10 +39,13 @@ public class VideoClipController {
     private final VideoClipValidationHelper videoClipValidationHelper;
 
     @PostMapping
-    public VideoClipShortDto createVideoClip(@RequestHeader("X-Requestor-Id") Long requestorId,
-                                             @RequestParam("text") String json,
-                                             @RequestParam("video") MultipartFile file) {
+    public VideoClipDto createVideoClip(@RequestHeader("X-Requestor-Id") Long requestorId,
+                                        @RequestParam("text") String json,
+                                        @RequestParam("video") MultipartFile file) {
         log.info("Добавление пользователем с ИД {} нового видео-клипа.", requestorId);
+        /* ToDo
+            Разобраться как принимать составные запросы.
+         */
         NewVideoClipRequest request = new Gson().fromJson(json, NewVideoClipRequest.class);
         videoClipValidationHelper.isRequestorCreatorVideo(requestorId, request.getCreatorId());
         return videoClipService.addVideoClip(requestorId, request, file);
@@ -63,31 +65,31 @@ public class VideoClipController {
     }
 
     @PatchMapping("/{videoId}")
-    public VideoClipShortDto updateVideoClipById(@RequestHeader("X-Requestor-Id") Long requestorId,
-                                                 @PathVariable @Positive Long videoId,
-                                                 @RequestBody @Valid UpdateVideoClipRequest request) {
+    public VideoClipDto updateVideoClipById(@RequestHeader("X-Requestor-Id") Long requestorId,
+                                            @PathVariable @Positive Long videoId,
+                                            @RequestBody @Valid UpdateVideoClipRequest request) {
         log.info("Обновление пользователем с ИД {} видео-клипа с ИД {}.", requestorId, videoId);
         return videoClipService.updateVideoClipById(requestorId, videoId, request);
     }
 
     @GetMapping("/search")
-    public List<VideoClipShortDto> getVideoClipsByHashtag(@RequestParam @Size(min = 2, max = 20) String hashtag,
-                                                          @RequestParam(defaultValue = "0") @Min(0) int from,
-                                                          @RequestParam(defaultValue = "10") @Positive int size) {
+    public List<VideoClipDto> getVideoClipsByHashtag(@RequestParam @Size(min = 2, max = 20) String hashtag,
+                                                     @RequestParam(defaultValue = "0") @Min(0) int from,
+                                                     @RequestParam(defaultValue = "10") @Positive int size) {
         log.info("Возвращение списка видео-клипов с хештегом {}.", hashtag);
         return videoClipService.getVideoClipsByHashtag(hashtag, from, size);
     }
 
     @PostMapping("/{videoId}/likes")
-    public VideoClipShortDto addLikeByVideoClipId(@RequestHeader("X-Requestor-Id") Long requestorId,
-                                                  @PathVariable @Positive Long videoId) {
+    public VideoClipDto addLikeByVideoClipId(@RequestHeader("X-Requestor-Id") Long requestorId,
+                                             @PathVariable @Positive Long videoId) {
         log.info("Добавление пользователем с ИД {} лайка к видео-клипу с ИД {}.", requestorId, videoId);
         return videoClipService.addLikeByVideoClipId(requestorId, videoId);
     }
 
     @DeleteMapping("/{videoId}/likes")
-    public VideoClipShortDto deleteLikeByVideoClipId(@RequestHeader("X-Requestor-Id") Long requestorId,
-                                                     @PathVariable @Positive Long videoId) {
+    public VideoClipDto deleteLikeByVideoClipId(@RequestHeader("X-Requestor-Id") Long requestorId,
+                                                @PathVariable @Positive Long videoId) {
         log.info("Удаление пользователем с ИД {} своего лайка к видео-клипу с ИД {}.", requestorId, videoId);
         return videoClipService.deleteLikeByVideoClipId(requestorId, videoId);
     }

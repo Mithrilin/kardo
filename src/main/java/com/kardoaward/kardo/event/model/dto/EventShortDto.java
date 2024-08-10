@@ -19,4 +19,5 @@ public class EventShortDto {
     private LocalDateTime eventStart;
     private LocalDateTime eventEnd;
     private Status status;
+    private String logo;
 }

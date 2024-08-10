@@ -18,5 +18,5 @@ public class VideoClipDto {
     private Set<String> hashtags;
     private UserShortDto creatorDto;
     private Integer likesCount;
-    private byte[] videoClip;
+    private String videoLink;
 }
