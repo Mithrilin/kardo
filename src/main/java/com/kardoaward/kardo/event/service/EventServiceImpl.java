@@ -14,9 +14,9 @@ import com.kardoaward.kardo.exception.FileContentException;
 import com.kardoaward.kardo.grand_competition.model.GrandCompetition;
 import com.kardoaward.kardo.grand_competition.service.helper.GrandCompetitionValidationHelper;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
@@ -25,14 +25,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Slf4j
 @Service
-@AllArgsConstructor
 public class EventServiceImpl implements EventService {
 
     private final EventRepository eventRepository;
@@ -42,15 +40,27 @@ public class EventServiceImpl implements EventService {
     private final EventValidationHelper eventValidationHelper;
     private final GrandCompetitionValidationHelper grandHelper;
 
-    private final String FOLDER_PATH = "C:/Users/Roman/Desktop/test/events/";
+    private final String FOLDER_PATH;
+
+    public EventServiceImpl(EventRepository eventRepository,
+                            EventMapper eventMapper,
+                            EventValidationHelper eventValidationHelper,
+                            GrandCompetitionValidationHelper grandHelper,
+                            @Value("${folder.path}") String FOLDER_PATH) {
+        this.eventRepository = eventRepository;
+        this.eventMapper = eventMapper;
+        this.eventValidationHelper = eventValidationHelper;
+        this.grandHelper = grandHelper;
+        this.FOLDER_PATH = FOLDER_PATH;
+    }
 
     @Override
     @Transactional
-    public EventShortDto addEvent(NewEventRequest newEventRequest, MultipartFile file) {
+    public EventDto addEvent(NewEventRequest newEventRequest, MultipartFile file) {
         GrandCompetition grandCompetition = grandHelper.isGrandCompetitionPresent(newEventRequest.getCompetitionId());
         Event event = eventMapper.newEventRequestToEvent(newEventRequest, grandCompetition);
         Event returnedEvent = eventRepository.save(event);
-        String path = FOLDER_PATH + returnedEvent.getId() + "/logo/";
+        String path = FOLDER_PATH + "/events/" + returnedEvent.getId() + "/logo/";
         File logoPath = new File(path);
         logoPath.mkdirs();
         String newLogoPath = path + file.getOriginalFilename();
@@ -63,16 +73,16 @@ public class EventServiceImpl implements EventService {
 
         event.setLogo(newLogoPath);
         Event updatedEvent = eventRepository.save(event);
-        EventShortDto eventShortDto = eventMapper.eventToEventShortDto(updatedEvent);
-        log.info("Мероприятие с ID = {} создано.", eventShortDto.getId());
-        return eventShortDto;
+        EventDto eventDto = eventMapper.eventToEventDto(updatedEvent);
+        log.info("Мероприятие с ID = {} создано.", eventDto.getId());
+        return eventDto;
     }
 
     @Override
     @Transactional
     public void deleteEventById(Long eventId) {
         eventValidationHelper.isEventPresent(eventId);
-        File eventPath = new File(FOLDER_PATH + eventId);
+        File eventPath = new File(FOLDER_PATH + "/events/" + eventId);
 
         try {
             FileUtils.deleteDirectory(eventPath);
@@ -88,14 +98,6 @@ public class EventServiceImpl implements EventService {
     public EventDto getEventById(Long eventId) {
         Event event = eventValidationHelper.isEventPresent(eventId);
         EventDto eventDto = eventMapper.eventToEventDto(event);
-        File logo = new File(event.getLogo());
-
-        try {
-            eventDto.setLogo(Files.readAllBytes(logo.toPath()));
-        } catch (IOException e) {
-            throw new FileContentException("Не удалось обработать файл.");
-        }
-
         log.info("Мероприятие с ИД {} возвращено.", eventId);
         return eventDto;
     }

@@ -2,7 +2,6 @@ package com.kardoaward.kardo.event.controller.admin;
 
 import com.google.gson.Gson;
 import com.kardoaward.kardo.event.model.dto.EventDto;
-import com.kardoaward.kardo.event.model.dto.EventShortDto;
 import com.kardoaward.kardo.event.model.dto.NewEventRequest;
 import com.kardoaward.kardo.event.model.dto.UpdateEventRequest;
 import com.kardoaward.kardo.event.service.EventService;
@@ -34,8 +33,11 @@ public class EventAdminController {
     private final EventValidationHelper eventValidationHelper;
 
     @PostMapping
-    public EventShortDto createEvent(@RequestParam("text") String json,
-                                     @RequestParam("video") MultipartFile file) {
+    public EventDto createEvent(@RequestParam("text") String json,
+                                @RequestParam("video") MultipartFile file) {
+        /* ToDo
+            Разобраться как принимать составные запросы.
+         */
         NewEventRequest newEventRequest = new Gson().fromJson(json, NewEventRequest.class);
         log.info("Добавление администратором нового мероприятия к гранд-соревнованию с ИД {}.",
                 newEventRequest.getCompetitionId());

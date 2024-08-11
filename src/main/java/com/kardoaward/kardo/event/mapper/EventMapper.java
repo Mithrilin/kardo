@@ -28,10 +28,10 @@ public interface EventMapper {
     @Mapping(source = "newEventRequest.description", target = "description")
     Event newEventRequestToEvent(NewEventRequest newEventRequest, GrandCompetition grandCompetition);
 
-    @Mapping(source = "returnedEvent.competition", target = "competitionDto")
-    EventDto eventToEventDto(Event returnedEvent);
+    @Mapping(source = "event.competition", target = "competitionDto")
+    EventDto eventToEventDto(Event event);
 
-    @Mapping(source = "returnedEvent.competition", target = "competitionDto")
+    @Mapping(source = "event.competition", target = "competitionDto")
     EventShortDto eventToEventShortDto(Event event);
 
     @BeanMapping(nullValuePropertyMappingStrategy = IGNORE)

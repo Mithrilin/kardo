@@ -22,8 +22,6 @@ public interface UserMapper {
 
     UserShortDto userToUserShortDto(User user);
 
-    List<UserDto> userListToUserDtoList(List<User> userList);
-
     List<UserShortDto> userListToUserShortDtoList(List<User> userList);
 
     @BeanMapping(nullValuePropertyMappingStrategy = IGNORE)

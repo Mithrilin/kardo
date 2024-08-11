@@ -25,7 +25,7 @@ public class UserDto {
     private String phoneNumber;
     private Gender gender;
     private String citizenship;
-    private byte[] avatarPhoto;
+    private String avatarPhoto;
     private String portfolio;
     private String aboutMe;
     private Set<String> network;

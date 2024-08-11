@@ -1,5 +1,6 @@
 package com.kardoaward.kardo.user.controller;
 
+import com.google.gson.Gson;
 import com.kardoaward.kardo.user.model.dto.NewUserRequest;
 import com.kardoaward.kardo.user.model.dto.UpdateUserRequest;
 import com.kardoaward.kardo.user.model.dto.UserDto;
@@ -55,22 +56,14 @@ public class UserController {
     }
 
     @PatchMapping
-    public UserShortDto updateUser(@RequestHeader("X-Requestor-Id") Long requestorId,
-                                   @RequestBody @Valid UpdateUserRequest request) {
+    public UserDto updateUser(@RequestHeader("X-Requestor-Id") Long requestorId,
+                              @RequestParam(value = "text", required = false) String json,
+                              @RequestParam(value = "image", required = false) MultipartFile file) {
         log.info("Обновление пользователем с ИД {} своих данных.", requestorId);
-        return userService.updateUser(requestorId, request);
-    }
-
-    @PatchMapping("/avatar")
-    public UserShortDto uploadAvatar(@RequestHeader("X-Requestor-Id") Long requestorId,
-                                     @RequestParam("image") MultipartFile file) {
-        log.info("Добавление пользователем с ИД {} аватара.", requestorId);
-        return userService.uploadAvatar(requestorId, file);
-    }
-
-    @DeleteMapping("/avatar")
-    public void deleteAvatar(@RequestHeader("X-Requestor-Id") Long requestorId) {
-        log.info("Удаление пользователем с ИД {} аватара.", requestorId);
-        userService.deleteAvatar(requestorId);
+        /* ToDo
+            Разобраться как принимать составные запросы.
+         */
+        UpdateUserRequest request = new Gson().fromJson(json, UpdateUserRequest.class);
+        return userService.updateUser(requestorId, request, file);
     }
 }

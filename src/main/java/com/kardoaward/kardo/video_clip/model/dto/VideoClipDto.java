@@ -1,6 +1,6 @@
 package com.kardoaward.kardo.video_clip.model.dto;
 
-import com.kardoaward.kardo.user.model.dto.UserDto;
+import com.kardoaward.kardo.user.model.dto.UserShortDto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,7 +16,7 @@ public class VideoClipDto {
     private Long id;
     private LocalDateTime publicationTime;
     private Set<String> hashtags;
-    private UserDto creatorDto;
+    private UserShortDto creatorDto;
     private Integer likesCount;
-    private byte[] videoClip;
+    private String videoLink;
 }

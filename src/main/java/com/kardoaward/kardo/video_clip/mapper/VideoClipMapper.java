@@ -6,7 +6,6 @@ import com.kardoaward.kardo.video_clip.model.VideoClip;
 import com.kardoaward.kardo.video_clip.model.dto.NewVideoClipRequest;
 import com.kardoaward.kardo.video_clip.model.dto.UpdateVideoClipRequest;
 import com.kardoaward.kardo.video_clip.model.dto.VideoClipDto;
-import com.kardoaward.kardo.video_clip.model.dto.VideoClipShortDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -24,10 +23,7 @@ public interface VideoClipMapper {
     @Mapping(source = "returnedVideoClip.creator", target = "creatorDto")
     VideoClipDto videoClipToVideoClipDto(VideoClip returnedVideoClip);
 
-    @Mapping(source = "returnedVideoClip.creator", target = "creatorDto")
-    VideoClipShortDto videoClipToVideoClipShortDto(VideoClip returnedVideoClip);
-
     void updateVideoClip(UpdateVideoClipRequest request, @MappingTarget VideoClip videoClip);
 
-    List<VideoClipShortDto> videoClipListToVideoClipShortDtoList(List<VideoClip> videoClips);
+    List<VideoClipDto> videoClipListToVideoClipDtoList(List<VideoClip> videoClips);
 }

@@ -9,15 +9,14 @@ import com.kardoaward.kardo.video_clip.model.VideoClip;
 import com.kardoaward.kardo.video_clip.model.dto.NewVideoClipRequest;
 import com.kardoaward.kardo.video_clip.model.dto.UpdateVideoClipRequest;
 import com.kardoaward.kardo.video_clip.model.dto.VideoClipDto;
-import com.kardoaward.kardo.video_clip.model.dto.VideoClipShortDto;
 import com.kardoaward.kardo.video_clip.model.like.Like;
 import com.kardoaward.kardo.video_clip.repository.LikeRepository;
 import com.kardoaward.kardo.video_clip.repository.VideoClipRepository;
 import com.kardoaward.kardo.video_clip.service.helper.VideoClipValidationHelper;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -26,13 +25,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @Service
-@AllArgsConstructor
 public class VideoClipServiceImpl implements VideoClipService {
 
     private final VideoClipRepository videoClipRepository;
@@ -44,12 +41,29 @@ public class VideoClipServiceImpl implements VideoClipService {
     private final VideoClipValidationHelper videoClipValidationHelper;
     private final UserValidationHelper userValidationHelper;
 
+    private final String FOLDER_PATH;
+
+    public VideoClipServiceImpl(VideoClipRepository videoClipRepository,
+                                LikeRepository likeRepository,
+                                VideoClipMapper videoClipMapper,
+                                LikeMapper likeMapper,
+                                VideoClipValidationHelper videoClipValidationHelper,
+                                UserValidationHelper userValidationHelper,
+                                @Value("${folder.path}") String FOLDER_PATH) {
+        this.videoClipRepository = videoClipRepository;
+        this.likeRepository = likeRepository;
+        this.videoClipMapper = videoClipMapper;
+        this.likeMapper = likeMapper;
+        this.videoClipValidationHelper = videoClipValidationHelper;
+        this.userValidationHelper = userValidationHelper;
+        this.FOLDER_PATH = FOLDER_PATH;
+    }
+
     @Override
     @Transactional
-    public VideoClipShortDto addVideoClip(Long requestorId, NewVideoClipRequest request, MultipartFile file) {
+    public VideoClipDto addVideoClip(Long requestorId, NewVideoClipRequest request, MultipartFile file) {
         User user = userValidationHelper.isUserPresent(requestorId);
-        String folderPath = "C:/Users/Roman/Desktop/test/users/";
-        String path = folderPath + requestorId + "/videos/";
+        String path = FOLDER_PATH + "/users/" + requestorId + "/videos/";
         File videoPath = new File(path);
         videoPath.mkdirs();
         String newVideoPath = path + file.getOriginalFilename();
@@ -62,9 +76,9 @@ public class VideoClipServiceImpl implements VideoClipService {
 
         VideoClip videoClip = videoClipMapper.newVideoClipRequestToVideoClip(request, user, newVideoPath);
         VideoClip returnedVideoClip = videoClipRepository.save(videoClip);
-        VideoClipShortDto videoClipShortDto = videoClipMapper.videoClipToVideoClipShortDto(returnedVideoClip);
-        log.info("Видео-клип с ID = {} создан.", videoClipShortDto.getId());
-        return videoClipShortDto;
+        VideoClipDto videoClipDto = videoClipMapper.videoClipToVideoClipDto(returnedVideoClip);
+        log.info("Видео-клип с ID = {} создан.", videoClipDto.getId());
+        return videoClipDto;
     }
 
     @Override
@@ -89,33 +103,25 @@ public class VideoClipServiceImpl implements VideoClipService {
     public VideoClipDto getVideoClipById(Long videoId) {
         VideoClip videoClip = videoClipValidationHelper.isVideoClipPresent(videoId);
         VideoClipDto videoClipDto = videoClipMapper.videoClipToVideoClipDto(videoClip);
-        File videoFile = new File(videoClip.getVideoLink());
-
-        try {
-            videoClipDto.setVideoClip(Files.readAllBytes(videoFile.toPath()));
-        } catch (IOException e) {
-            throw new FileContentException("Не удалось обработать файл.");
-        }
-
         log.info("Видео-клип с ИД {} возвращен.", videoId);
         return videoClipDto;
     }
 
     @Override
     @Transactional
-    public VideoClipShortDto updateVideoClipById(Long requestorId, Long videoId, UpdateVideoClipRequest request) {
+    public VideoClipDto updateVideoClipById(Long requestorId, Long videoId, UpdateVideoClipRequest request) {
         userValidationHelper.isUserPresent(requestorId);
         VideoClip videoClip = videoClipValidationHelper.isVideoClipPresent(videoId);
         videoClipValidationHelper.isRequestorCreatorVideo(requestorId, videoClip.getCreator().getId());
         videoClipMapper.updateVideoClip(request, videoClip);
         VideoClip updatedVideoClip = videoClipRepository.save(videoClip);
-        VideoClipShortDto videoClipShortDto = videoClipMapper.videoClipToVideoClipShortDto(updatedVideoClip);
+        VideoClipDto videoClipDto = videoClipMapper.videoClipToVideoClipDto(updatedVideoClip);
         log.info("Видео-клип с ID {} обновлён.", videoId);
-        return videoClipShortDto;
+        return videoClipDto;
     }
 
     @Override
-    public List<VideoClipShortDto> getVideoClipsByHashtag(String hashtag, int from, int size) {
+    public List<VideoClipDto> getVideoClipsByHashtag(String hashtag, int from, int size) {
         int page = from / size;
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
         PageRequest pageRequest = PageRequest.of(page, size, sort);
@@ -127,14 +133,14 @@ public class VideoClipServiceImpl implements VideoClipService {
         }
 
         List<VideoClip> videoClips = videoClipsPage.getContent();
-        List<VideoClipShortDto> videoClipShortDtos = videoClipMapper.videoClipListToVideoClipShortDtoList(videoClips);
-        log.info("Список видео-клипов с номера {} размером {} возвращён.", from, videoClipShortDtos.size());
-        return videoClipShortDtos;
+        List<VideoClipDto> videoClipDtos = videoClipMapper.videoClipListToVideoClipDtoList(videoClips);
+        log.info("Список видео-клипов с номера {} размером {} возвращён.", from, videoClipDtos.size());
+        return videoClipDtos;
     }
 
     @Override
     @Transactional
-    public VideoClipShortDto addLikeByVideoClipId(Long requestorId, Long videoId) {
+    public VideoClipDto addLikeByVideoClipId(Long requestorId, Long videoId) {
         User user = userValidationHelper.isUserPresent(requestorId);
         VideoClip videoClip = videoClipValidationHelper.isVideoClipPresent(videoId);
         videoClipValidationHelper.isRequestorNotCreatorVideo(requestorId, videoClip.getCreator().getId());
@@ -142,23 +148,23 @@ public class VideoClipServiceImpl implements VideoClipService {
         likeRepository.save(like);
         Integer likesCount = videoClip.getLikesCount();
         videoClip.setLikesCount(++likesCount);
-        VideoClipShortDto videoClipShortDto = videoClipMapper.videoClipToVideoClipShortDto(videoClip);
+        VideoClipDto videoClipDto = videoClipMapper.videoClipToVideoClipDto(videoClip);
         log.info("Лайк пользователя с ID {} к видео-клипу с ИД {} добавлен.", requestorId, videoId);
-        return videoClipShortDto;
+        return videoClipDto;
     }
 
     @Override
     @Transactional
-    public VideoClipShortDto deleteLikeByVideoClipId(Long requestorId, Long videoId) {
+    public VideoClipDto deleteLikeByVideoClipId(Long requestorId, Long videoId) {
         userValidationHelper.isUserPresent(requestorId);
         VideoClip videoClip = videoClipValidationHelper.isVideoClipPresent(videoId);
         Like like = videoClipValidationHelper.isRequestorLikedVideoClip(requestorId, videoId);
         likeRepository.delete(like);
         Integer likesCount = videoClip.getLikesCount();
         videoClip.setLikesCount(--likesCount);
-        VideoClipShortDto videoClipShortDto = videoClipMapper.videoClipToVideoClipShortDto(videoClip);
+        VideoClipDto videoClipDto = videoClipMapper.videoClipToVideoClipDto(videoClip);
         log.info("Лайк пользователя с ID {} к видео-клипу с ИД {} удалён.", requestorId, videoId);
-        return videoClipShortDto;
+        return videoClipDto;
     }
 
     private void deleteVideo(VideoClip videoClip) {
