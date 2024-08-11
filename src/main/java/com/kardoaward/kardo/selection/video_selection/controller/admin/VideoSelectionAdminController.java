@@ -1,6 +1,6 @@
 package com.kardoaward.kardo.selection.video_selection.controller.admin;
 
-import com.kardoaward.kardo.selection.model.dto.UpdateSelectionRequest;
+import com.kardoaward.kardo.selection.video_selection.model.UpdateVideoSelectionRequest;
 import com.kardoaward.kardo.selection.video_selection.model.dto.NewVideoSelectionRequest;
 import com.kardoaward.kardo.selection.video_selection.model.dto.VideoSelectionDto;
 import com.kardoaward.kardo.selection.video_selection.service.VideoSelectionService;
@@ -49,7 +49,7 @@ public class VideoSelectionAdminController {
     @PatchMapping("/{selectionId}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public VideoSelectionDto updateVideoSelectionById(@PathVariable @Positive Long selectionId,
-                                                      @RequestBody @Valid UpdateSelectionRequest request) {
+                                                      @RequestBody @Valid UpdateVideoSelectionRequest request) {
         log.info("Обновление администратором видео-отбора с ИД {}.", selectionId);
         return videoSelectionService.updateVideoSelectionById(selectionId, request);
     }

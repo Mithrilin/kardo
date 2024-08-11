@@ -5,5 +5,6 @@ CREATE TABLE video_selections (
   competition_id BIGINT NOT NULL REFERENCES grand_competitions(id) ON DELETE CASCADE,
   selection_start DATE NOT NULL,
   selection_end DATE NOT NULL,
-  status VARCHAR(20) NOT NULL
+  status VARCHAR(20) NOT NULL,
+  description VARCHAR(6500) NOT NULL
 );

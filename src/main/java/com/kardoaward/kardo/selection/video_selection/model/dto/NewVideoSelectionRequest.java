@@ -17,4 +17,7 @@ public class NewVideoSelectionRequest extends NewSelectionRequest {
     @NotBlank(message = "Hashtag не может быть пустым.")
     @Size(min = 2, max = 20, message = "Длина hashtag должна быть в диапазоне от 2 до 20 символов.")
     private String hashtag;
+    @NotBlank(message = "Description не может быть пустым.")
+    @Size(min = 2, max = 6500, message = "Длина Description должна быть в диапазоне от 2 до 6500 символов.")
+    private String description;
 }

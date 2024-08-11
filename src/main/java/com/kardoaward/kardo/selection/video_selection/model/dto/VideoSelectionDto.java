@@ -13,4 +13,5 @@ import lombok.NoArgsConstructor;
 public class VideoSelectionDto extends SelectionDto {
 
     private String hashtag;
+    private String description;
 }

@@ -12,5 +12,6 @@ public enum Field {
     HIP_HOP,
     DJ_ING,
     GRAFFITI,
-    WAKEBOARDING
+    WAKEBOARDING,
+    ALL_FIELD
 }

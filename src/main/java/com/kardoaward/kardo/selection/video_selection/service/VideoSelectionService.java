@@ -1,6 +1,6 @@
 package com.kardoaward.kardo.selection.video_selection.service;
 
-import com.kardoaward.kardo.selection.model.dto.UpdateSelectionRequest;
+import com.kardoaward.kardo.selection.video_selection.model.UpdateVideoSelectionRequest;
 import com.kardoaward.kardo.selection.video_selection.model.dto.NewVideoSelectionRequest;
 import com.kardoaward.kardo.selection.video_selection.model.dto.VideoSelectionDto;
 
@@ -16,7 +16,7 @@ public interface VideoSelectionService {
 
     List<VideoSelectionDto> getVideoSelections(int from, int size);
 
-    VideoSelectionDto updateVideoSelectionById(Long selectionId, UpdateSelectionRequest request);
+    VideoSelectionDto updateVideoSelectionById(Long selectionId, UpdateVideoSelectionRequest request);
 
     List<VideoSelectionDto> getVideoSelectionsByGrandCompetitionId(Long competitionId, int from, int size);
 }
