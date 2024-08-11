@@ -1,4 +1,4 @@
-package com.kardoaward.kardo.config;
+package com.kardoaward.kardo.security;
 
 import com.kardoaward.kardo.user.model.User;
 import org.springframework.security.core.GrantedAuthority;

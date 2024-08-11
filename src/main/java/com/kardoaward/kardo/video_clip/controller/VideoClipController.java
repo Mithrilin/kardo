@@ -1,7 +1,7 @@
 package com.kardoaward.kardo.video_clip.controller;
 
 import com.google.gson.Gson;
-import com.kardoaward.kardo.config.MyUserDetails;
+import com.kardoaward.kardo.security.MyUserDetails;
 import com.kardoaward.kardo.video_clip.model.dto.NewVideoClipRequest;
 import com.kardoaward.kardo.video_clip.model.dto.UpdateVideoClipRequest;
 import com.kardoaward.kardo.video_clip.model.dto.VideoClipDto;

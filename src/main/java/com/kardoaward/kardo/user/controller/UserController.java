@@ -1,7 +1,7 @@
 package com.kardoaward.kardo.user.controller;
 
 import com.google.gson.Gson;
-import com.kardoaward.kardo.config.MyUserDetails;
+import com.kardoaward.kardo.security.MyUserDetails;
 import com.kardoaward.kardo.user.model.dto.NewUserRequest;
 import com.kardoaward.kardo.user.model.dto.UpdateUserRequest;
 import com.kardoaward.kardo.user.model.dto.UserDto;

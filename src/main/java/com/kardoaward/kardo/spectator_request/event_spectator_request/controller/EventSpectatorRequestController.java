@@ -1,6 +1,6 @@
 package com.kardoaward.kardo.spectator_request.event_spectator_request.controller;
 
-import com.kardoaward.kardo.config.MyUserDetails;
+import com.kardoaward.kardo.security.MyUserDetails;
 import com.kardoaward.kardo.spectator_request.event_spectator_request.model.dto.EventSpectatorRequestDto;
 import com.kardoaward.kardo.spectator_request.event_spectator_request.model.dto.NewEventSpectatorRequest;
 import com.kardoaward.kardo.spectator_request.event_spectator_request.service.EventSpectatorRequestService;

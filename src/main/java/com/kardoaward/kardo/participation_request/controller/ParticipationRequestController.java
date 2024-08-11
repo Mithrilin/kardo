@@ -1,6 +1,6 @@
 package com.kardoaward.kardo.participation_request.controller;
 
-import com.kardoaward.kardo.config.MyUserDetails;
+import com.kardoaward.kardo.security.MyUserDetails;
 import com.kardoaward.kardo.participation_request.model.dto.NewParticipationRequest;
 import com.kardoaward.kardo.participation_request.model.dto.ParticipationRequestDto;
 import com.kardoaward.kardo.participation_request.model.dto.update.UpdateParticipationRequest;

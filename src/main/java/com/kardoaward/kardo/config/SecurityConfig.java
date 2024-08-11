@@ -1,7 +1,7 @@
 package com.kardoaward.kardo.config;
 
-import com.kardoaward.kardo.user.service.MyUserDetailsService;
-import lombok.RequiredArgsConstructor;
+import com.kardoaward.kardo.security.UserDetailsServiceImpl;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;

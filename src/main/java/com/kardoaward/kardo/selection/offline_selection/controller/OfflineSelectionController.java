@@ -1,6 +1,6 @@
 package com.kardoaward.kardo.selection.offline_selection.controller;
 
-import com.kardoaward.kardo.config.MyUserDetails;
+import com.kardoaward.kardo.security.MyUserDetails;
 import com.kardoaward.kardo.selection.offline_selection.model.dto.OfflineSelectionDto;
 import com.kardoaward.kardo.selection.offline_selection.service.OfflineSelectionService;
 import com.kardoaward.kardo.user.model.dto.UserShortDto;
