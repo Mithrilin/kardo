@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -30,6 +31,7 @@ public class VideoSelectionAdminController {
     private final VideoSelectionValidationHelper videoSelectionValidationHelper;
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public VideoSelectionDto createVideoSelection(@RequestBody @Valid
                                                   NewVideoSelectionRequest newVideoSelectionRequest) {
         log.info("Добавление администратором нового видео-отбора {}.", newVideoSelectionRequest);
@@ -38,12 +40,14 @@ public class VideoSelectionAdminController {
     }
 
     @DeleteMapping("/{selectionId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteVideoSelection(@PathVariable @Positive Long selectionId) {
         log.info("Удаление администратором видео-отбора с ИД {}.", selectionId);
         videoSelectionService.deleteVideoSelection(selectionId);
     }
 
     @PatchMapping("/{selectionId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public VideoSelectionDto updateVideoSelectionById(@PathVariable @Positive Long selectionId,
                                                       @RequestBody @Valid UpdateSelectionRequest request) {
         log.info("Обновление администратором видео-отбора с ИД {}.", selectionId);

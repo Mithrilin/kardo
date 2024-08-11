@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,12 +30,14 @@ public class OfflineSelectionController {
     private final UserService userService;
 
     @GetMapping("/{selectionId}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public OfflineSelectionDto getOfflineSelectionById(@PathVariable @Positive Long selectionId) {
         log.info("Возвращение оффлайн-отбора с ИД {}.", selectionId);
         return offlineSelectionService.getOfflineSelectionById(selectionId);
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public List<OfflineSelectionDto> getOfflineSelections(@RequestParam(defaultValue = "0") @Min(0) int from,
                                                           @RequestParam(defaultValue = "10") @Positive int size) {
         log.info("Возвращение списка оффлайн-отборов.");
@@ -42,6 +45,7 @@ public class OfflineSelectionController {
     }
 
     @GetMapping("/{selectionId}/contestants")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public List<UserShortDto> getContestantsByOfflineSelectionId(@PathVariable @Positive Long selectionId,
                                                                  @RequestParam(defaultValue = "0") @Min(0) int from,
                                                                  @RequestParam(defaultValue = "10") @Positive int size) {
@@ -50,6 +54,7 @@ public class OfflineSelectionController {
     }
 
     @GetMapping("/contestants")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public List<OfflineSelectionDto> getOfflineSelectionsByRequestorId(@RequestHeader("X-Requestor-Id")
                                                                        Long requestorId,
                                                                        @RequestParam(defaultValue = "0")
@@ -61,6 +66,7 @@ public class OfflineSelectionController {
     }
 
     @GetMapping("/competitions/{competitionId}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public List<OfflineSelectionDto> getOfflineSelectionsByGrandCompetitionId(@PathVariable
                                                                               @Positive Long competitionId,
                                                                               @RequestParam(defaultValue = "0")

@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -30,6 +31,7 @@ public class OfflineSelectionAdminController {
     private final OfflineSelectionValidationHelper offlineSelectionValidationHelper;
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public OfflineSelectionDto createOfflineSelection(@RequestBody @Valid
                                                       NewOfflineSelectionRequest newOfflineSelectionRequest) {
         log.info("Добавление администратором нового оффлайн-отбора {}.", newOfflineSelectionRequest);
@@ -38,12 +40,14 @@ public class OfflineSelectionAdminController {
     }
 
     @DeleteMapping("/{selectionId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteOfflineSelection(@PathVariable @Positive Long selectionId) {
         log.info("Удаление администратором оффлайн-отбора с ИД {}.", selectionId);
         offlineSelectionService.deleteOfflineSelection(selectionId);
     }
 
     @PatchMapping("/{selectionId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public OfflineSelectionDto updateOfflineSelectionById(@PathVariable @Positive Long selectionId,
                                                           @RequestBody @Valid UpdateOfflineSelectionRequest request) {
         log.info("Обновление администратором оффлайн-отбора с ИД {}.", selectionId);

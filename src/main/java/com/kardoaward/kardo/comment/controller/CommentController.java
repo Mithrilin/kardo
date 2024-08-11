@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +37,7 @@ public class CommentController {
     private final CommentValidationHelper commentValidationHelper;
 
     @PostMapping("/videos/{videoId}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public CommentDto createComment(@RequestHeader("X-Requestor-Id") Long requestorId,
                                     @PathVariable @Positive Long videoId,
                                     @RequestBody @Valid NewCommentRequest newCommentRequest) {
@@ -45,6 +47,7 @@ public class CommentController {
     }
 
     @DeleteMapping("/{commentId}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public void deleteCommentById(@RequestHeader("X-Requestor-Id") Long requestorId,
                                   @PathVariable @Positive Long commentId) {
         log.info("Удаление пользователем с ИД {} своего комментария с ИД {}.", requestorId, commentId);
@@ -52,12 +55,14 @@ public class CommentController {
     }
 
     @GetMapping("/{commentId}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public CommentDto getCommentById(@PathVariable @Positive Long commentId) {
         log.info("Возвращение комментария с ИД {}.", commentId);
         return commentService.getCommentById(commentId);
     }
 
     @PatchMapping("/{commentId}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public CommentDto updateCommentById(@RequestHeader("X-Requestor-Id") Long requestorId,
                                         @PathVariable @Positive Long commentId,
                                         @RequestBody @Valid UpdateCommentRequest request) {
@@ -66,6 +71,7 @@ public class CommentController {
     }
 
     @GetMapping("/videos/{videoId}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public List<CommentDto> getCommentsByVideoId(@PathVariable @Positive Long videoId,
                                                  @RequestParam(defaultValue = "0") @Min(0) int from,
                                                  @RequestParam(defaultValue = "10") @Positive int size) {

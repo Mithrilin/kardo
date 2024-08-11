@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,13 +36,14 @@ public class UserController {
 
     private final UserValidationHelper userValidationHelper;
 
-    @PostMapping
+    @PostMapping("/reg")
     public UserShortDto createUser(@RequestBody @Valid NewUserRequest newUserRequest) {
         log.info("Добавление нового пользователь {}.", newUserRequest);
         return userService.addUser(newUserRequest);
     }
 
     @GetMapping("/{userId}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public UserDto getUserById(@RequestHeader("X-Requestor-Id") Long requestorId,
                                @PathVariable @Positive Long userId) {
         log.info("Получение пользователем с ИД {} своих данных.", userId);
@@ -50,12 +52,14 @@ public class UserController {
     }
 
     @DeleteMapping
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public void deleteUser(@RequestHeader("X-Requestor-Id") Long requestorId) {
         log.info("Удаление пользователем с ИД {} своего профиля.", requestorId);
         userService.deleteUser(requestorId);
     }
 
     @PatchMapping
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public UserDto updateUser(@RequestHeader("X-Requestor-Id") Long requestorId,
                               @RequestParam(value = "text", required = false) String json,
                               @RequestParam(value = "image", required = false) MultipartFile file) {

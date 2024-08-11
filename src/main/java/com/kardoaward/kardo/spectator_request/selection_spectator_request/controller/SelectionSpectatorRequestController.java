@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,7 @@ public class SelectionSpectatorRequestController {
     private final SelectionSpectatorRequestValidationHelper helper;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public SelectionSpectatorRequestDto createSelectionSpectatorRequest(@RequestHeader("X-Requestor-Id")
                                                                         Long requestorId,
                                                                         @RequestBody @Valid
@@ -40,6 +42,7 @@ public class SelectionSpectatorRequestController {
     }
 
     @DeleteMapping("/{spectatorId}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public void deleteSelectionSpectatorRequestById(@RequestHeader("X-Requestor-Id") Long requestorId,
                                                     @PathVariable @Positive Long spectatorId) {
         log.info("Удаление пользователем с ИД {} своей заявки зрителя отбора с ИД {}.", requestorId, spectatorId);
@@ -47,6 +50,7 @@ public class SelectionSpectatorRequestController {
     }
 
     @GetMapping("/{spectatorId}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public SelectionSpectatorRequestDto getSelectionSpectatorRequestById(@RequestHeader("X-Requestor-Id")
                                                                          Long requestorId,
                                                                          @PathVariable @Positive Long spectatorId) {

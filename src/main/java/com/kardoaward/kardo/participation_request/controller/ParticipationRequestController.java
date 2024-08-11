@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,7 @@ public class ParticipationRequestController {
     private final ParticipationRequestValidationHelper participationHelper;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ParticipationRequestDto createParticipation(@RequestHeader("X-Requestor-Id") Long requestorId,
                                                        @RequestBody @Valid
                                                        NewParticipationRequest newParticipationRequest) {
@@ -42,6 +44,7 @@ public class ParticipationRequestController {
     }
 
     @DeleteMapping("/{participationId}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public void deleteParticipationById(@RequestHeader("X-Requestor-Id") Long requestorId,
                                         @PathVariable @Positive Long participationId) {
         log.info("Удаление пользователем с ИД {} своей заявки с ИД {} на участие в отборе.",
@@ -50,6 +53,7 @@ public class ParticipationRequestController {
     }
 
     @GetMapping("/{participationId}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ParticipationRequestDto getParticipationById(@RequestHeader("X-Requestor-Id") Long requestorId,
                                                         @PathVariable @Positive Long participationId) {
         log.info("Возвращение пользователю с ИД {} его заявки с ИД {} на участие в отборе.",
@@ -58,6 +62,7 @@ public class ParticipationRequestController {
     }
 
     @PatchMapping("/{participationId}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ParticipationRequestDto updateParticipationById(@RequestHeader("X-Requestor-Id") Long requestorId,
                                                            @PathVariable @Positive Long participationId,
                                                            @RequestBody @Valid UpdateParticipationRequest request) {

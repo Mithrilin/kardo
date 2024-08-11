@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -30,12 +31,14 @@ public class EventSpectatorRequestAdminController {
     private final EventSpectatorRequestService service;
 
     @GetMapping("/{spectatorId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public EventSpectatorRequestDto getEventSpectatorRequestByIdByAdmin(@PathVariable @Positive Long spectatorId) {
         log.info("Возвращение администратору заявки зрителя мероприятия с ИД {}.", spectatorId);
         return service.getEventSpectatorRequestByIdByAdmin(spectatorId);
     }
 
     @GetMapping("/events/{eventId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<EventSpectatorRequestDto> getEventSpectatorRequestByEventId(@PathVariable @Positive Long eventId,
                                                                             @RequestParam(defaultValue = "0")
                                                                             @Min(0) int from,
@@ -46,6 +49,7 @@ public class EventSpectatorRequestAdminController {
     }
 
     @PatchMapping("/events/{eventId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public SpectatorRequestStatusUpdateResult updateEventSpectatorRequestStatusByEventId(
                                                     @PathVariable @Positive Long eventId,
                                                     @RequestBody @Valid SpectatorRequestStatusUpdateRequest request) {

@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,7 @@ public class EventSpectatorRequestController {
     private final EventSpectatorRequestValidationHelper helper;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public EventSpectatorRequestDto createEventSpectatorRequest(@RequestHeader("X-Requestor-Id") Long requestorId,
                                                                 @RequestBody @Valid NewEventSpectatorRequest request) {
         log.info("Добавление пользователем с ИД {} новой заявки зрителя мероприятия {}.", requestorId, request);
@@ -38,6 +40,7 @@ public class EventSpectatorRequestController {
     }
 
     @DeleteMapping("/{spectatorId}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public void deleteEventSpectatorRequestById(@RequestHeader("X-Requestor-Id") Long requestorId,
                                                 @PathVariable @Positive Long spectatorId) {
         log.info("Удаление пользователем с ИД {} своей заявки зрителя мероприятия с ИД {}.", requestorId, spectatorId);
@@ -45,6 +48,7 @@ public class EventSpectatorRequestController {
     }
 
     @GetMapping("/{spectatorId}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public EventSpectatorRequestDto getEventSpectatorRequestById(@RequestHeader("X-Requestor-Id") Long requestorId,
                                                                  @PathVariable @Positive Long spectatorId) {
         log.info("Возвращение пользователю с ИД {} его заявки зрителя мероприятия с ИД {}.", requestorId, spectatorId);

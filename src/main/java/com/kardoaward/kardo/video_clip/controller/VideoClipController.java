@@ -12,6 +12,7 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +40,7 @@ public class VideoClipController {
     private final VideoClipValidationHelper videoClipValidationHelper;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public VideoClipDto createVideoClip(@RequestHeader("X-Requestor-Id") Long requestorId,
                                         @RequestParam("text") String json,
                                         @RequestParam("video") MultipartFile file) {
@@ -52,6 +54,7 @@ public class VideoClipController {
     }
 
     @DeleteMapping("/{videoId}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public void deleteVideoClipById(@RequestHeader("X-Requestor-Id") Long requestorId,
                                     @PathVariable @Positive Long videoId) {
         log.info("Удаление пользователем с ИД {} своего видео-клипа с ИД {}.", requestorId, videoId);
@@ -59,12 +62,14 @@ public class VideoClipController {
     }
 
     @GetMapping("/{videoId}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public VideoClipDto getVideoClipById(@PathVariable @Positive Long videoId) {
         log.info("Возвращение видео-клипа с ИД {}.", videoId);
         return videoClipService.getVideoClipById(videoId);
     }
 
     @PatchMapping("/{videoId}")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public VideoClipDto updateVideoClipById(@RequestHeader("X-Requestor-Id") Long requestorId,
                                             @PathVariable @Positive Long videoId,
                                             @RequestBody @Valid UpdateVideoClipRequest request) {
@@ -73,6 +78,7 @@ public class VideoClipController {
     }
 
     @GetMapping("/search")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public List<VideoClipDto> getVideoClipsByHashtag(@RequestParam @Size(min = 2, max = 20) String hashtag,
                                                      @RequestParam(defaultValue = "0") @Min(0) int from,
                                                      @RequestParam(defaultValue = "10") @Positive int size) {
@@ -81,6 +87,7 @@ public class VideoClipController {
     }
 
     @PostMapping("/{videoId}/likes")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public VideoClipDto addLikeByVideoClipId(@RequestHeader("X-Requestor-Id") Long requestorId,
                                              @PathVariable @Positive Long videoId) {
         log.info("Добавление пользователем с ИД {} лайка к видео-клипу с ИД {}.", requestorId, videoId);
@@ -88,6 +95,7 @@ public class VideoClipController {
     }
 
     @DeleteMapping("/{videoId}/likes")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public VideoClipDto deleteLikeByVideoClipId(@RequestHeader("X-Requestor-Id") Long requestorId,
                                                 @PathVariable @Positive Long videoId) {
         log.info("Удаление пользователем с ИД {} своего лайка к видео-клипу с ИД {}.", requestorId, videoId);

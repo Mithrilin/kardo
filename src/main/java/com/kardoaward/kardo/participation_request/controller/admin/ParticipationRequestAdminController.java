@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -30,12 +31,14 @@ public class ParticipationRequestAdminController {
     private final ParticipationRequestService service;
 
     @GetMapping("/{participationId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ParticipationRequestDto getParticipationByIdByAdmin(@PathVariable @Positive Long participationId) {
         log.info("Возвращение администратору заявки с ИД {} на участие в отборе.", participationId);
         return service.getParticipationByIdByAdmin(participationId);
     }
 
     @GetMapping("/selections/offline/{selectionId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<ParticipationRequestDto> getParticipationsBySelectionId(@PathVariable @Positive Long selectionId,
                                                                         @RequestParam(defaultValue = "0")
                                                                         @Min(0) int from,
@@ -46,6 +49,7 @@ public class ParticipationRequestAdminController {
     }
 
     @PatchMapping("/selections/offline/{selectionId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ParticipationRequestStatusUpdateResult updateParticipationRequestStatusById (
                                                 @PathVariable @Positive Long selectionId,
                                                 @RequestBody @Valid ParticipationRequestStatusUpdateRequest request) {

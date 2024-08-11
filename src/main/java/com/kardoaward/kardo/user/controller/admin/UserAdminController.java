@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,18 +28,21 @@ public class UserAdminController {
     private final UserService userService;
 
     @DeleteMapping("/{userId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public void deleteUserByAdmin(@PathVariable @Positive Long userId) {
         log.info("Удаление администратором пользователя с ИД {}.", userId);
         userService.deleteUser(userId);
     }
 
     @GetMapping("/{userId}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public UserDto getUserByIdByAdmin(@PathVariable @Positive Long userId) {
         log.info("Возвращение администратору информации о пользователе с ИД {}.", userId);
         return userService.getUserById(userId);
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<UserShortDto> getUsersByIds(@RequestParam(required = false) List<Long> ids,
                                             @RequestParam(defaultValue = "0") @Min(0) int from,
                                             @RequestParam(defaultValue = "10") @Positive int size) {
