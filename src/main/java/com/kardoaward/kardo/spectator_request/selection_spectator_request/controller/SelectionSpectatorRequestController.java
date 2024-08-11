@@ -1,6 +1,6 @@
 package com.kardoaward.kardo.spectator_request.selection_spectator_request.controller;
 
-import com.kardoaward.kardo.security.MyUserDetails;
+import com.kardoaward.kardo.security.UserDetailsImpl;
 import com.kardoaward.kardo.spectator_request.selection_spectator_request.model.dto.NewSelectionSpectatorRequest;
 import com.kardoaward.kardo.spectator_request.selection_spectator_request.model.dto.SelectionSpectatorRequestDto;
 import com.kardoaward.kardo.spectator_request.selection_spectator_request.service.SelectionSpectatorRequestService;
@@ -35,7 +35,7 @@ public class SelectionSpectatorRequestController {
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public SelectionSpectatorRequestDto createSelectionSpectatorRequest(@RequestBody @Valid
                                                                         NewSelectionSpectatorRequest request) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         Long requestorId = userDetails.getUser().getId();
         log.info("Добавление пользователем с ИД {} новой заявки зрителя отбора {}.", requestorId, request);
@@ -46,7 +46,7 @@ public class SelectionSpectatorRequestController {
     @DeleteMapping("/{spectatorId}")
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public void deleteSelectionSpectatorRequestById(@PathVariable @Positive Long spectatorId) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         Long requestorId = userDetails.getUser().getId();
         log.info("Удаление пользователем с ИД {} своей заявки зрителя отбора с ИД {}.", requestorId, spectatorId);
@@ -56,7 +56,7 @@ public class SelectionSpectatorRequestController {
     @GetMapping("/{spectatorId}")
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public SelectionSpectatorRequestDto getSelectionSpectatorRequestById(@PathVariable @Positive Long spectatorId) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         Long requestorId = userDetails.getUser().getId();
         log.info("Возвращение пользователю с ИД {} его заявки зрителя отбора с ИД {}.", requestorId, spectatorId);

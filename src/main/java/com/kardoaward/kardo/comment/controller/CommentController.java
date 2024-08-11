@@ -5,7 +5,7 @@ import com.kardoaward.kardo.comment.model.dto.NewCommentRequest;
 import com.kardoaward.kardo.comment.model.dto.UpdateCommentRequest;
 import com.kardoaward.kardo.comment.service.CommentService;
 import com.kardoaward.kardo.comment.service.helper.CommentValidationHelper;
-import com.kardoaward.kardo.security.MyUserDetails;
+import com.kardoaward.kardo.security.UserDetailsImpl;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
@@ -41,7 +41,7 @@ public class CommentController {
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public CommentDto createComment(@PathVariable @Positive Long videoId,
                                     @RequestBody @Valid NewCommentRequest newCommentRequest) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         Long requestorId = userDetails.getUser().getId();
         log.info("Добавление пользователем с ИД {} нового комментария к видео-клипу с ИД {}.", requestorId, videoId);
@@ -52,7 +52,7 @@ public class CommentController {
     @DeleteMapping("/{commentId}")
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public void deleteCommentById(@PathVariable @Positive Long commentId) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         Long requestorId = userDetails.getUser().getId();
         log.info("Удаление пользователем с ИД {} своего комментария с ИД {}.", requestorId, commentId);
@@ -70,7 +70,7 @@ public class CommentController {
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public CommentDto updateCommentById(@PathVariable @Positive Long commentId,
                                         @RequestBody @Valid UpdateCommentRequest request) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         Long requestorId = userDetails.getUser().getId();
         log.info("Обновление пользователем с ИД {} своего комментария с ИД {}.", requestorId, commentId);

@@ -1,6 +1,6 @@
 package com.kardoaward.kardo.selection.offline_selection.controller;
 
-import com.kardoaward.kardo.security.MyUserDetails;
+import com.kardoaward.kardo.security.UserDetailsImpl;
 import com.kardoaward.kardo.selection.offline_selection.model.dto.OfflineSelectionDto;
 import com.kardoaward.kardo.selection.offline_selection.service.OfflineSelectionService;
 import com.kardoaward.kardo.user.model.dto.UserShortDto;
@@ -60,7 +60,7 @@ public class OfflineSelectionController {
                                                                        @Min(0) int from,
                                                                        @RequestParam(defaultValue = "10")
                                                                        @Positive int size) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         Long requestorId = userDetails.getUser().getId();
         log.info("Возвращение списка оффлайн-отборов с участием пользователя с ИД {}.", requestorId);

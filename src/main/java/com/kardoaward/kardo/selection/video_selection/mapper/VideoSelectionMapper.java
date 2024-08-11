@@ -23,6 +23,7 @@ public interface VideoSelectionMapper {
     @Mapping(source = "grandCompetition", target = "competition")
     @Mapping(source = "newVideoSelectionRequest.title", target = "title")
     @Mapping(source = "newVideoSelectionRequest.hashtag", target = "hashtag")
+    @Mapping(source = "newVideoSelectionRequest.description", target = "description")
     VideoSelection newVideoSelectionRequestToVideoSelection(NewVideoSelectionRequest newVideoSelectionRequest,
                                                             GrandCompetition grandCompetition);
 

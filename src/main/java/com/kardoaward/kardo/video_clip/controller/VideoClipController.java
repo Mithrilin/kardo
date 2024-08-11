@@ -1,7 +1,7 @@
 package com.kardoaward.kardo.video_clip.controller;
 
 import com.google.gson.Gson;
-import com.kardoaward.kardo.security.MyUserDetails;
+import com.kardoaward.kardo.security.UserDetailsImpl;
 import com.kardoaward.kardo.video_clip.model.dto.NewVideoClipRequest;
 import com.kardoaward.kardo.video_clip.model.dto.UpdateVideoClipRequest;
 import com.kardoaward.kardo.video_clip.model.dto.VideoClipDto;
@@ -44,7 +44,7 @@ public class VideoClipController {
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public VideoClipDto createVideoClip(@RequestParam("text") String json,
                                         @RequestParam("video") MultipartFile file) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         Long requestorId = userDetails.getUser().getId();
         log.info("Добавление пользователем с ИД {} нового видео-клипа.", requestorId);
@@ -59,7 +59,7 @@ public class VideoClipController {
     @DeleteMapping("/{videoId}")
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public void deleteVideoClipById(@PathVariable @Positive Long videoId) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         Long requestorId = userDetails.getUser().getId();
         log.info("Удаление пользователем с ИД {} своего видео-клипа с ИД {}.", requestorId, videoId);
@@ -77,7 +77,7 @@ public class VideoClipController {
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public VideoClipDto updateVideoClipById(@PathVariable @Positive Long videoId,
                                             @RequestBody @Valid UpdateVideoClipRequest request) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         Long requestorId = userDetails.getUser().getId();
         log.info("Обновление пользователем с ИД {} видео-клипа с ИД {}.", requestorId, videoId);
@@ -96,7 +96,7 @@ public class VideoClipController {
     @PostMapping("/{videoId}/likes")
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public VideoClipDto addLikeByVideoClipId(@PathVariable @Positive Long videoId) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         Long requestorId = userDetails.getUser().getId();
         log.info("Добавление пользователем с ИД {} лайка к видео-клипу с ИД {}.", requestorId, videoId);
@@ -106,7 +106,7 @@ public class VideoClipController {
     @DeleteMapping("/{videoId}/likes")
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public VideoClipDto deleteLikeByVideoClipId(@PathVariable @Positive Long videoId) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         Long requestorId = userDetails.getUser().getId();
         log.info("Удаление пользователем с ИД {} своего лайка к видео-клипу с ИД {}.", requestorId, videoId);

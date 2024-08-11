@@ -1,6 +1,6 @@
 package com.kardoaward.kardo.spectator_request.event_spectator_request.controller;
 
-import com.kardoaward.kardo.security.MyUserDetails;
+import com.kardoaward.kardo.security.UserDetailsImpl;
 import com.kardoaward.kardo.spectator_request.event_spectator_request.model.dto.EventSpectatorRequestDto;
 import com.kardoaward.kardo.spectator_request.event_spectator_request.model.dto.NewEventSpectatorRequest;
 import com.kardoaward.kardo.spectator_request.event_spectator_request.service.EventSpectatorRequestService;
@@ -34,7 +34,7 @@ public class EventSpectatorRequestController {
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public EventSpectatorRequestDto createEventSpectatorRequest(@RequestBody @Valid NewEventSpectatorRequest request) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         Long requestorId = userDetails.getUser().getId();
         log.info("Добавление пользователем с ИД {} новой заявки зрителя мероприятия {}.", requestorId, request);
@@ -45,7 +45,7 @@ public class EventSpectatorRequestController {
     @DeleteMapping("/{spectatorId}")
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public void deleteEventSpectatorRequestById(@PathVariable @Positive Long spectatorId) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         Long requestorId = userDetails.getUser().getId();
         log.info("Удаление пользователем с ИД {} своей заявки зрителя мероприятия с ИД {}.", requestorId, spectatorId);
@@ -55,7 +55,7 @@ public class EventSpectatorRequestController {
     @GetMapping("/{spectatorId}")
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public EventSpectatorRequestDto getEventSpectatorRequestById(@PathVariable @Positive Long spectatorId) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         Long requestorId = userDetails.getUser().getId();
         log.info("Возвращение пользователю с ИД {} его заявки зрителя мероприятия с ИД {}.", requestorId, spectatorId);

@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,24 +37,29 @@ public class UserServiceImpl implements UserService {
     private final UserValidationHelper userValidationHelper;
     private final OfflineSelectionValidationHelper offlineSelectionValidationHelper;
 
+    private final PasswordEncoder passwordEncoder;
+
     private final String FOLDER_PATH;
 
     public UserServiceImpl(UserRepository userRepository,
                            UserMapper userMapper,
                            UserValidationHelper userValidationHelper,
                            OfflineSelectionValidationHelper offlineSelectionValidationHelper,
+                           PasswordEncoder passwordEncoder,
                            @Value("${folder.path}") String FOLDER_PATH) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.userValidationHelper = userValidationHelper;
         this.offlineSelectionValidationHelper = offlineSelectionValidationHelper;
+        this.passwordEncoder = passwordEncoder;
         this.FOLDER_PATH = FOLDER_PATH;
     }
 
     @Override
     @Transactional
     public UserShortDto addUser(NewUserRequest newUserRequest) {
-        User user = userMapper.newUserRequestToUser(newUserRequest);
+        User user = userMapper.newUserRequestToUser(newUserRequest,
+                passwordEncoder.encode(newUserRequest.getPassword()));
         User returnedUser = userRepository.save(user);
         UserShortDto userShortDto = userMapper.userToUserShortDto(returnedUser);
         log.info("Пользователь с ID = {} создан.", userShortDto.getId());

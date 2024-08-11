@@ -1,7 +1,7 @@
 package com.kardoaward.kardo.user.controller;
 
 import com.google.gson.Gson;
-import com.kardoaward.kardo.security.MyUserDetails;
+import com.kardoaward.kardo.security.UserDetailsImpl;
 import com.kardoaward.kardo.user.model.dto.NewUserRequest;
 import com.kardoaward.kardo.user.model.dto.UpdateUserRequest;
 import com.kardoaward.kardo.user.model.dto.UserDto;
@@ -46,7 +46,7 @@ public class UserController {
     @GetMapping("/{userId}")
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public UserDto getUserById(@PathVariable @Positive Long userId) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         Long requestorId = userDetails.getUser().getId();
         log.info("Получение пользователем с ИД {} своих данных.", requestorId);
@@ -57,7 +57,7 @@ public class UserController {
     @DeleteMapping
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public void deleteUser() {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         Long requestorId = userDetails.getUser().getId();
         log.info("Удаление пользователем с ИД {} своего профиля.", requestorId);
@@ -68,7 +68,7 @@ public class UserController {
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public UserDto updateUser(@RequestParam(value = "text", required = false) String json,
                               @RequestParam(value = "image", required = false) MultipartFile file) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         Long requestorId = userDetails.getUser().getId();
         log.info("Обновление пользователем с ИД {} своих данных.", requestorId);

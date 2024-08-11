@@ -1,6 +1,6 @@
 package com.kardoaward.kardo.participation_request.controller;
 
-import com.kardoaward.kardo.security.MyUserDetails;
+import com.kardoaward.kardo.security.UserDetailsImpl;
 import com.kardoaward.kardo.participation_request.model.dto.NewParticipationRequest;
 import com.kardoaward.kardo.participation_request.model.dto.ParticipationRequestDto;
 import com.kardoaward.kardo.participation_request.model.dto.update.UpdateParticipationRequest;
@@ -37,7 +37,7 @@ public class ParticipationRequestController {
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ParticipationRequestDto createParticipation(@RequestBody @Valid
                                                        NewParticipationRequest newParticipationRequest) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         Long requestorId = userDetails.getUser().getId();
         log.info("Добавление пользователем с ИД {} новой заявки на участие в отборе с ИД {}.", requestorId,
@@ -49,7 +49,7 @@ public class ParticipationRequestController {
     @DeleteMapping("/{participationId}")
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public void deleteParticipationById(@PathVariable @Positive Long participationId) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         Long requestorId = userDetails.getUser().getId();
         log.info("Удаление пользователем с ИД {} своей заявки с ИД {} на участие в отборе.",
@@ -60,7 +60,7 @@ public class ParticipationRequestController {
     @GetMapping("/{participationId}")
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ParticipationRequestDto getParticipationById(@PathVariable @Positive Long participationId) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         Long requestorId = userDetails.getUser().getId();
         log.info("Возвращение пользователю с ИД {} его заявки с ИД {} на участие в отборе.",
@@ -72,7 +72,7 @@ public class ParticipationRequestController {
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
     public ParticipationRequestDto updateParticipationById(@PathVariable @Positive Long participationId,
                                                            @RequestBody @Valid UpdateParticipationRequest request) {
-        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         Long requestorId = userDetails.getUser().getId();
         log.info("Обновление пользователем с ИД {} своей заявки с ИД {} на участие в отборе.", requestorId,
