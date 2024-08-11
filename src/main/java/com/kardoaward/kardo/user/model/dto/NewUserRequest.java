@@ -46,4 +46,7 @@ public class NewUserRequest {
     private Set<String> network;
     @NotNull(message = "Role не может быть null.")
     private Role role;
+    @NotBlank(message = "Password не может быть пустым.")
+    @Size(min = 2, max = 250, message = "Длина password должна быть в диапазоне от 2 до 250 символов.")
+    private String password;
 }
