@@ -1,5 +1,6 @@
 package com.kardoaward.kardo.selection.offline_selection.controller;
 
+import com.kardoaward.kardo.config.MyUserDetails;
 import com.kardoaward.kardo.selection.offline_selection.model.dto.OfflineSelectionDto;
 import com.kardoaward.kardo.selection.offline_selection.service.OfflineSelectionService;
 import com.kardoaward.kardo.user.model.dto.UserShortDto;
@@ -9,10 +10,10 @@ import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,12 +56,13 @@ public class OfflineSelectionController {
 
     @GetMapping("/contestants")
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    public List<OfflineSelectionDto> getOfflineSelectionsByRequestorId(@RequestHeader("X-Requestor-Id")
-                                                                       Long requestorId,
-                                                                       @RequestParam(defaultValue = "0")
+    public List<OfflineSelectionDto> getOfflineSelectionsByRequestorId(@RequestParam(defaultValue = "0")
                                                                        @Min(0) int from,
                                                                        @RequestParam(defaultValue = "10")
                                                                        @Positive int size) {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        Long requestorId = userDetails.getUser().getId();
         log.info("Возвращение списка оффлайн-отборов с участием пользователя с ИД {}.", requestorId);
         return offlineSelectionService.getOfflineSelectionsByRequestorId(requestorId, from, size);
     }

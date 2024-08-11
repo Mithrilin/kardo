@@ -1,6 +1,7 @@
 package com.kardoaward.kardo.video_clip.controller;
 
 import com.google.gson.Gson;
+import com.kardoaward.kardo.config.MyUserDetails;
 import com.kardoaward.kardo.video_clip.model.dto.NewVideoClipRequest;
 import com.kardoaward.kardo.video_clip.model.dto.UpdateVideoClipRequest;
 import com.kardoaward.kardo.video_clip.model.dto.VideoClipDto;
@@ -13,6 +14,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +22,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,9 +42,11 @@ public class VideoClipController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    public VideoClipDto createVideoClip(@RequestHeader("X-Requestor-Id") Long requestorId,
-                                        @RequestParam("text") String json,
+    public VideoClipDto createVideoClip(@RequestParam("text") String json,
                                         @RequestParam("video") MultipartFile file) {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        Long requestorId = userDetails.getUser().getId();
         log.info("Добавление пользователем с ИД {} нового видео-клипа.", requestorId);
         /* ToDo
             Разобраться как принимать составные запросы.
@@ -55,8 +58,10 @@ public class VideoClipController {
 
     @DeleteMapping("/{videoId}")
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    public void deleteVideoClipById(@RequestHeader("X-Requestor-Id") Long requestorId,
-                                    @PathVariable @Positive Long videoId) {
+    public void deleteVideoClipById(@PathVariable @Positive Long videoId) {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        Long requestorId = userDetails.getUser().getId();
         log.info("Удаление пользователем с ИД {} своего видео-клипа с ИД {}.", requestorId, videoId);
         videoClipService.deleteVideoClipById(requestorId, videoId);
     }
@@ -70,9 +75,11 @@ public class VideoClipController {
 
     @PatchMapping("/{videoId}")
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    public VideoClipDto updateVideoClipById(@RequestHeader("X-Requestor-Id") Long requestorId,
-                                            @PathVariable @Positive Long videoId,
+    public VideoClipDto updateVideoClipById(@PathVariable @Positive Long videoId,
                                             @RequestBody @Valid UpdateVideoClipRequest request) {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        Long requestorId = userDetails.getUser().getId();
         log.info("Обновление пользователем с ИД {} видео-клипа с ИД {}.", requestorId, videoId);
         return videoClipService.updateVideoClipById(requestorId, videoId, request);
     }
@@ -88,16 +95,20 @@ public class VideoClipController {
 
     @PostMapping("/{videoId}/likes")
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    public VideoClipDto addLikeByVideoClipId(@RequestHeader("X-Requestor-Id") Long requestorId,
-                                             @PathVariable @Positive Long videoId) {
+    public VideoClipDto addLikeByVideoClipId(@PathVariable @Positive Long videoId) {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        Long requestorId = userDetails.getUser().getId();
         log.info("Добавление пользователем с ИД {} лайка к видео-клипу с ИД {}.", requestorId, videoId);
         return videoClipService.addLikeByVideoClipId(requestorId, videoId);
     }
 
     @DeleteMapping("/{videoId}/likes")
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    public VideoClipDto deleteLikeByVideoClipId(@RequestHeader("X-Requestor-Id") Long requestorId,
-                                                @PathVariable @Positive Long videoId) {
+    public VideoClipDto deleteLikeByVideoClipId(@PathVariable @Positive Long videoId) {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        Long requestorId = userDetails.getUser().getId();
         log.info("Удаление пользователем с ИД {} своего лайка к видео-клипу с ИД {}.", requestorId, videoId);
         return videoClipService.deleteLikeByVideoClipId(requestorId, videoId);
     }

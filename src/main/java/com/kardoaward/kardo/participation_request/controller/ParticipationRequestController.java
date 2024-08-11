@@ -1,5 +1,6 @@
 package com.kardoaward.kardo.participation_request.controller;
 
+import com.kardoaward.kardo.config.MyUserDetails;
 import com.kardoaward.kardo.participation_request.model.dto.NewParticipationRequest;
 import com.kardoaward.kardo.participation_request.model.dto.ParticipationRequestDto;
 import com.kardoaward.kardo.participation_request.model.dto.update.UpdateParticipationRequest;
@@ -10,6 +11,7 @@ import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +19,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,9 +35,11 @@ public class ParticipationRequestController {
 
     @PostMapping
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    public ParticipationRequestDto createParticipation(@RequestHeader("X-Requestor-Id") Long requestorId,
-                                                       @RequestBody @Valid
+    public ParticipationRequestDto createParticipation(@RequestBody @Valid
                                                        NewParticipationRequest newParticipationRequest) {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        Long requestorId = userDetails.getUser().getId();
         log.info("Добавление пользователем с ИД {} новой заявки на участие в отборе с ИД {}.", requestorId,
                 newParticipationRequest.getSelectionId());
         participationHelper.isUserRequester(requestorId, newParticipationRequest.getRequesterId());
@@ -45,8 +48,10 @@ public class ParticipationRequestController {
 
     @DeleteMapping("/{participationId}")
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    public void deleteParticipationById(@RequestHeader("X-Requestor-Id") Long requestorId,
-                                        @PathVariable @Positive Long participationId) {
+    public void deleteParticipationById(@PathVariable @Positive Long participationId) {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        Long requestorId = userDetails.getUser().getId();
         log.info("Удаление пользователем с ИД {} своей заявки с ИД {} на участие в отборе.",
                 requestorId, participationId);
         service.deleteParticipationById(requestorId, participationId);
@@ -54,8 +59,10 @@ public class ParticipationRequestController {
 
     @GetMapping("/{participationId}")
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    public ParticipationRequestDto getParticipationById(@RequestHeader("X-Requestor-Id") Long requestorId,
-                                                        @PathVariable @Positive Long participationId) {
+    public ParticipationRequestDto getParticipationById(@PathVariable @Positive Long participationId) {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        Long requestorId = userDetails.getUser().getId();
         log.info("Возвращение пользователю с ИД {} его заявки с ИД {} на участие в отборе.",
                 requestorId, participationId);
         return service.getParticipationById(requestorId, participationId);
@@ -63,9 +70,11 @@ public class ParticipationRequestController {
 
     @PatchMapping("/{participationId}")
     @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    public ParticipationRequestDto updateParticipationById(@RequestHeader("X-Requestor-Id") Long requestorId,
-                                                           @PathVariable @Positive Long participationId,
+    public ParticipationRequestDto updateParticipationById(@PathVariable @Positive Long participationId,
                                                            @RequestBody @Valid UpdateParticipationRequest request) {
+        MyUserDetails userDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        Long requestorId = userDetails.getUser().getId();
         log.info("Обновление пользователем с ИД {} своей заявки с ИД {} на участие в отборе.", requestorId,
                 participationId);
         return service.updateParticipationById(requestorId, participationId, request);
