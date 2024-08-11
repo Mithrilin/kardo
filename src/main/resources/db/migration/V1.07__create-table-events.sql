@@ -8,7 +8,7 @@ CREATE TABLE events (
   status VARCHAR(20) NOT NULL,
   logo VARCHAR(250),
   is_main_event BOOLEAN NOT NULL,
-  description VARCHAR(5000) NOT NULL
+  description VARCHAR(1500) NOT NULL
 );
 
 CREATE TABLE event_programs (
