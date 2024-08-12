@@ -48,7 +48,7 @@ public class EventAdminController {
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Гранд-соревнование не найдено", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content),})
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content)})
     @PostMapping
     @Secured("ADMIN")
     public EventDto createEvent(@Parameter(description = "Данные добавляемого мероприятия")
@@ -67,7 +67,7 @@ public class EventAdminController {
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Мероприятие не найдено", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content),})
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content)})
     @PostMapping("/{eventId}/logo")
     @Secured("ADMIN")
     public EventDto addEventLogo(@Parameter(description = "id мероприятия")
@@ -84,7 +84,7 @@ public class EventAdminController {
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Мероприятие не найдено", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content),})
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content)})
     @DeleteMapping("/{eventId}")
     @Secured("ADMIN")
     public void deleteEventById(@Parameter(description = "id мероприятия")
@@ -101,7 +101,7 @@ public class EventAdminController {
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Мероприятие не найдено", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content),})
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content)})
     @PatchMapping("/{eventId}")
     @Secured("ADMIN")
     public EventDto updateEventById(@Parameter(description = "id мероприятия")

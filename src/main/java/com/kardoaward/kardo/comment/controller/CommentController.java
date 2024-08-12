@@ -54,7 +54,7 @@ public class CommentController {
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Видео-клип не найден", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content),})
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content)})
     @PostMapping("/videos/{videoId}")
     @Secured({"ADMIN", "USER"})
     public CommentDto createComment(@Parameter(description = "id видео-клипа")
@@ -75,7 +75,7 @@ public class CommentController {
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Комментарий не найден", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content),})
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content)})
     @DeleteMapping("/{commentId}")
     @Secured({"ADMIN", "USER"})
     public void deleteCommentById(@Parameter(description = "id комментария")
@@ -95,7 +95,7 @@ public class CommentController {
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Комментарий не найден", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content),})
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content)})
     @GetMapping("/{commentId}")
     @Secured({"ADMIN", "USER"})
     public CommentDto getCommentById(@Parameter(description = "id комментария")
@@ -112,7 +112,7 @@ public class CommentController {
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Комментарий не найден", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content),})
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content)})
     @PatchMapping("/{commentId}")
     @Secured({"ADMIN", "USER"})
     public CommentDto updateCommentById(@Parameter(description = "id комментария")
@@ -131,7 +131,7 @@ public class CommentController {
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Видео-клип не найден", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content),})
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content)})
     @GetMapping("/videos/{videoId}")
     @Secured({"ADMIN", "USER"})
     public List<CommentDto> getCommentsByVideoId(@Parameter(description = "id видео-клипа")

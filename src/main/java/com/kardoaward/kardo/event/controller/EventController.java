@@ -46,7 +46,7 @@ public class EventController {
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Мероприятие не найдено", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content),})
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content)})
     @GetMapping("/{eventId}")
     @Secured({"ADMIN", "USER"})
     public EventDto getEventById(@Parameter(description = "id мероприятия")
@@ -60,7 +60,7 @@ public class EventController {
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Мероприятие не найдено", content = @Content),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content),})
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content)})
     @GetMapping
     @Secured({"ADMIN", "USER"})
     public List<EventShortDto> getEventsByParams(@Parameter(description = "id Гранд-соревнования")
