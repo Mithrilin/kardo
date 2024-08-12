@@ -103,7 +103,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
     }
 
     @Override
-    public ParticipationRequestStatusUpdateResult updateParticipationRequestStatusById(
+    public ParticipationRequestStatusUpdateResult updateParticipationRequestStatus(
             Long selectionId, ParticipationRequestStatusUpdateRequest request) {
 
         offlineSelectionValidationHelper.isOfflineSelectionPresent(selectionId);
