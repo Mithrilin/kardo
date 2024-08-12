@@ -57,14 +57,6 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    @Transactional
-    public void deleteCommentByIdByAdmin(Long commentId) {
-        commentValidationHelper.isCommentPresent(commentId);
-        commentRepository.deleteById(commentId);
-        log.info("Комментарий с ИД {} удалён.", commentId);
-    }
-
-    @Override
     public CommentDto getCommentById(Long commentId) {
         Comment comment = commentValidationHelper.isCommentPresent(commentId);
         CommentDto commentDto = commentMapper.commentToCommentDto(comment);
