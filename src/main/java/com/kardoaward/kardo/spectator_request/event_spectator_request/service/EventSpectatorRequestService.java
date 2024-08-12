@@ -4,18 +4,17 @@ import com.kardoaward.kardo.spectator_request.event_spectator_request.model.dto.
 import com.kardoaward.kardo.spectator_request.event_spectator_request.model.dto.NewEventSpectatorRequest;
 import com.kardoaward.kardo.spectator_request.model.dto.update.SpectatorRequestStatusUpdateRequest;
 import com.kardoaward.kardo.spectator_request.model.dto.update.SpectatorRequestStatusUpdateResult;
+import com.kardoaward.kardo.user.model.User;
 
 import java.util.List;
 
 public interface EventSpectatorRequestService {
 
-    EventSpectatorRequestDto addEventSpectatorRequest(Long requestorId, NewEventSpectatorRequest request);
+    EventSpectatorRequestDto addEventSpectatorRequest(User requestor, NewEventSpectatorRequest request);
 
-    void deleteEventSpectatorRequestById(Long requestorId, Long spectatorId);
+    void deleteEventSpectatorRequestById(User requestor, Long spectatorId);
 
-    EventSpectatorRequestDto getEventSpectatorRequestById(Long requestorId, Long spectatorId);
-
-    EventSpectatorRequestDto getEventSpectatorRequestByIdByAdmin(Long spectatorId);
+    EventSpectatorRequestDto getEventSpectatorRequestById(User requestor, Long spectatorId);
 
     List<EventSpectatorRequestDto> getEventSpectatorRequestByEventId(Long eventId, int from, int size);
 

@@ -61,9 +61,8 @@ public class VideoClipServiceImpl implements VideoClipService {
 
     @Override
     @Transactional
-    public VideoClipDto addVideoClip(Long requestorId, NewVideoClipRequest request, MultipartFile file) {
-        User user = userValidationHelper.isUserPresent(requestorId);
-        String path = FOLDER_PATH + "/users/" + requestorId + "/videos/";
+    public VideoClipDto addVideoClip(User requestor, NewVideoClipRequest request, MultipartFile file) {
+        String path = FOLDER_PATH + "/users/" + requestor.getId() + "/videos/";
         File videoPath = new File(path);
         videoPath.mkdirs();
         String newVideoPath = path + file.getOriginalFilename();
@@ -74,7 +73,7 @@ public class VideoClipServiceImpl implements VideoClipService {
             throw new FileContentException("Не удалось сохранить файл: " + newVideoPath);
         }
 
-        VideoClip videoClip = videoClipMapper.newVideoClipRequestToVideoClip(request, user, newVideoPath);
+        VideoClip videoClip = videoClipMapper.newVideoClipRequestToVideoClip(request, requestor, newVideoPath);
         VideoClip returnedVideoClip = videoClipRepository.save(videoClip);
         VideoClipDto videoClipDto = videoClipMapper.videoClipToVideoClipDto(returnedVideoClip);
         log.info("Видео-клип с ID = {} создан.", videoClipDto.getId());
@@ -83,20 +82,11 @@ public class VideoClipServiceImpl implements VideoClipService {
 
     @Override
     @Transactional
-    public void deleteVideoClipById(Long requestorId, Long videoId) {
-        userValidationHelper.isUserPresent(requestorId);
+    public void deleteVideoClipById(User requestor, Long videoId) {
         VideoClip videoClip = videoClipValidationHelper.isVideoClipPresent(videoId);
-        videoClipValidationHelper.isRequestorCreatorVideo(requestorId, videoClip.getCreator().getId());
+        videoClipValidationHelper.isRequestorCreatorVideoOrAdmin(requestor, videoClip.getCreator().getId());
         deleteVideo(videoClip);
-        log.info("Видео-клип с ID {} удалён пользователем с ИД {}.", videoId, requestorId);
-    }
-
-    @Override
-    @Transactional
-    public void deleteVideoClipByIdByAdmin(Long videoId) {
-        VideoClip videoClip = videoClipValidationHelper.isVideoClipPresent(videoId);
-        deleteVideo(videoClip);
-        log.info("Видео-клип с ID {} удалён администратором.", videoId);
+        log.info("Видео-клип с ID {} удалён.", videoId);
     }
 
     @Override
@@ -109,10 +99,9 @@ public class VideoClipServiceImpl implements VideoClipService {
 
     @Override
     @Transactional
-    public VideoClipDto updateVideoClipById(Long requestorId, Long videoId, UpdateVideoClipRequest request) {
-        userValidationHelper.isUserPresent(requestorId);
+    public VideoClipDto updateVideoClipById(User requestor, Long videoId, UpdateVideoClipRequest request) {
         VideoClip videoClip = videoClipValidationHelper.isVideoClipPresent(videoId);
-        videoClipValidationHelper.isRequestorCreatorVideo(requestorId, videoClip.getCreator().getId());
+        videoClipValidationHelper.isRequestorCreatorVideoOrAdmin(requestor, videoClip.getCreator().getId());
         videoClipMapper.updateVideoClip(request, videoClip);
         VideoClip updatedVideoClip = videoClipRepository.save(videoClip);
         VideoClipDto videoClipDto = videoClipMapper.videoClipToVideoClipDto(updatedVideoClip);
@@ -140,23 +129,21 @@ public class VideoClipServiceImpl implements VideoClipService {
 
     @Override
     @Transactional
-    public VideoClipDto addLikeByVideoClipId(Long requestorId, Long videoId) {
-        User user = userValidationHelper.isUserPresent(requestorId);
+    public VideoClipDto addLikeByVideoClipId(User requestor, Long videoId) {
         VideoClip videoClip = videoClipValidationHelper.isVideoClipPresent(videoId);
-        videoClipValidationHelper.isRequestorNotCreatorVideo(requestorId, videoClip.getCreator().getId());
-        Like like = likeMapper.toLike(user, videoClip);
+        videoClipValidationHelper.isRequestorNotCreatorVideo(requestor.getId(), videoClip.getCreator().getId());
+        Like like = likeMapper.toLike(requestor, videoClip);
         likeRepository.save(like);
         Integer likesCount = videoClip.getLikesCount();
         videoClip.setLikesCount(++likesCount);
         VideoClipDto videoClipDto = videoClipMapper.videoClipToVideoClipDto(videoClip);
-        log.info("Лайк пользователя с ID {} к видео-клипу с ИД {} добавлен.", requestorId, videoId);
+        log.info("Лайк пользователя с ID {} к видео-клипу с ИД {} добавлен.", requestor.getId(), videoId);
         return videoClipDto;
     }
 
     @Override
     @Transactional
     public VideoClipDto deleteLikeByVideoClipId(Long requestorId, Long videoId) {
-        userValidationHelper.isUserPresent(requestorId);
         VideoClip videoClip = videoClipValidationHelper.isVideoClipPresent(videoId);
         Like like = videoClipValidationHelper.isRequestorLikedVideoClip(requestorId, videoId);
         likeRepository.delete(like);

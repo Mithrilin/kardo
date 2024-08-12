@@ -1,6 +1,6 @@
 package com.kardoaward.kardo.selection.video_selection.controller.admin;
 
-import com.kardoaward.kardo.selection.model.dto.UpdateSelectionRequest;
+import com.kardoaward.kardo.selection.video_selection.model.UpdateVideoSelectionRequest;
 import com.kardoaward.kardo.selection.video_selection.model.dto.NewVideoSelectionRequest;
 import com.kardoaward.kardo.selection.video_selection.model.dto.VideoSelectionDto;
 import com.kardoaward.kardo.selection.video_selection.service.VideoSelectionService;
@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -30,6 +31,7 @@ public class VideoSelectionAdminController {
     private final VideoSelectionValidationHelper videoSelectionValidationHelper;
 
     @PostMapping
+    @Secured("ADMIN")
     public VideoSelectionDto createVideoSelection(@RequestBody @Valid
                                                   NewVideoSelectionRequest newVideoSelectionRequest) {
         log.info("Добавление администратором нового видео-отбора {}.", newVideoSelectionRequest);
@@ -38,14 +40,16 @@ public class VideoSelectionAdminController {
     }
 
     @DeleteMapping("/{selectionId}")
+    @Secured("ADMIN")
     public void deleteVideoSelection(@PathVariable @Positive Long selectionId) {
         log.info("Удаление администратором видео-отбора с ИД {}.", selectionId);
         videoSelectionService.deleteVideoSelection(selectionId);
     }
 
     @PatchMapping("/{selectionId}")
+    @Secured("ADMIN")
     public VideoSelectionDto updateVideoSelectionById(@PathVariable @Positive Long selectionId,
-                                                      @RequestBody @Valid UpdateSelectionRequest request) {
+                                                      @RequestBody @Valid UpdateVideoSelectionRequest request) {
         log.info("Обновление администратором видео-отбора с ИД {}.", selectionId);
         return videoSelectionService.updateVideoSelectionById(selectionId, request);
     }

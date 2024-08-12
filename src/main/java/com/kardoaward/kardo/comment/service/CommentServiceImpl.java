@@ -37,25 +37,23 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public CommentDto addComment(Long requestorId, Long videoId, NewCommentRequest newCommentRequest) {
-        User user = userValidationHelper.isUserPresent(requestorId);
+    public CommentDto addComment(User requestor, Long videoId, NewCommentRequest newCommentRequest) {
         VideoClip videoClip = videoClipValidationHelper.isVideoClipPresent(videoId);
-        Comment comment = commentMapper.newCommentRequestToComment(newCommentRequest, user, videoClip);
+        Comment comment = commentMapper.newCommentRequestToComment(newCommentRequest, requestor, videoClip);
         Comment returnedComment = commentRepository.save(comment);
         CommentDto commentDto = commentMapper.commentToCommentDto(returnedComment);
         log.info("Комментарий с ИД {} пользователя с ИД {} к видео-клипу с ИД {} создан.", commentDto.getId(),
-                requestorId, videoId);
+                requestor.getId(), videoId);
         return commentDto;
     }
 
     @Override
     @Transactional
-    public void deleteCommentById(Long requestorId, Long commentId) {
-        userValidationHelper.isUserPresent(requestorId);
+    public void deleteCommentById(User requestor, Long commentId) {
         Comment comment = commentValidationHelper.isCommentPresent(commentId);
-        commentValidationHelper.isUserAuthor(requestorId, comment.getAuthor().getId());
+        commentValidationHelper.isUserAuthor(requestor, comment.getAuthor().getId());
         commentRepository.deleteById(commentId);
-        log.info("Комментарий с ИД {} пользователя с ИД {} удалён.", commentId, requestorId);
+        log.info("Комментарий с ИД {} пользователя с ИД {} удалён.", commentId, requestor.getId());
     }
 
     @Override
@@ -76,9 +74,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public CommentDto updateCommentById(Long requestorId, Long commentId, UpdateCommentRequest request) {
-        userValidationHelper.isUserPresent(requestorId);
+    public CommentDto updateCommentById(User requestor, Long commentId, UpdateCommentRequest request) {
         Comment comment = commentValidationHelper.isCommentPresent(commentId);
+        commentValidationHelper.isUserAuthor(requestor, comment.getAuthor().getId());
         commentMapper.updateComment(request, comment);
         Comment updatedComment = commentRepository.save(comment);
         CommentDto commentDto = commentMapper.commentToCommentDto(updatedComment);

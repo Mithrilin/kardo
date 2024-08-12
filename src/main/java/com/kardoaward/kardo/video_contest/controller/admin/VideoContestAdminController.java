@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -30,6 +31,7 @@ public class VideoContestAdminController {
     private final VideoContestValidationHelper videoHelper;
 
     @PostMapping
+    @Secured("ADMIN")
     public VideoContestDto createVideoContest(@RequestBody @Valid NewVideoContestRequest newContest) {
         log.info("Добавление администратором нового видео-конкурса {}.", newContest);
         videoHelper.isNewVideoContestDateValid(newContest);
@@ -37,12 +39,14 @@ public class VideoContestAdminController {
     }
 
     @DeleteMapping("/{contestId}")
+    @Secured("ADMIN")
     public void deleteVideoContest(@PathVariable @Positive Long contestId) {
         log.info("Удаление администратором видео-конкурса с ИД {}.", contestId);
         service.deleteVideoContest(contestId);
     }
 
     @PatchMapping("/{contestId}")
+    @Secured("ADMIN")
     public VideoContestDto updateVideoContest(@PathVariable @Positive Long contestId,
                                               @RequestBody @Valid UpdateVideoContestRequest request) {
         log.info("Обновление администратором видео-конкурса с ИД {}.", contestId);

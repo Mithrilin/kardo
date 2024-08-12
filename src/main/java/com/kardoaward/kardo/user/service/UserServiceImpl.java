@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,24 +37,29 @@ public class UserServiceImpl implements UserService {
     private final UserValidationHelper userValidationHelper;
     private final OfflineSelectionValidationHelper offlineSelectionValidationHelper;
 
+    private final PasswordEncoder passwordEncoder;
+
     private final String FOLDER_PATH;
 
     public UserServiceImpl(UserRepository userRepository,
                            UserMapper userMapper,
                            UserValidationHelper userValidationHelper,
                            OfflineSelectionValidationHelper offlineSelectionValidationHelper,
+                           PasswordEncoder passwordEncoder,
                            @Value("${folder.path}") String FOLDER_PATH) {
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.userValidationHelper = userValidationHelper;
         this.offlineSelectionValidationHelper = offlineSelectionValidationHelper;
+        this.passwordEncoder = passwordEncoder;
         this.FOLDER_PATH = FOLDER_PATH;
     }
 
     @Override
     @Transactional
     public UserShortDto addUser(NewUserRequest newUserRequest) {
-        User user = userMapper.newUserRequestToUser(newUserRequest);
+        User user = userMapper.newUserRequestToUser(newUserRequest,
+                passwordEncoder.encode(newUserRequest.getPassword()));
         User returnedUser = userRepository.save(user);
         UserShortDto userShortDto = userMapper.userToUserShortDto(returnedUser);
         log.info("Пользователь с ID = {} создан.", userShortDto.getId());
@@ -71,7 +77,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void deleteUser(Long userId) {
-        userValidationHelper.isUserPresent(userId);
         File userPath = new File(FOLDER_PATH + "/users/" + userId);
 
         try {
@@ -109,8 +114,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDto updateUser(Long userId, UpdateUserRequest request, MultipartFile file) {
-        User user = userValidationHelper.isUserPresent(userId);
+    public UserDto updateUser(User user, UpdateUserRequest request, MultipartFile file) {
 
         if (user.getAvatarPhoto() != null) {
             try {
@@ -122,7 +126,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if (file != null) {
-            String path = FOLDER_PATH + "/users/" + userId + "/avatar/";
+            String path = FOLDER_PATH + "/users/" + user.getId() + "/avatar/";
             File avatarPath = new File(path);
             avatarPath.mkdirs();
             String newAvatarPath = path + file.getOriginalFilename();
@@ -139,7 +143,7 @@ public class UserServiceImpl implements UserService {
         userMapper.updateUser(request, user);
         User updatedUser = userRepository.save(user);
         UserDto userDto = userMapper.userToUserDto(updatedUser);
-        log.info("Пользователь с ID {} обновлён.", userId);
+        log.info("Пользователь с ID {} обновлён.", user.getId());
         return userDto;
     }
 

@@ -9,6 +9,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -29,14 +30,8 @@ public class SelectionSpectatorRequestAdminController {
 
     private final SelectionSpectatorRequestService service;
 
-    @GetMapping("/{spectatorId}")
-    public SelectionSpectatorRequestDto getSelectionSpectatorRequestByIdByAdmin(@PathVariable @Positive
-                                                                                Long spectatorId) {
-        log.info("Возвращение администратору заявки зрителя отбора с ИД {}.", spectatorId);
-        return service.getSelectionSpectatorRequestByIdByAdmin(spectatorId);
-    }
-
     @GetMapping("/selections/{selectionId}")
+    @Secured("ADMIN")
     public List<SelectionSpectatorRequestDto> getSelectionSpectatorRequestByEventId(@PathVariable @Positive
                                                                                     Long selectionId,
                                                                                     @RequestParam(defaultValue = "0")
@@ -48,6 +43,7 @@ public class SelectionSpectatorRequestAdminController {
     }
 
     @PatchMapping("/selections/{selectionId}")
+    @Secured("ADMIN")
     public SpectatorRequestStatusUpdateResult updateSelectionSpectatorRequestStatusBySelectionId(
                                                     @PathVariable @Positive Long selectionId,
                                                     @RequestBody @Valid SpectatorRequestStatusUpdateRequest request) {

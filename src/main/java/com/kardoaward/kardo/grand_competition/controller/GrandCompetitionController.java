@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,12 +26,14 @@ public class GrandCompetitionController {
     private final GrandCompetitionService service;
 
     @GetMapping("/{competitionId}")
+    @Secured({"ADMIN", "USER"})
     public GrandCompetitionDto getGrandCompetitionById(@PathVariable @Positive Long competitionId) {
         log.info("Возвращение гранд-соревнования с ИД {}.", competitionId);
         return service.getGrandCompetitionById(competitionId);
     }
 
     @GetMapping
+    @Secured({"ADMIN", "USER"})
     public List<GrandCompetitionDto> getGrandCompetitions(@RequestParam(defaultValue = "0") @Min(0) int from,
                                                           @RequestParam(defaultValue = "10") @Positive int size) {
         log.info("Возвращение списка гранд-соревнований.");

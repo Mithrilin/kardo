@@ -21,6 +21,6 @@ public class UpdateVideoContestRequest {
     @Future(message = "ContestEnd должен быть в будущем.")
     private LocalDate contestEnd;
     private Status status;
-    @Size(min = 2, max = 1000, message = "Длина Description должна быть в диапазоне от 2 до 1000 символов.")
+    @Size(min = 2, max = 3000, message = "Длина Description должна быть в диапазоне от 2 до 3000 символов.")
     private String description;
 }

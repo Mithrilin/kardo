@@ -4,6 +4,8 @@ import com.kardoaward.kardo.exception.NotFoundException;
 import com.kardoaward.kardo.exception.NotValidException;
 import com.kardoaward.kardo.spectator_request.selection_spectator_request.model.SelectionSpectatorRequest;
 import com.kardoaward.kardo.spectator_request.selection_spectator_request.repository.SelectionSpectatorRequestRepository;
+import com.kardoaward.kardo.user.model.User;
+import com.kardoaward.kardo.user.model.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,11 +19,12 @@ public class SelectionSpectatorRequestValidationHelper {
 
     private final SelectionSpectatorRequestRepository repository;
 
-    public void isUserRequester(Long userId, Long requesterId) {
-        if (!userId.equals(requesterId)) {
-            log.error("Пользователь с ИД {} не является создателем заявки зрителя отбора.", userId);
+    public void isUserRequesterOrAdmin(User user, Long requesterId) {
+        if (!user.getId().equals(requesterId) && user.getRole() != Role.ADMIN) {
+            log.error("Пользователь с ИД {} не является создателем заявки зрителя отбора или администратором.",
+                    user.getId());
             throw new NotValidException(String.format("Пользователь с ИД %d не является создателем заявки зрителя " +
-                    "отбора.", userId));
+                    "отбора или администратором.", user.getId()));
         }
     }
 

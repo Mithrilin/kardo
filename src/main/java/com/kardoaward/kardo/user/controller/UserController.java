@@ -1,6 +1,8 @@
 package com.kardoaward.kardo.user.controller;
 
 import com.google.gson.Gson;
+import com.kardoaward.kardo.security.UserDetailsImpl;
+import com.kardoaward.kardo.user.model.User;
 import com.kardoaward.kardo.user.model.dto.NewUserRequest;
 import com.kardoaward.kardo.user.model.dto.UpdateUserRequest;
 import com.kardoaward.kardo.user.model.dto.UserDto;
@@ -11,6 +13,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +22,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,35 +38,46 @@ public class UserController {
 
     private final UserValidationHelper userValidationHelper;
 
-    @PostMapping
+    @PostMapping("/reg")
     public UserShortDto createUser(@RequestBody @Valid NewUserRequest newUserRequest) {
         log.info("Добавление нового пользователь {}.", newUserRequest);
         return userService.addUser(newUserRequest);
     }
 
     @GetMapping("/{userId}")
-    public UserDto getUserById(@RequestHeader("X-Requestor-Id") Long requestorId,
-                               @PathVariable @Positive Long userId) {
-        log.info("Получение пользователем с ИД {} своих данных.", userId);
-        userValidationHelper.isUserOwner(requestorId, userId);
+    @Secured({"ADMIN", "USER"})
+    public UserDto getUserById(@PathVariable @Positive Long userId) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        User requestor = userDetails.getUser();
+        log.info("Получение данных пользователя с ИД {}.", userId);
+        userValidationHelper.isUserOwnerOrAdmin(requestor, userId);
         return userService.getUserById(userId);
     }
 
-    @DeleteMapping
-    public void deleteUser(@RequestHeader("X-Requestor-Id") Long requestorId) {
-        log.info("Удаление пользователем с ИД {} своего профиля.", requestorId);
-        userService.deleteUser(requestorId);
+    @DeleteMapping("/{userId}")
+    @Secured({"ADMIN", "USER"})
+    public void deleteUser(@PathVariable @Positive Long userId) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        User requestor = userDetails.getUser();
+        log.info("Удаление профиля пользователя с ИД {}.", userId);
+        userValidationHelper.isUserOwnerOrAdmin(requestor, userId);
+        userService.deleteUser(userId);
     }
 
     @PatchMapping
-    public UserDto updateUser(@RequestHeader("X-Requestor-Id") Long requestorId,
-                              @RequestParam(value = "text", required = false) String json,
+    @Secured("USER")
+    public UserDto updateUser(@RequestParam(value = "text", required = false) String json,
                               @RequestParam(value = "image", required = false) MultipartFile file) {
-        log.info("Обновление пользователем с ИД {} своих данных.", requestorId);
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        User requestor = userDetails.getUser();
+        log.info("Обновление пользователем с ИД {} своих данных.", requestor.getId());
         /* ToDo
             Разобраться как принимать составные запросы.
          */
         UpdateUserRequest request = new Gson().fromJson(json, UpdateUserRequest.class);
-        return userService.updateUser(requestorId, request, file);
+        return userService.updateUser(requestor, request, file);
     }
 }

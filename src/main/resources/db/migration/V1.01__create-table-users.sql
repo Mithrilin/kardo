@@ -13,8 +13,9 @@ CREATE TABLE users (
   citizenship VARCHAR(250),
   avatar_photo VARCHAR(250),
   portfolio VARCHAR(250),
-  about_me VARCHAR(7000),
-  role VARCHAR(10)
+  about_me VARCHAR(1000),
+  role VARCHAR(10) NOT NULL,
+  password VARCHAR(250) NOT NULL
 );
 
 CREATE TABLE user_networks (

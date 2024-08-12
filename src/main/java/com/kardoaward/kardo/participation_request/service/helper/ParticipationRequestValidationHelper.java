@@ -4,6 +4,8 @@ import com.kardoaward.kardo.exception.NotFoundException;
 import com.kardoaward.kardo.exception.NotValidException;
 import com.kardoaward.kardo.participation_request.model.ParticipationRequest;
 import com.kardoaward.kardo.participation_request.repository.ParticipationRequestRepository;
+import com.kardoaward.kardo.user.model.User;
+import com.kardoaward.kardo.user.model.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -28,11 +30,12 @@ public class ParticipationRequestValidationHelper {
         return optionalParticipationRequest.get();
     }
 
-    public void isUserRequester(Long userId, Long requestId) {
-        if (!userId.equals(requestId)) {
-            log.error("Пользователь с ИД {} не является создателем заявки с ИД {}.", userId, requestId);
-            throw new NotValidException(String.format("Пользователь с ИД %d не является создателем заявки с ИД %d.",
-                    userId, requestId));
+    public void isUserRequesterOrAdmin(User requestor, Long requesterId) {
+        if (!requestor.getId().equals(requesterId) && requestor.getRole() != Role.ADMIN) {
+            log.error("Пользователь с ИД {} не является создателем заявки с ИД {} или администратором.",
+                    requestor.getId(), requesterId);
+            throw new NotValidException(String.format("Пользователь с ИД %d не является создателем заявки с ИД %d " +
+                            "или администратором.", requestor.getId(), requesterId));
         }
     }
 }

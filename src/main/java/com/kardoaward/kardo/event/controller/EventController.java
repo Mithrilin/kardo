@@ -10,6 +10,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,12 +31,14 @@ public class EventController {
     private final EventService eventService;
 
     @GetMapping("/{eventId}")
+    @Secured({"ADMIN", "USER"})
     public EventDto getEventById(@PathVariable @Positive Long eventId) {
         log.info("Возвращение мероприятия с ИД {}.", eventId);
         return eventService.getEventById(eventId);
     }
 
     @GetMapping
+    @Secured({"ADMIN", "USER"})
     public List<EventShortDto> getEventsByParams(@RequestParam(required = false) Long grandCompetitionId,
                                                  @RequestParam(required = false) LocalDate day,
                                                  @RequestParam(required = false) EventProgram program,

@@ -19,4 +19,5 @@ import lombok.ToString;
 public class VideoSelection extends Selection {
 
     private String hashtag;
+    private String description;
 }

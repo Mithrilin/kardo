@@ -13,7 +13,6 @@ import com.kardoaward.kardo.spectator_request.event_spectator_request.service.he
 import com.kardoaward.kardo.spectator_request.model.dto.update.SpectatorRequestStatusUpdateRequest;
 import com.kardoaward.kardo.spectator_request.model.dto.update.SpectatorRequestStatusUpdateResult;
 import com.kardoaward.kardo.user.model.User;
-import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,48 +33,35 @@ public class EventSpectatorRequestServiceImpl implements EventSpectatorRequestSe
 
     private final EventSpectatorRequestMapper mapper;
 
-    private final UserValidationHelper userValidationHelper;
     private final EventValidationHelper eventValidationHelper;
     private final EventSpectatorRequestValidationHelper helper;
 
     @Override
     @Transactional
-    public EventSpectatorRequestDto addEventSpectatorRequest(Long requestorId, NewEventSpectatorRequest request) {
-        User user = userValidationHelper.isUserPresent(requestorId);
+    public EventSpectatorRequestDto addEventSpectatorRequest(User requestor, NewEventSpectatorRequest request) {
         Event event = eventValidationHelper.isEventPresent(request.getEventId());
-        EventSpectatorRequest eventSpectatorRequest = mapper.newSpectatorRequestToSpectatorRequest(event, user);
+        EventSpectatorRequest eventSpectatorRequest = mapper.newSpectatorRequestToSpectatorRequest(event, requestor);
         EventSpectatorRequest returnedSpectatorRequest = repository.save(eventSpectatorRequest);
         EventSpectatorRequestDto spectatorRequestDto = mapper
                 .spectatorRequestToSpectatorRequestDto(returnedSpectatorRequest);
         log.info("Заявка зрителя мероприятия с ИД {} пользователя с ИД {} создана.", spectatorRequestDto.getId(),
-                requestorId);
+                requestor.getId());
         return spectatorRequestDto;
     }
 
     @Override
     @Transactional
-    public void deleteEventSpectatorRequestById(Long requestorId, Long spectatorId) {
-        userValidationHelper.isUserPresent(requestorId);
+    public void deleteEventSpectatorRequestById(User requestor, Long spectatorId) {
         EventSpectatorRequest eventSpectatorRequest = helper.isSpectatorRequestPresent(spectatorId);
-        helper.isUserRequester(requestorId, eventSpectatorRequest.getRequester().getId());
+        helper.isUserRequesterOrAdmin(requestor, eventSpectatorRequest.getRequester().getId());
         repository.deleteById(spectatorId);
-        log.info("Заявка зрителя мероприятия с ИД {} пользователя с ИД {} удалена.", spectatorId, requestorId);
+        log.info("Заявка зрителя мероприятия с ИД {} пользователя с ИД {} удалена.", spectatorId, requestor.getId());
     }
 
     @Override
-    public EventSpectatorRequestDto getEventSpectatorRequestById(Long requestorId, Long spectatorId) {
-        userValidationHelper.isUserPresent(requestorId);
+    public EventSpectatorRequestDto getEventSpectatorRequestById(User requestor, Long spectatorId) {
         EventSpectatorRequest eventSpectatorRequest = helper.isSpectatorRequestPresent(spectatorId);
-        helper.isUserRequester(requestorId, eventSpectatorRequest.getRequester().getId());
-        EventSpectatorRequestDto spectatorRequestDto = mapper
-                .spectatorRequestToSpectatorRequestDto(eventSpectatorRequest);
-        log.info("Заявка зрителя мероприятия с ИД {} пользователя с ИД {} возвращена.", spectatorId, requestorId);
-        return spectatorRequestDto;
-    }
-
-    @Override
-    public EventSpectatorRequestDto getEventSpectatorRequestByIdByAdmin(Long spectatorId) {
-        EventSpectatorRequest eventSpectatorRequest = helper.isSpectatorRequestPresent(spectatorId);
+        helper.isUserRequesterOrAdmin(requestor, eventSpectatorRequest.getRequester().getId());
         EventSpectatorRequestDto spectatorRequestDto = mapper
                 .spectatorRequestToSpectatorRequestDto(eventSpectatorRequest);
         log.info("Заявка зрителя мероприятия с ИД {} возвращена.", spectatorId);

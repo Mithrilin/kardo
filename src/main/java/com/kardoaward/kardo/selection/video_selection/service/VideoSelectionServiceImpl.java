@@ -3,7 +3,7 @@ package com.kardoaward.kardo.selection.video_selection.service;
 import com.kardoaward.kardo.grand_competition.model.GrandCompetition;
 import com.kardoaward.kardo.grand_competition.service.helper.GrandCompetitionValidationHelper;
 import com.kardoaward.kardo.selection.video_selection.mapper.VideoSelectionMapper;
-import com.kardoaward.kardo.selection.model.dto.UpdateSelectionRequest;
+import com.kardoaward.kardo.selection.video_selection.model.UpdateVideoSelectionRequest;
 import com.kardoaward.kardo.selection.video_selection.model.VideoSelection;
 import com.kardoaward.kardo.selection.video_selection.model.dto.NewVideoSelectionRequest;
 import com.kardoaward.kardo.selection.video_selection.model.dto.VideoSelectionDto;
@@ -83,7 +83,7 @@ public class VideoSelectionServiceImpl implements VideoSelectionService {
 
     @Override
     @Transactional
-    public VideoSelectionDto updateVideoSelectionById(Long selectionId, UpdateSelectionRequest request) {
+    public VideoSelectionDto updateVideoSelectionById(Long selectionId, UpdateVideoSelectionRequest request) {
         VideoSelection videoSelection = videoSelectionValidationHelper.isVideoSelectionPresent(selectionId);
         videoSelectionValidationHelper.isUpdateSelectionDateValid(videoSelection, request);
         videoSelectionMapper.updateVideoSelection(request, videoSelection);

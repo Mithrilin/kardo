@@ -2,7 +2,7 @@ package com.kardoaward.kardo.selection.video_selection.mapper;
 
 import com.kardoaward.kardo.grand_competition.mapper.GrandCompetitionMapper;
 import com.kardoaward.kardo.grand_competition.model.GrandCompetition;
-import com.kardoaward.kardo.selection.model.dto.UpdateSelectionRequest;
+import com.kardoaward.kardo.selection.video_selection.model.UpdateVideoSelectionRequest;
 import com.kardoaward.kardo.selection.video_selection.model.VideoSelection;
 import com.kardoaward.kardo.selection.video_selection.model.dto.NewVideoSelectionRequest;
 import com.kardoaward.kardo.selection.video_selection.model.dto.VideoSelectionDto;
@@ -23,6 +23,7 @@ public interface VideoSelectionMapper {
     @Mapping(source = "grandCompetition", target = "competition")
     @Mapping(source = "newVideoSelectionRequest.title", target = "title")
     @Mapping(source = "newVideoSelectionRequest.hashtag", target = "hashtag")
+    @Mapping(source = "newVideoSelectionRequest.description", target = "description")
     VideoSelection newVideoSelectionRequestToVideoSelection(NewVideoSelectionRequest newVideoSelectionRequest,
                                                             GrandCompetition grandCompetition);
 
@@ -32,5 +33,5 @@ public interface VideoSelectionMapper {
     List<VideoSelectionDto> videoSelectionListToVideoSelectionDtoList(List<VideoSelection> selections);
 
     @BeanMapping(nullValuePropertyMappingStrategy = IGNORE)
-    void updateVideoSelection(UpdateSelectionRequest request, @MappingTarget VideoSelection selection);
+    void updateVideoSelection(UpdateVideoSelectionRequest request, @MappingTarget VideoSelection selection);
 }
