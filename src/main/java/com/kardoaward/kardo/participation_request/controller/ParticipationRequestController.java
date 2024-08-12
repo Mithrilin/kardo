@@ -7,6 +7,13 @@ import com.kardoaward.kardo.participation_request.model.dto.update.UpdatePartici
 import com.kardoaward.kardo.participation_request.service.ParticipationRequestService;
 import com.kardoaward.kardo.participation_request.service.helper.ParticipationRequestValidationHelper;
 import com.kardoaward.kardo.user.model.User;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
@@ -28,15 +35,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/participations")
 @Validated
+@Tag(name="Заявка на участие в отборе: Users.", description="API для работы с заявками на участие в отборе " +
+        "для зарегистрированных пользователей.")
 public class ParticipationRequestController {
 
     private final ParticipationRequestService service;
 
     private final ParticipationRequestValidationHelper participationHelper;
 
+    @Operation(summary = "Добавление заявки на участие в отборе.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Заявка добавлена.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ParticipationRequestDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Отбор не найден", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content)})
     @PostMapping
     @Secured("USER")
-    public ParticipationRequestDto createParticipation(@RequestBody @Valid
+    public ParticipationRequestDto createParticipation(@Parameter(description = "Данные добавляемой заявки")
+                                                       @RequestBody @Valid
                                                        NewParticipationRequest newParticipationRequest) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
@@ -47,9 +66,17 @@ public class ParticipationRequestController {
         return service.addParticipation(requestor, newParticipationRequest);
     }
 
+    @Operation(summary = "Удаление заявки на участие в отборе по ИД.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Заявка удалена.", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Заявка не найдена", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content)})
     @DeleteMapping("/{participationId}")
     @Secured("USER")
-    public void deleteParticipationById(@PathVariable @Positive Long participationId) {
+    public void deleteParticipationById(@Parameter(description = "id заявки")
+                                        @PathVariable @Positive Long participationId) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         User requestor = userDetails.getUser();
@@ -58,9 +85,19 @@ public class ParticipationRequestController {
         service.deleteParticipationById(requestor, participationId);
     }
 
+    @Operation(summary = "Получение заявки на участие в отборе.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Заявка найдена.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ParticipationRequestDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Заявка не найдена", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content)})
     @GetMapping("/{participationId}")
     @Secured({"ADMIN", "USER"})
-    public ParticipationRequestDto getParticipationById(@PathVariable @Positive Long participationId) {
+    public ParticipationRequestDto getParticipationById(@Parameter(description = "id заявки")
+                                                        @PathVariable @Positive Long participationId) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         User requestor = userDetails.getUser();
@@ -68,9 +105,20 @@ public class ParticipationRequestController {
         return service.getParticipationById(requestor, participationId);
     }
 
+    @Operation(summary = "Обновление заявки на участие в отборе.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Заявка обновлена.",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ParticipationRequestDto.class)) }),
+            @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Заявка не найдена", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content)})
     @PatchMapping("/{participationId}")
     @Secured("USER")
-    public ParticipationRequestDto updateParticipationById(@PathVariable @Positive Long participationId,
+    public ParticipationRequestDto updateParticipationById(@Parameter(description = "id заявки")
+                                                           @PathVariable @Positive Long participationId,
+                                                           @Parameter(description = "Данные для обновления заявки")
                                                            @RequestBody @Valid UpdateParticipationRequest request) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
