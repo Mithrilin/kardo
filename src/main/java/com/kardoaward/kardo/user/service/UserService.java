@@ -19,7 +19,9 @@ public interface UserService {
 
     List<UserShortDto> getUsersByIds(List<Long> ids, int from, int size);
 
-    UserDto updateUser(User requestor, UpdateUserRequest request, MultipartFile file);
+    UserDto updateUser(User requestor, UpdateUserRequest request);
 
     List<UserShortDto> getContestantsByOfflineSelectionId(Long selectionId, int from, int size);
+
+    UserDto addUserAvatar(User requestor, MultipartFile file);
 }

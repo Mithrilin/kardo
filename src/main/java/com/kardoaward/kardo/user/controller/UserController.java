@@ -1,6 +1,5 @@
 package com.kardoaward.kardo.user.controller;
 
-import com.google.gson.Gson;
 import com.kardoaward.kardo.security.UserDetailsImpl;
 import com.kardoaward.kardo.user.model.User;
 import com.kardoaward.kardo.user.model.dto.NewUserRequest;
@@ -67,17 +66,22 @@ public class UserController {
     }
 
     @PatchMapping
-    @Secured("USER")
-    public UserDto updateUser(@RequestParam(value = "text", required = false) String json,
-                              @RequestParam(value = "image", required = false) MultipartFile file) {
+    @Secured({"ADMIN", "USER"})
+    public UserDto updateUser(@RequestBody @Valid UpdateUserRequest request) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         User requestor = userDetails.getUser();
         log.info("Обновление пользователем с ИД {} своих данных.", requestor.getId());
-        /* ToDo
-            Разобраться как принимать составные запросы.
-         */
-        UpdateUserRequest request = new Gson().fromJson(json, UpdateUserRequest.class);
-        return userService.updateUser(requestor, request, file);
+        return userService.updateUser(requestor, request);
+    }
+
+    @PatchMapping("/avatar")
+    @Secured({"ADMIN", "USER"})
+    public UserDto addUserAvatar(@RequestParam("image") MultipartFile file) {
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        User requestor = userDetails.getUser();
+        log.info("Обновление пользователем с ИД {} своей аватарки.", requestor.getId());
+        return userService.addUserAvatar(requestor, file);
     }
 }

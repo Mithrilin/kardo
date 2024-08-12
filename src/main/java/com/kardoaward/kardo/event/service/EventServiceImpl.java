@@ -56,11 +56,30 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Transactional
-    public EventDto addEvent(NewEventRequest newEventRequest, MultipartFile file) {
+    public EventDto addEvent(NewEventRequest newEventRequest) {
         GrandCompetition grandCompetition = grandHelper.isGrandCompetitionPresent(newEventRequest.getCompetitionId());
         Event event = eventMapper.newEventRequestToEvent(newEventRequest, grandCompetition);
         Event returnedEvent = eventRepository.save(event);
-        String path = FOLDER_PATH + "/events/" + returnedEvent.getId() + "/logo/";
+        EventDto eventDto = eventMapper.eventToEventDto(returnedEvent);
+        log.info("Мероприятие с ID = {} создано.", eventDto.getId());
+        return eventDto;
+    }
+
+    @Override
+    @Transactional
+    public EventDto addEventLogo(Long eventId, MultipartFile file) {
+        Event event = eventValidationHelper.isEventPresent(eventId);
+
+        if (event.getLogo() != null) {
+            try {
+                FileUtils.forceDelete(new File(event.getLogo()));
+                event.setLogo(null);
+            } catch (IOException e) {
+                throw new FileContentException("Не удалось очистить директорию: " + event.getLogo());
+            }
+        }
+
+        String path = FOLDER_PATH + "/events/" + event.getId() + "/logo/";
         File logoPath = new File(path);
         logoPath.mkdirs();
         String newLogoPath = path + file.getOriginalFilename();
@@ -74,7 +93,7 @@ public class EventServiceImpl implements EventService {
         event.setLogo(newLogoPath);
         Event updatedEvent = eventRepository.save(event);
         EventDto eventDto = eventMapper.eventToEventDto(updatedEvent);
-        log.info("Мероприятие с ID = {} создано.", eventDto.getId());
+        log.info("Логотип к мероприятию с ID = {} добавлен.", eventDto.getId());
         return eventDto;
     }
 

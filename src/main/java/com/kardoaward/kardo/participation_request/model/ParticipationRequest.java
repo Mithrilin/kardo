@@ -57,8 +57,5 @@ public class ParticipationRequest {
             joinColumns=@JoinColumn(name="participation_request_id"))
     @Column(name="field")
     @Enumerated(EnumType.STRING)
-/*  ToDo
-     После добавления контроллера проверить сохраняются/возвращаются ли значения в этом поле.
- */
     private List<Field> fields;
 }

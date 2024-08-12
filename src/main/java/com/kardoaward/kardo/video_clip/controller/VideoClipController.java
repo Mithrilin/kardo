@@ -7,7 +7,6 @@ import com.kardoaward.kardo.video_clip.model.dto.NewVideoClipRequest;
 import com.kardoaward.kardo.video_clip.model.dto.UpdateVideoClipRequest;
 import com.kardoaward.kardo.video_clip.model.dto.VideoClipDto;
 import com.kardoaward.kardo.video_clip.service.VideoClipService;
-import com.kardoaward.kardo.video_clip.service.helper.VideoClipValidationHelper;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
@@ -39,8 +38,6 @@ public class VideoClipController {
 
     private final VideoClipService videoClipService;
 
-    private final VideoClipValidationHelper videoClipValidationHelper;
-
     @PostMapping
     @Secured("USER")
     public VideoClipDto createVideoClip(@RequestParam("text") String json,
@@ -53,7 +50,6 @@ public class VideoClipController {
             Разобраться как принимать составные запросы.
          */
         NewVideoClipRequest request = new Gson().fromJson(json, NewVideoClipRequest.class);
-        videoClipValidationHelper.isRequestorCreatorVideoOrAdmin(requestor, request.getCreatorId());
         return videoClipService.addVideoClip(requestor, request, file);
     }
 

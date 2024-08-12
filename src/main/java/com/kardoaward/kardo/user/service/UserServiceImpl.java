@@ -114,8 +114,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDto updateUser(User user, UpdateUserRequest request, MultipartFile file) {
+    public UserDto updateUser(User user, UpdateUserRequest request) {
+        userMapper.updateUser(request, user);
+        User updatedUser = userRepository.save(user);
+        UserDto userDto = userMapper.userToUserDto(updatedUser);
+        log.info("Пользователь с ID {} обновлён.", user.getId());
+        return userDto;
+    }
 
+    @Override
+    @Transactional
+    public UserDto addUserAvatar(User user, MultipartFile file) {
         if (user.getAvatarPhoto() != null) {
             try {
                 FileUtils.forceDelete(new File(user.getAvatarPhoto()));
@@ -125,25 +134,21 @@ public class UserServiceImpl implements UserService {
             }
         }
 
-        if (file != null) {
-            String path = FOLDER_PATH + "/users/" + user.getId() + "/avatar/";
-            File avatarPath = new File(path);
-            avatarPath.mkdirs();
-            String newAvatarPath = path + file.getOriginalFilename();
+        String path = FOLDER_PATH + "/users/" + user.getId() + "/avatar/";
+        File avatarPath = new File(path);
+        avatarPath.mkdirs();
+        String newAvatarPath = path + file.getOriginalFilename();
 
-            try {
-                file.transferTo(new File(newAvatarPath));
-            } catch (IOException e) {
-                throw new FileContentException("Не удалось сохранить файл: " + newAvatarPath);
-            }
-
-            user.setAvatarPhoto(newAvatarPath);
+        try {
+            file.transferTo(new File(newAvatarPath));
+        } catch (IOException e) {
+            throw new FileContentException("Не удалось сохранить файл: " + newAvatarPath);
         }
 
-        userMapper.updateUser(request, user);
+        user.setAvatarPhoto(newAvatarPath);
         User updatedUser = userRepository.save(user);
         UserDto userDto = userMapper.userToUserDto(updatedUser);
-        log.info("Пользователь с ID {} обновлён.", user.getId());
+        log.info("Аватар пользователя с ID {} обновлена.", user.getId());
         return userDto;
     }
 

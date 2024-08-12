@@ -1,6 +1,5 @@
 package com.kardoaward.kardo.event.controller.admin;
 
-import com.google.gson.Gson;
 import com.kardoaward.kardo.event.model.dto.EventDto;
 import com.kardoaward.kardo.event.model.dto.NewEventRequest;
 import com.kardoaward.kardo.event.model.dto.UpdateEventRequest;
@@ -35,16 +34,19 @@ public class EventAdminController {
 
     @PostMapping
     @Secured("ADMIN")
-    public EventDto createEvent(@RequestParam("text") String json,
-                                @RequestParam("video") MultipartFile file) {
-        /* ToDo
-            Разобраться как принимать составные запросы.
-         */
-        NewEventRequest newEventRequest = new Gson().fromJson(json, NewEventRequest.class);
+    public EventDto createEvent(@RequestBody @Valid NewEventRequest newEventRequest) {
         log.info("Добавление администратором нового мероприятия к гранд-соревнованию с ИД {}.",
                 newEventRequest.getCompetitionId());
         eventValidationHelper.isNewEventDateValid(newEventRequest);
-        return eventService.addEvent(newEventRequest, file);
+        return eventService.addEvent(newEventRequest);
+    }
+
+    @PostMapping("/{eventId}/logo")
+    @Secured("ADMIN")
+    public EventDto addEventLogo(@PathVariable @Positive Long eventId,
+                                 @RequestParam("image") MultipartFile file) {
+        log.info("Добавление администратором логотипа к мероприятию с ИД {}.", eventId);
+        return eventService.addEventLogo(eventId, file);
     }
 
     @DeleteMapping("/{eventId}")

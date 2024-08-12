@@ -2,7 +2,6 @@ package com.kardoaward.kardo.video_clip.service;
 
 import com.kardoaward.kardo.exception.FileContentException;
 import com.kardoaward.kardo.user.model.User;
-import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import com.kardoaward.kardo.video_clip.mapper.LikeMapper;
 import com.kardoaward.kardo.video_clip.mapper.VideoClipMapper;
 import com.kardoaward.kardo.video_clip.model.VideoClip;
@@ -39,7 +38,6 @@ public class VideoClipServiceImpl implements VideoClipService {
     private final LikeMapper likeMapper;
 
     private final VideoClipValidationHelper videoClipValidationHelper;
-    private final UserValidationHelper userValidationHelper;
 
     private final String FOLDER_PATH;
 
@@ -48,14 +46,12 @@ public class VideoClipServiceImpl implements VideoClipService {
                                 VideoClipMapper videoClipMapper,
                                 LikeMapper likeMapper,
                                 VideoClipValidationHelper videoClipValidationHelper,
-                                UserValidationHelper userValidationHelper,
                                 @Value("${folder.path}") String FOLDER_PATH) {
         this.videoClipRepository = videoClipRepository;
         this.likeRepository = likeRepository;
         this.videoClipMapper = videoClipMapper;
         this.likeMapper = likeMapper;
         this.videoClipValidationHelper = videoClipValidationHelper;
-        this.userValidationHelper = userValidationHelper;
         this.FOLDER_PATH = FOLDER_PATH;
     }
 
