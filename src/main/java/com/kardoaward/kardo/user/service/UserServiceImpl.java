@@ -77,7 +77,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void deleteUser(Long userId) {
-        userValidationHelper.isUserPresent(userId);
         File userPath = new File(FOLDER_PATH + "/users/" + userId);
 
         try {
@@ -115,8 +114,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDto updateUser(Long userId, UpdateUserRequest request, MultipartFile file) {
-        User user = userValidationHelper.isUserPresent(userId);
+    public UserDto updateUser(User user, UpdateUserRequest request, MultipartFile file) {
 
         if (user.getAvatarPhoto() != null) {
             try {
@@ -128,7 +126,7 @@ public class UserServiceImpl implements UserService {
         }
 
         if (file != null) {
-            String path = FOLDER_PATH + "/users/" + userId + "/avatar/";
+            String path = FOLDER_PATH + "/users/" + user.getId() + "/avatar/";
             File avatarPath = new File(path);
             avatarPath.mkdirs();
             String newAvatarPath = path + file.getOriginalFilename();
@@ -145,7 +143,7 @@ public class UserServiceImpl implements UserService {
         userMapper.updateUser(request, user);
         User updatedUser = userRepository.save(user);
         UserDto userDto = userMapper.userToUserDto(updatedUser);
-        log.info("Пользователь с ID {} обновлён.", userId);
+        log.info("Пользователь с ID {} обновлён.", user.getId());
         return userDto;
     }
 

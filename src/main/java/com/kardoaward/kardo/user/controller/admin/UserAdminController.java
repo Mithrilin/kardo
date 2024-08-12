@@ -1,6 +1,5 @@
 package com.kardoaward.kardo.user.controller.admin;
 
-import com.kardoaward.kardo.user.model.dto.UserDto;
 import com.kardoaward.kardo.user.model.dto.UserShortDto;
 import com.kardoaward.kardo.user.service.UserService;
 import jakarta.validation.constraints.Min;
@@ -9,9 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,20 +23,6 @@ import java.util.List;
 public class UserAdminController {
 
     private final UserService userService;
-
-    @DeleteMapping("/{userId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public void deleteUserByAdmin(@PathVariable @Positive Long userId) {
-        log.info("Удаление администратором пользователя с ИД {}.", userId);
-        userService.deleteUser(userId);
-    }
-
-    @GetMapping("/{userId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public UserDto getUserByIdByAdmin(@PathVariable @Positive Long userId) {
-        log.info("Возвращение администратору информации о пользователе с ИД {}.", userId);
-        return userService.getUserById(userId);
-    }
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")

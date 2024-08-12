@@ -5,11 +5,12 @@ import com.kardoaward.kardo.spectator_request.event_spectator_request.model.dto.
 import com.kardoaward.kardo.spectator_request.event_spectator_request.model.dto.NewEventSpectatorRequest;
 import com.kardoaward.kardo.spectator_request.event_spectator_request.service.EventSpectatorRequestService;
 import com.kardoaward.kardo.spectator_request.event_spectator_request.service.helper.EventSpectatorRequestValidationHelper;
+import com.kardoaward.kardo.user.model.User;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,33 +33,34 @@ public class EventSpectatorRequestController {
     private final EventSpectatorRequestValidationHelper helper;
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @Secured("USER")
     public EventSpectatorRequestDto createEventSpectatorRequest(@RequestBody @Valid NewEventSpectatorRequest request) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
-        Long requestorId = userDetails.getUser().getId();
-        log.info("Добавление пользователем с ИД {} новой заявки зрителя мероприятия {}.", requestorId, request);
-        helper.isUserRequester(requestorId, request.getRequesterId());
-        return service.addEventSpectatorRequest(requestorId, request);
+        User requestor = userDetails.getUser();
+        log.info("Добавление пользователем с ИД {} новой заявки зрителя мероприятия {}.", requestor.getId(), request);
+        helper.isUserRequesterOrAdmin(requestor, request.getRequesterId());
+        return service.addEventSpectatorRequest(requestor, request);
     }
 
     @DeleteMapping("/{spectatorId}")
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @Secured("USER")
     public void deleteEventSpectatorRequestById(@PathVariable @Positive Long spectatorId) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
-        Long requestorId = userDetails.getUser().getId();
-        log.info("Удаление пользователем с ИД {} своей заявки зрителя мероприятия с ИД {}.", requestorId, spectatorId);
-        service.deleteEventSpectatorRequestById(requestorId, spectatorId);
+        User requestor = userDetails.getUser();
+        log.info("Удаление пользователем с ИД {} своей заявки зрителя мероприятия с ИД {}.", requestor.getId(),
+                spectatorId);
+        service.deleteEventSpectatorRequestById(requestor, spectatorId);
     }
 
     @GetMapping("/{spectatorId}")
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @Secured({"ADMIN", "USER"})
     public EventSpectatorRequestDto getEventSpectatorRequestById(@PathVariable @Positive Long spectatorId) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
-        Long requestorId = userDetails.getUser().getId();
-        log.info("Возвращение пользователю с ИД {} его заявки зрителя мероприятия с ИД {}.", requestorId, spectatorId);
-        return service.getEventSpectatorRequestById(requestorId, spectatorId);
+        User requestor = userDetails.getUser();
+        log.info("Возвращение заявки зрителя мероприятия с ИД {}.", spectatorId);
+        return service.getEventSpectatorRequestById(requestor, spectatorId);
     }
 }

@@ -9,7 +9,6 @@ import com.kardoaward.kardo.selection.offline_selection.model.dto.OfflineSelecti
 import com.kardoaward.kardo.selection.offline_selection.model.dto.UpdateOfflineSelectionRequest;
 import com.kardoaward.kardo.selection.offline_selection.repository.OfflineSelectionRepository;
 import com.kardoaward.kardo.selection.offline_selection.service.helper.OfflineSelectionValidationHelper;
-import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +31,6 @@ public class OfflineSelectionServiceImpl implements OfflineSelectionService {
 
     private final OfflineSelectionValidationHelper offlineSelectionValidationHelper;
     private final GrandCompetitionValidationHelper grandCompetitionValidationHelper;
-    private final UserValidationHelper userValidationHelper;
 
     @Override
     @Transactional
@@ -99,7 +97,6 @@ public class OfflineSelectionServiceImpl implements OfflineSelectionService {
 
     @Override
     public List<OfflineSelectionDto> getOfflineSelectionsByRequestorId(Long requestorId, int from, int size) {
-        userValidationHelper.isUserPresent(requestorId);
         int page = from / size;
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
         PageRequest pageRequest = PageRequest.of(page, size, sort);

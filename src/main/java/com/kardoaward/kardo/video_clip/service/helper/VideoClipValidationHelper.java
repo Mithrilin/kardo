@@ -2,6 +2,8 @@ package com.kardoaward.kardo.video_clip.service.helper;
 
 import com.kardoaward.kardo.exception.BadRequestException;
 import com.kardoaward.kardo.exception.NotFoundException;
+import com.kardoaward.kardo.user.model.User;
+import com.kardoaward.kardo.user.model.enums.Role;
 import com.kardoaward.kardo.video_clip.model.VideoClip;
 import com.kardoaward.kardo.video_clip.model.like.Like;
 import com.kardoaward.kardo.video_clip.repository.LikeRepository;
@@ -31,11 +33,11 @@ public class VideoClipValidationHelper {
         return optionalVideoClip.get();
     }
 
-    public void isRequestorCreatorVideo(Long requestorId, Long creatorId) {
-        if (!requestorId.equals(creatorId)) {
-            log.error("Пользователь с ИД {} не является создателем видео.", requestorId);
-            throw new BadRequestException(String.format("Пользователь с ИД %d не является создателем видео.",
-                    requestorId));
+    public void isRequestorCreatorVideoOrAdmin(User requestor, Long creatorId) {
+        if (!requestor.getId().equals(creatorId) && requestor.getRole() != Role.ADMIN) {
+            log.error("Пользователь с ИД {} не является создателем видео или администратором.", requestor.getId());
+            throw new BadRequestException(String.format("Пользователь с ИД %d не является создателем видео " +
+                            "или администратором.", requestor.getId()));
         }
     }
 

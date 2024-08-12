@@ -8,7 +8,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -28,21 +28,21 @@ public class GrandCompetitionAdminController {
     private final GrandCompetitionService service;
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @Secured("ADMIN")
     public GrandCompetitionDto createGrandCompetition(@RequestBody @Valid NewGrandCompetitionRequest newCompetition) {
         log.info("Добавление администратором нового гранд-соревнования {}.", newCompetition);
         return service.addGrandCompetition(newCompetition);
     }
 
     @DeleteMapping("/{competitionId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @Secured("ADMIN")
     public void deleteGrandCompetition(@PathVariable @Positive Long competitionId) {
         log.info("Удаление администратором гранд-соревнования с ИД {}.", competitionId);
         service.deleteGrandCompetition(competitionId);
     }
 
     @PatchMapping("/{competitionId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @Secured("ADMIN")
     public GrandCompetitionDto updateGrandCompetition(@PathVariable @Positive Long competitionId,
                                                       @RequestBody @Valid UpdateGrandCompetitionRequest request) {
         log.info("Обновление администратором гранд-соревнования с ИД {}.", competitionId);

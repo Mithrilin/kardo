@@ -6,12 +6,13 @@ import com.kardoaward.kardo.comment.model.dto.UpdateCommentRequest;
 import com.kardoaward.kardo.comment.service.CommentService;
 import com.kardoaward.kardo.comment.service.helper.CommentValidationHelper;
 import com.kardoaward.kardo.security.UserDetailsImpl;
+import com.kardoaward.kardo.user.model.User;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -38,47 +39,47 @@ public class CommentController {
     private final CommentValidationHelper commentValidationHelper;
 
     @PostMapping("/videos/{videoId}")
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @Secured({"ADMIN", "USER"})
     public CommentDto createComment(@PathVariable @Positive Long videoId,
                                     @RequestBody @Valid NewCommentRequest newCommentRequest) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
-        Long requestorId = userDetails.getUser().getId();
-        log.info("Добавление пользователем с ИД {} нового комментария к видео-клипу с ИД {}.", requestorId, videoId);
-        commentValidationHelper.isUserAuthor(requestorId, newCommentRequest.getAuthorId());
-        return commentService.addComment(requestorId, videoId, newCommentRequest);
+        User requestor = userDetails.getUser();
+        log.info("Добавление комментария к видео-клипу с ИД {}.", videoId);
+        commentValidationHelper.isUserAuthor(requestor, newCommentRequest.getAuthorId());
+        return commentService.addComment(requestor, videoId, newCommentRequest);
     }
 
     @DeleteMapping("/{commentId}")
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @Secured({"ADMIN", "USER"})
     public void deleteCommentById(@PathVariable @Positive Long commentId) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
-        Long requestorId = userDetails.getUser().getId();
-        log.info("Удаление пользователем с ИД {} своего комментария с ИД {}.", requestorId, commentId);
-        commentService.deleteCommentById(requestorId, commentId);
+        User requestor = userDetails.getUser();
+        log.info("Удаление комментария с ИД {}.", commentId);
+        commentService.deleteCommentById(requestor, commentId);
     }
 
     @GetMapping("/{commentId}")
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @Secured({"ADMIN", "USER"})
     public CommentDto getCommentById(@PathVariable @Positive Long commentId) {
         log.info("Возвращение комментария с ИД {}.", commentId);
         return commentService.getCommentById(commentId);
     }
 
     @PatchMapping("/{commentId}")
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @Secured({"ADMIN", "USER"})
     public CommentDto updateCommentById(@PathVariable @Positive Long commentId,
                                         @RequestBody @Valid UpdateCommentRequest request) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
-        Long requestorId = userDetails.getUser().getId();
-        log.info("Обновление пользователем с ИД {} своего комментария с ИД {}.", requestorId, commentId);
-        return commentService.updateCommentById(requestorId, commentId, request);
+        User requestor = userDetails.getUser();
+        log.info("Обновление пользователем с ИД {} своего комментария с ИД {}.", requestor.getId(), commentId);
+        return commentService.updateCommentById(requestor, commentId, request);
     }
 
     @GetMapping("/videos/{videoId}")
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @Secured({"ADMIN", "USER"})
     public List<CommentDto> getCommentsByVideoId(@PathVariable @Positive Long videoId,
                                                  @RequestParam(defaultValue = "0") @Min(0) int from,
                                                  @RequestParam(defaultValue = "10") @Positive int size) {

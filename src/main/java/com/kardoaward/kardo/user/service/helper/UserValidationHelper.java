@@ -3,6 +3,7 @@ package com.kardoaward.kardo.user.service.helper;
 import com.kardoaward.kardo.exception.BadRequestException;
 import com.kardoaward.kardo.exception.NotFoundException;
 import com.kardoaward.kardo.user.model.User;
+import com.kardoaward.kardo.user.model.enums.Role;
 import com.kardoaward.kardo.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,11 +29,12 @@ public class UserValidationHelper {
         return optionalUser.get();
     }
 
-    public void isUserOwner(Long requestorId, Long userId) {
-        if (!userId.equals(requestorId)) {
-            log.error("Пользователь с ИД {} не является владельцем профиля пользователя с ИД {}.", requestorId, userId);
+    public void isUserOwnerOrAdmin(User requestor, Long userId) {
+        if (!userId.equals(requestor.getId()) && requestor.getRole() != Role.ADMIN) {
+            log.error("Пользователь с ИД {} не является владельцем профиля пользователя с ИД {} или администратором.",
+                    requestor.getId(), userId);
             throw new BadRequestException(String.format("Пользователь с ИД %d не является владельцем профиля " +
-                    "пользователя с ИД %d.", requestorId, userId));
+                    "пользователя с ИД %d или администратором.", requestor.getId(), userId));
         }
     }
 }

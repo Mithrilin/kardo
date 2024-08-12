@@ -40,45 +40,33 @@ public class SelectionSpectatorRequestServiceImpl implements SelectionSpectatorR
 
     @Override
     @Transactional
-    public SelectionSpectatorRequestDto addSelectionSpectatorRequest(Long requestorId,
+    public SelectionSpectatorRequestDto addSelectionSpectatorRequest(User requestor,
                                                                      NewSelectionSpectatorRequest request) {
-        User user = userValidationHelper.isUserPresent(requestorId);
         OfflineSelection offlineSelection = offlineSelectionValidationHelper
                 .isOfflineSelectionPresent(request.getSelectionId());
         SelectionSpectatorRequest spectatorRequest = mapper
-                .newSpectatorRequestToSpectatorRequest(offlineSelection, user);
+                .newSpectatorRequestToSpectatorRequest(offlineSelection, requestor);
         SelectionSpectatorRequest returnedSpectatorRequest = repository.save(spectatorRequest);
         SelectionSpectatorRequestDto spectatorRequestDto = mapper
                 .spectatorRequestToSpectatorRequestDto(returnedSpectatorRequest);
         log.info("Заявка зрителя отбора с ИД {} пользователя с ИД {} создана.", spectatorRequestDto.getId(),
-                requestorId);
+                requestor.getId());
         return spectatorRequestDto;
     }
 
     @Override
     @Transactional
-    public void deleteSelectionSpectatorRequestById(Long requestorId, Long spectatorId) {
-        userValidationHelper.isUserPresent(requestorId);
+    public void deleteSelectionSpectatorRequestById(User requestor, Long spectatorId) {
         SelectionSpectatorRequest spectatorRequest = helper.isSpectatorRequestPresent(spectatorId);
-        helper.isUserRequester(requestorId, spectatorRequest.getRequester().getId());
+        helper.isUserRequesterOrAdmin(requestor, spectatorRequest.getRequester().getId());
         repository.deleteById(spectatorId);
-        log.info("Заявка зрителя отбора с ИД {} пользователя с ИД {} удалена.", spectatorId, requestorId);
+        log.info("Заявка зрителя отбора с ИД {} пользователя с ИД {} удалена.", spectatorId, requestor.getId());
     }
 
     @Override
-    public SelectionSpectatorRequestDto getSelectionSpectatorRequestById(Long requestorId, Long spectatorId) {
-        userValidationHelper.isUserPresent(requestorId);
+    public SelectionSpectatorRequestDto getSelectionSpectatorRequestById(User requestor, Long spectatorId) {
         SelectionSpectatorRequest spectatorRequest = helper.isSpectatorRequestPresent(spectatorId);
-        helper.isUserRequester(requestorId, spectatorRequest.getRequester().getId());
-        SelectionSpectatorRequestDto spectatorRequestDto = mapper
-                .spectatorRequestToSpectatorRequestDto(spectatorRequest);
-        log.info("Заявка зрителя отбора с ИД {} пользователя с ИД {} возвращена.", spectatorId, requestorId);
-        return spectatorRequestDto;
-    }
-
-    @Override
-    public SelectionSpectatorRequestDto getSelectionSpectatorRequestByIdByAdmin(Long spectatorId) {
-        SelectionSpectatorRequest spectatorRequest = helper.isSpectatorRequestPresent(spectatorId);
+        helper.isUserRequesterOrAdmin(requestor, spectatorRequest.getRequester().getId());
         SelectionSpectatorRequestDto spectatorRequestDto = mapper
                 .spectatorRequestToSpectatorRequestDto(spectatorRequest);
         log.info("Заявка зрителя отбора с ИД {} возвращена.", spectatorId);

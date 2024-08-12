@@ -2,6 +2,7 @@ package com.kardoaward.kardo.user.controller;
 
 import com.google.gson.Gson;
 import com.kardoaward.kardo.security.UserDetailsImpl;
+import com.kardoaward.kardo.user.model.User;
 import com.kardoaward.kardo.user.model.dto.NewUserRequest;
 import com.kardoaward.kardo.user.model.dto.UpdateUserRequest;
 import com.kardoaward.kardo.user.model.dto.UserDto;
@@ -12,7 +13,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,38 +45,39 @@ public class UserController {
     }
 
     @GetMapping("/{userId}")
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @Secured({"ADMIN", "USER"})
     public UserDto getUserById(@PathVariable @Positive Long userId) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
-        Long requestorId = userDetails.getUser().getId();
-        log.info("Получение пользователем с ИД {} своих данных.", requestorId);
-        userValidationHelper.isUserOwner(requestorId, userId);
+        User requestor = userDetails.getUser();
+        log.info("Получение данных пользователя с ИД {}.", userId);
+        userValidationHelper.isUserOwnerOrAdmin(requestor, userId);
         return userService.getUserById(userId);
     }
 
-    @DeleteMapping
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
-    public void deleteUser() {
+    @DeleteMapping("/{userId}")
+    @Secured({"ADMIN", "USER"})
+    public void deleteUser(@PathVariable @Positive Long userId) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
-        Long requestorId = userDetails.getUser().getId();
-        log.info("Удаление пользователем с ИД {} своего профиля.", requestorId);
-        userService.deleteUser(requestorId);
+        User requestor = userDetails.getUser();
+        log.info("Удаление профиля пользователя с ИД {}.", userId);
+        userValidationHelper.isUserOwnerOrAdmin(requestor, userId);
+        userService.deleteUser(userId);
     }
 
     @PatchMapping
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @Secured("USER")
     public UserDto updateUser(@RequestParam(value = "text", required = false) String json,
                               @RequestParam(value = "image", required = false) MultipartFile file) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
-        Long requestorId = userDetails.getUser().getId();
-        log.info("Обновление пользователем с ИД {} своих данных.", requestorId);
+        User requestor = userDetails.getUser();
+        log.info("Обновление пользователем с ИД {} своих данных.", requestor.getId());
         /* ToDo
             Разобраться как принимать составные запросы.
          */
         UpdateUserRequest request = new Gson().fromJson(json, UpdateUserRequest.class);
-        return userService.updateUser(requestorId, request, file);
+        return userService.updateUser(requestor, request, file);
     }
 }

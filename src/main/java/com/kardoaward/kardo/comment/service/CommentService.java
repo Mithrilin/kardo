@@ -3,20 +3,21 @@ package com.kardoaward.kardo.comment.service;
 import com.kardoaward.kardo.comment.model.dto.CommentDto;
 import com.kardoaward.kardo.comment.model.dto.NewCommentRequest;
 import com.kardoaward.kardo.comment.model.dto.UpdateCommentRequest;
+import com.kardoaward.kardo.user.model.User;
 
 import java.util.List;
 
 public interface CommentService {
 
-    CommentDto addComment(Long requestorId, Long videoId, NewCommentRequest newCommentRequest);
+    CommentDto addComment(User requestor, Long videoId, NewCommentRequest newCommentRequest);
 
-    void deleteCommentById(Long requestorId, Long commentId);
+    void deleteCommentById(User requestor, Long commentId);
 
     void deleteCommentByIdByAdmin(Long commentId);
 
     CommentDto getCommentById(Long commentId);
 
-    CommentDto updateCommentById(Long requestorId, Long commentId, UpdateCommentRequest request);
+    CommentDto updateCommentById(User requestor, Long commentId, UpdateCommentRequest request);
 
     List<CommentDto> getCommentsByVideoId(Long videoId, int from, int size);
 }

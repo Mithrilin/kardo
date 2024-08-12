@@ -10,7 +10,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -34,7 +34,7 @@ public class EventAdminController {
     private final EventValidationHelper eventValidationHelper;
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @Secured("ADMIN")
     public EventDto createEvent(@RequestParam("text") String json,
                                 @RequestParam("video") MultipartFile file) {
         /* ToDo
@@ -48,14 +48,14 @@ public class EventAdminController {
     }
 
     @DeleteMapping("/{eventId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @Secured("ADMIN")
     public void deleteEventById(@PathVariable @Positive Long eventId) {
         log.info("Удаление администратором мероприятия с ИД {}.", eventId);
         eventService.deleteEventById(eventId);
     }
 
     @PatchMapping("/{eventId}")
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @Secured("ADMIN")
     public EventDto updateEventById(@PathVariable @Positive Long eventId,
                                     @RequestBody @Valid UpdateEventRequest request) {
         log.info("Обновление администратором мероприятия с ИД {}.", eventId);

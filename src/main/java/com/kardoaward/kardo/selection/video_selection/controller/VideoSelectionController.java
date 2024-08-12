@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,14 +26,14 @@ public class VideoSelectionController {
     private final VideoSelectionService videoSelectionService;
 
     @GetMapping("/{selectionId}")
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @Secured({"ADMIN", "USER"})
     public VideoSelectionDto getVideoSelectionById(@PathVariable @Positive Long selectionId) {
         log.info("Возвращение видео-отбора с ИД {}.", selectionId);
         return videoSelectionService.getVideoSelectionById(selectionId);
     }
 
     @GetMapping
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @Secured({"ADMIN", "USER"})
     public List<VideoSelectionDto> getVideoSelections(@RequestParam(defaultValue = "0") @Min(0) int from,
                                                       @RequestParam(defaultValue = "10") @Positive int size) {
         log.info("Возвращение списка видео-отборов.");
@@ -41,7 +41,7 @@ public class VideoSelectionController {
     }
 
     @GetMapping("/competitions/{competitionId}")
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @Secured({"ADMIN", "USER"})
     public List<VideoSelectionDto> getVideoSelectionsByGrandCompetitionId(@PathVariable @Positive Long competitionId,
                                                                           @RequestParam(defaultValue = "0")
                                                                           @Min(0) int from,

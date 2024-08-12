@@ -6,11 +6,12 @@ import com.kardoaward.kardo.participation_request.model.dto.ParticipationRequest
 import com.kardoaward.kardo.participation_request.model.dto.update.UpdateParticipationRequest;
 import com.kardoaward.kardo.participation_request.service.ParticipationRequestService;
 import com.kardoaward.kardo.participation_request.service.helper.ParticipationRequestValidationHelper;
+import com.kardoaward.kardo.user.model.User;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,42 +35,41 @@ public class ParticipationRequestController {
     private final ParticipationRequestValidationHelper participationHelper;
 
     @PostMapping
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @Secured("USER")
     public ParticipationRequestDto createParticipation(@RequestBody @Valid
                                                        NewParticipationRequest newParticipationRequest) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
-        Long requestorId = userDetails.getUser().getId();
-        log.info("Добавление пользователем с ИД {} новой заявки на участие в отборе с ИД {}.", requestorId,
+        User requestor = userDetails.getUser();
+        log.info("Добавление пользователем с ИД {} новой заявки на участие в отборе с ИД {}.", requestor.getId(),
                 newParticipationRequest.getSelectionId());
-        participationHelper.isUserRequester(requestorId, newParticipationRequest.getRequesterId());
-        return service.addParticipation(requestorId, newParticipationRequest);
+        participationHelper.isUserRequesterOrAdmin(requestor, newParticipationRequest.getRequesterId());
+        return service.addParticipation(requestor, newParticipationRequest);
     }
 
     @DeleteMapping("/{participationId}")
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @Secured("USER")
     public void deleteParticipationById(@PathVariable @Positive Long participationId) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
-        Long requestorId = userDetails.getUser().getId();
+        User requestor = userDetails.getUser();
         log.info("Удаление пользователем с ИД {} своей заявки с ИД {} на участие в отборе.",
-                requestorId, participationId);
-        service.deleteParticipationById(requestorId, participationId);
+                requestor.getId(), participationId);
+        service.deleteParticipationById(requestor, participationId);
     }
 
     @GetMapping("/{participationId}")
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @Secured({"ADMIN", "USER"})
     public ParticipationRequestDto getParticipationById(@PathVariable @Positive Long participationId) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
-        Long requestorId = userDetails.getUser().getId();
-        log.info("Возвращение пользователю с ИД {} его заявки с ИД {} на участие в отборе.",
-                requestorId, participationId);
-        return service.getParticipationById(requestorId, participationId);
+        User requestor = userDetails.getUser();
+        log.info("Возвращение заявки с ИД {} на участие в отборе.", participationId);
+        return service.getParticipationById(requestor, participationId);
     }
 
     @PatchMapping("/{participationId}")
-    @PreAuthorize("hasAnyRole('ADMIN','USER')")
+    @Secured("USER")
     public ParticipationRequestDto updateParticipationById(@PathVariable @Positive Long participationId,
                                                            @RequestBody @Valid UpdateParticipationRequest request) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
