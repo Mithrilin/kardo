@@ -1,4 +1,4 @@
-package com.kardoaward.kardo.selection.video_selection.model;
+package com.kardoaward.kardo.selection.video_selection.model.dto;
 
 import com.kardoaward.kardo.selection.model.dto.UpdateSelectionRequest;
 import jakarta.validation.constraints.Size;

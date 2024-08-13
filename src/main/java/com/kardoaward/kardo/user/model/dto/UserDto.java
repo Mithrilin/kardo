@@ -1,6 +1,7 @@
 package com.kardoaward.kardo.user.model.dto;
 
 import com.kardoaward.kardo.user.model.enums.Gender;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,6 +12,7 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(description = "Сущность пользователя.")
 public class UserDto {
 
     private Long id;

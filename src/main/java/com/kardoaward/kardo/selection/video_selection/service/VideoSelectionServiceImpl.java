@@ -3,7 +3,7 @@ package com.kardoaward.kardo.selection.video_selection.service;
 import com.kardoaward.kardo.grand_competition.model.GrandCompetition;
 import com.kardoaward.kardo.grand_competition.service.helper.GrandCompetitionValidationHelper;
 import com.kardoaward.kardo.selection.video_selection.mapper.VideoSelectionMapper;
-import com.kardoaward.kardo.selection.video_selection.model.UpdateVideoSelectionRequest;
+import com.kardoaward.kardo.selection.video_selection.model.dto.UpdateVideoSelectionRequest;
 import com.kardoaward.kardo.selection.video_selection.model.VideoSelection;
 import com.kardoaward.kardo.selection.video_selection.model.dto.NewVideoSelectionRequest;
 import com.kardoaward.kardo.selection.video_selection.model.dto.VideoSelectionDto;

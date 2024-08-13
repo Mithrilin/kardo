@@ -1,6 +1,6 @@
 package com.kardoaward.kardo.selection.video_selection.controller.admin;
 
-import com.kardoaward.kardo.selection.video_selection.model.UpdateVideoSelectionRequest;
+import com.kardoaward.kardo.selection.video_selection.model.dto.UpdateVideoSelectionRequest;
 import com.kardoaward.kardo.selection.video_selection.model.dto.NewVideoSelectionRequest;
 import com.kardoaward.kardo.selection.video_selection.model.dto.VideoSelectionDto;
 import com.kardoaward.kardo.selection.video_selection.service.VideoSelectionService;
