@@ -1,0 +1,5783 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OpenAPI definition",
+    "version": "v0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Generated server url"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Оффлайн-отбор: Admin.",
+      "description": "API администратора для работы с оффлайн-отборами."
+    },
+    {
+      "name": "Заявка зрителя на мероприятие: Users.",
+      "description": "API для работы с заявками зрителей на мероприятие для зарегистрированных пользователей."
+    },
+    {
+      "name": "Заявка на участие в отборе: Admin.",
+      "description": "API администратора для работы с заявками на участие в отборе."
+    },
+    {
+      "name": "Заявка на участие в отборе: Users.",
+      "description": "API для работы с заявками на участие в отборе для зарегистрированных пользователей."
+    },
+    {
+      "name": "Мероприятия: Users.",
+      "description": "API для работы с мероприятиями для зарегистрированных пользователей."
+    },
+    {
+      "name": "Мероприятия: Admin.",
+      "description": "API администратора для работы с мероприятиями."
+    },
+    {
+      "name": "Оффлайн-отбор: Users.",
+      "description": "API для работы с оффлайн-отборами для зарегистрированных пользователей."
+    },
+    {
+      "name": "Видео-клип.",
+      "description": "API для работы с видео-клипами для зарегистрированных пользователей."
+    },
+    {
+      "name": "Комментарии.",
+      "description": "Публичный API для работы с комментариями."
+    },
+    {
+      "name": "Пользователь: Admin.",
+      "description": "API администратора для работы с пользователями."
+    },
+    {
+      "name": "Видео-соревнование: Admin.",
+      "description": "API администратора для работы с видео-соревнованиями."
+    },
+    {
+      "name": "Видео-отбор: Users.",
+      "description": "API для работы с видео-отборами для зарегистрированных пользователей."
+    },
+    {
+      "name": "Гранд-соревнование: Admin.",
+      "description": "API администратора для работы с Гранд-соревнованиями."
+    },
+    {
+      "name": "Видео-отбор: Admin.",
+      "description": "API администратора для работы с видео-отборами."
+    },
+    {
+      "name": "Авторизация.",
+      "description": "API для авторизации."
+    },
+    {
+      "name": "Заявка зрителя на отбор: Admin.",
+      "description": "API администратора для работы с заявками зрителей на отбор."
+    },
+    {
+      "name": "Заявка зрителя на мероприятие: Admin.",
+      "description": "API администратора для работы с заявками зрителей на мероприятие."
+    },
+    {
+      "name": "Заявка зрителя на отбор: Users.",
+      "description": "API для работы с заявками зрителей на отбор для зарегистрированных пользователей."
+    },
+    {
+      "name": "Пользователь: Users.",
+      "description": "API для работы с пользователями для зарегистрированных пользователей."
+    },
+    {
+      "name": "Гранд-соревнование: Users.",
+      "description": "API для работы с Гранд-соревнованиями для зарегистрированных пользователей."
+    },
+    {
+      "name": "Видео-соревнование: Users.",
+      "description": "API для работы с видео-соревнованиями для зарегистрированных пользователей."
+    }
+  ],
+  "paths": {
+    "/videos": {
+      "post": {
+        "tags": [
+          "Видео-клип."
+        ],
+        "summary": "Добавление видео-клипа.",
+        "operationId": "createVideoClip",
+        "parameters": [
+          {
+            "name": "text",
+            "in": "query",
+            "description": "список хештегов в формате json",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "video"
+                ],
+                "type": "object",
+                "properties": {
+                  "video": {
+                    "type": "string",
+                    "description": "MultipartFile файл с видео-клипом",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "description": "Пользователь не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Видео-клип добавлен.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoClipDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/videos/{videoId}/likes": {
+      "post": {
+        "tags": [
+          "Видео-клип."
+        ],
+        "summary": "Добавление лайка к видео-клипу.",
+        "operationId": "addLikeByVideoClipId",
+        "parameters": [
+          {
+            "name": "videoId",
+            "in": "path",
+            "description": "id видео-клипа",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Видео-клип не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Лайк добавлен.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoClipDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Видео-клип."
+        ],
+        "summary": "Удаление лайка к видео-клипу.",
+        "operationId": "deleteLikeByVideoClipId",
+        "parameters": [
+          {
+            "name": "videoId",
+            "in": "path",
+            "description": "id видео-клипа",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Видео-клип не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Лайк удалён.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoClipDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/reg": {
+      "post": {
+        "tags": [
+          "Пользователь: Users."
+        ],
+        "summary": "Добавление пользователя. Регистрация.",
+        "operationId": "createUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewUserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Пользователь не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Пользователь добавлен.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserShortDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/auth/logout": {
+      "post": {
+        "tags": [
+          "Авторизация."
+        ],
+        "summary": "Выход из системы.",
+        "operationId": "logout",
+        "responses": {
+          "404": {
+            "description": "Пользователь не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Успешный выход из системы."
+          }
+        }
+      }
+    },
+    "/users/auth/login": {
+      "post": {
+        "tags": [
+          "Авторизация."
+        ],
+        "summary": "Авторизация.",
+        "operationId": "authenticate",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthenticationRequestDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Пользователь не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Успешная авторизация."
+          }
+        }
+      }
+    },
+    "/spectators/selection": {
+      "post": {
+        "tags": [
+          "Заявка зрителя на отбор: Users."
+        ],
+        "summary": "Добавление заявки зрителя на отбор.",
+        "operationId": "createSelectionSpectatorRequest",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewSelectionSpectatorRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Отбор не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Заявка добавлена.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SelectionSpectatorRequestDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/spectators/event": {
+      "post": {
+        "tags": [
+          "Заявка зрителя на мероприятие: Users."
+        ],
+        "summary": "Добавление заявки зрителя на мероприятие.",
+        "operationId": "createEventSpectatorRequest",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewEventSpectatorRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Мероприятие не найдено",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Заявка добавлена.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventSpectatorRequestDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/participations": {
+      "post": {
+        "tags": [
+          "Заявка на участие в отборе: Users."
+        ],
+        "summary": "Добавление заявки на участие в отборе.",
+        "operationId": "createParticipation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewParticipationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Отбор не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Заявка добавлена.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParticipationRequestDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/comments/videos/{videoId}": {
+      "get": {
+        "tags": [
+          "Комментарии."
+        ],
+        "summary": "Получение списка комментариев к видео-клипу.",
+        "operationId": "getCommentsByVideoId",
+        "parameters": [
+          {
+            "name": "videoId",
+            "in": "path",
+            "description": "id видео-клипа",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Количество элементов, которые нужно пропустить для формирования текущего набора",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Количество элементов в наборе",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Видео-клип не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CommentDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Комментарии."
+        ],
+        "summary": "Добавление нового комментария к видео-клипу.",
+        "operationId": "createComment",
+        "parameters": [
+          {
+            "name": "videoId",
+            "in": "path",
+            "description": "id видео-клипа",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewCommentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Видео-клип не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Комментарий добавлен.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommentDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/selections/video": {
+      "post": {
+        "tags": [
+          "Видео-отбор: Admin."
+        ],
+        "summary": "Добавление видео-отбора.",
+        "operationId": "createVideoSelection",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewVideoSelectionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Гранд-соревнование не найдено",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Видео-отбор добавлен.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoSelectionDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/selections/offline": {
+      "post": {
+        "tags": [
+          "Оффлайн-отбор: Admin."
+        ],
+        "summary": "Добавление оффлайн-отбора.",
+        "operationId": "createOfflineSelection",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewOfflineSelectionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Гранд-соревнование не найдено",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Оффлайн-отбор добавлен.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfflineSelectionDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/events": {
+      "post": {
+        "tags": [
+          "Мероприятия: Admin."
+        ],
+        "summary": "Добавление администратором нового мероприятия к Гранд-соревнованию.",
+        "operationId": "createEvent",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewEventRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Гранд-соревнование не найдено",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Мероприятие добавлено.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/events/{eventId}/logo": {
+      "post": {
+        "tags": [
+          "Мероприятия: Admin."
+        ],
+        "summary": "Добавление администратором логотипа к мероприятию.",
+        "operationId": "addEventLogo",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "id мероприятия",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "image"
+                ],
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "description": "MultipartFile с логотипом",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "description": "Мероприятие не найдено",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Логотип к мероприятию добавлен.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/contests": {
+      "post": {
+        "tags": [
+          "Видео-соревнование: Admin."
+        ],
+        "summary": "Добавление видео-соревнования.",
+        "operationId": "createVideoContest",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewVideoContestRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Пользователь не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Видео-соревнование добавлено.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoContestDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/competitions": {
+      "post": {
+        "tags": [
+          "Гранд-соревнование: Admin."
+        ],
+        "summary": "Добавление администратором нового Гранд-соревнования.",
+        "operationId": "createGrandCompetition",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewGrandCompetitionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Гранд-соревнование не найдено",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Гранд-соревнование добавлено.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GrandCompetitionDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/videos/{videoId}": {
+      "get": {
+        "tags": [
+          "Видео-клип."
+        ],
+        "summary": "Получение видео-клипа.",
+        "operationId": "getVideoClipById",
+        "parameters": [
+          {
+            "name": "videoId",
+            "in": "path",
+            "description": "id видео-клипа",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Видео-клип не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Видео-клип найден.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoClipDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Видео-клип."
+        ],
+        "summary": "Удаление видео-клипа.",
+        "operationId": "deleteVideoClipById",
+        "parameters": [
+          {
+            "name": "videoId",
+            "in": "path",
+            "description": "id видео-клипа",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Видео-клип не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Видео-клип удален."
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Видео-клип."
+        ],
+        "summary": "Обновление видео-клипа.",
+        "operationId": "updateVideoClipById",
+        "parameters": [
+          {
+            "name": "videoId",
+            "in": "path",
+            "description": "id видео-клипа",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateVideoClipRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Видео-клип не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Видео-клип обновлён.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoClipDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "patch": {
+        "tags": [
+          "Пользователь: Users."
+        ],
+        "summary": "Обновление пользователя.",
+        "operationId": "updateUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Пользователь не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Пользователь обновлён.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/avatar": {
+      "patch": {
+        "tags": [
+          "Пользователь: Users."
+        ],
+        "summary": "Обновление/добавление аватарки пользователя.",
+        "operationId": "addUserAvatar",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "required": [
+                  "image"
+                ],
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "description": "MultipartFile файл с аватаркой пользователя",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "404": {
+            "description": "Пользователь не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Аватарка обновлена/добавлена.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/participations/{participationId}": {
+      "get": {
+        "tags": [
+          "Заявка на участие в отборе: Users."
+        ],
+        "summary": "Получение заявки на участие в отборе.",
+        "operationId": "getParticipationById",
+        "parameters": [
+          {
+            "name": "participationId",
+            "in": "path",
+            "description": "id заявки",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Заявка не найдена",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Заявка найдена.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParticipationRequestDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Заявка на участие в отборе: Users."
+        ],
+        "summary": "Удаление заявки на участие в отборе по ИД.",
+        "operationId": "deleteParticipationById",
+        "parameters": [
+          {
+            "name": "participationId",
+            "in": "path",
+            "description": "id заявки",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Заявка не найдена",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Заявка удалена."
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Заявка на участие в отборе: Users."
+        ],
+        "summary": "Обновление заявки на участие в отборе.",
+        "operationId": "updateParticipationById",
+        "parameters": [
+          {
+            "name": "participationId",
+            "in": "path",
+            "description": "id заявки",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateParticipationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Заявка не найдена",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Заявка обновлена.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParticipationRequestDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/comments/{commentId}": {
+      "get": {
+        "tags": [
+          "Комментарии."
+        ],
+        "summary": "Получение комментария к видео-клипу по ИД.",
+        "operationId": "getCommentById",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "id комментария",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Комментарий не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Комментарий найден.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommentDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Комментарии."
+        ],
+        "summary": "Удаление комментария к видео-клипу.",
+        "operationId": "deleteCommentById",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "id комментария",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Комментарий не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Комментарий удалён."
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Комментарии."
+        ],
+        "summary": "Обновление пользователем своего комментария к видео-клипу по ИД.",
+        "operationId": "updateCommentById",
+        "parameters": [
+          {
+            "name": "commentId",
+            "in": "path",
+            "description": "id комментария",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCommentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Комментарий не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Комментарий обновлён.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommentDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/spectators/selection/selections/{selectionId}": {
+      "get": {
+        "tags": [
+          "Заявка зрителя на отбор: Admin."
+        ],
+        "summary": "Получение списка заявок зрителей по ИД отбора.",
+        "operationId": "getSelectionSpectatorRequestBySelectionId",
+        "parameters": [
+          {
+            "name": "selectionId",
+            "in": "path",
+            "description": "id отбора",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Количество элементов, которые нужно пропустить для формирования текущего набора",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Количество элементов в наборе",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Мероприятие не найдено",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SelectionSpectatorRequestDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Заявка зрителя на отбор: Admin."
+        ],
+        "summary": "Обновление администратором статуса заявок зрителей к отбору.",
+        "operationId": "updateSelectionSpectatorRequestStatusBySelectionId",
+        "parameters": [
+          {
+            "name": "selectionId",
+            "in": "path",
+            "description": "id отбора",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpectatorRequestStatusUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Пользователь не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Заявки обновлены.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpectatorRequestStatusUpdateResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/spectators/event/events/{eventId}": {
+      "get": {
+        "tags": [
+          "Заявка зрителя на мероприятие: Admin."
+        ],
+        "summary": "Получение списка заявок зрителей по ИД мероприятия.",
+        "operationId": "getEventSpectatorRequestByEventId",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "id мероприятия",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Количество элементов, которые нужно пропустить для формирования текущего набора",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Количество элементов в наборе",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Мероприятие не найдено",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EventSpectatorRequestDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Заявка зрителя на мероприятие: Admin."
+        ],
+        "summary": "Обновление администратором статуса заявок зрителей к мероприятию.",
+        "operationId": "updateEventSpectatorRequestStatusByEventId",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "id мероприятия",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpectatorRequestStatusUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Пользователь не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Заявки обновлены.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpectatorRequestStatusUpdateResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/selections/video/{selectionId}": {
+      "delete": {
+        "tags": [
+          "Видео-отбор: Admin."
+        ],
+        "summary": "Удаление видео-отбора.",
+        "operationId": "deleteVideoSelection",
+        "parameters": [
+          {
+            "name": "selectionId",
+            "in": "path",
+            "description": "id видео-отбора",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Видео-отбор не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Видео-отбор удалён."
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Видео-отбор: Admin."
+        ],
+        "summary": "Обновление видео-отбора.",
+        "operationId": "updateVideoSelectionById",
+        "parameters": [
+          {
+            "name": "selectionId",
+            "in": "path",
+            "description": "id видео-отбора",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateVideoSelectionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Видео-отбор не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Видео-отбор обновлён.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoSelectionDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/selections/offline/{selectionId}": {
+      "delete": {
+        "tags": [
+          "Оффлайн-отбор: Admin."
+        ],
+        "summary": "Удаление оффлайн-отбора.",
+        "operationId": "deleteOfflineSelection",
+        "parameters": [
+          {
+            "name": "selectionId",
+            "in": "path",
+            "description": "id оффлайн-отбора",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Оффлайн-отбор не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Оффлайн-отбор удалён."
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Оффлайн-отбор: Admin."
+        ],
+        "summary": "Обновление оффлайн-отбора.",
+        "operationId": "updateOfflineSelectionById",
+        "parameters": [
+          {
+            "name": "selectionId",
+            "in": "path",
+            "description": "id оффлайн-отбора",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOfflineSelectionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Оффлайн-отбор не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Оффлайн-отбор обновлен.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfflineSelectionDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/participations/selections/offline/{selectionId}": {
+      "get": {
+        "tags": [
+          "Заявка на участие в отборе: Admin."
+        ],
+        "summary": "Получение списка заявок на участие в конкретном отборе.",
+        "operationId": "getParticipationsBySelectionId",
+        "parameters": [
+          {
+            "name": "selectionId",
+            "in": "path",
+            "description": "id Гранд-соревнования",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Количество элементов, которые нужно пропустить для формирования текущего набора",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Количество элементов в наборе",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Гранд-соревнование не найдено",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ParticipationRequestDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Заявка на участие в отборе: Admin."
+        ],
+        "summary": "Обновление заявок на участие в конкретном отборе.",
+        "operationId": "updateParticipationRequestStatus",
+        "parameters": [
+          {
+            "name": "selectionId",
+            "in": "path",
+            "description": "id отбора",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ParticipationRequestStatusUpdateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Отбор не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Заявки обновлены.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ParticipationRequestStatusUpdateResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/events/{eventId}": {
+      "delete": {
+        "tags": [
+          "Мероприятия: Admin."
+        ],
+        "summary": "Удаление администратором мероприятия по ИД.",
+        "operationId": "deleteEventById",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "id мероприятия",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Мероприятие не найдено",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Мероприятие удалено."
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Мероприятия: Admin."
+        ],
+        "summary": "Обновление администратором мероприятия по ИД.",
+        "operationId": "updateEventById",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "id мероприятия",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateEventRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Мероприятие не найдено",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Мероприятие обновлено.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/contests/{contestId}": {
+      "delete": {
+        "tags": [
+          "Видео-соревнование: Admin."
+        ],
+        "summary": "Удаление видео-соревнования.",
+        "operationId": "deleteVideoContest",
+        "parameters": [
+          {
+            "name": "contestId",
+            "in": "path",
+            "description": "id видео-соревнования",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Видео-соревнование не найдено",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Видео-соревнование удалено."
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Видео-соревнование: Admin."
+        ],
+        "summary": "Обновление видео-соревнования.",
+        "operationId": "updateVideoContest",
+        "parameters": [
+          {
+            "name": "contestId",
+            "in": "path",
+            "description": "id видео-соревнования",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateVideoContestRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Видео-соревнование не найдено",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Видео-соревнование обновлено.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoContestDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/competitions/{competitionId}": {
+      "delete": {
+        "tags": [
+          "Гранд-соревнование: Admin."
+        ],
+        "summary": "Удаление администратором Гранд-соревнования по ИД.",
+        "operationId": "deleteGrandCompetition",
+        "parameters": [
+          {
+            "name": "competitionId",
+            "in": "path",
+            "description": "id Гранд-соревнования",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Гранд-соревнование не найдено",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Гранд-соревнование удалено."
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Гранд-соревнование: Admin."
+        ],
+        "summary": "Обновление администратором Гранд-соревнования по ИД.",
+        "operationId": "updateGrandCompetition",
+        "parameters": [
+          {
+            "name": "competitionId",
+            "in": "path",
+            "description": "id Гранд-соревнования",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateGrandCompetitionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Гранд-соревнование не найдено",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Гранд-соревнование обновлено.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GrandCompetitionDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/videos/search": {
+      "get": {
+        "tags": [
+          "Видео-клип."
+        ],
+        "summary": "Получение списка видео-клипов по хештегу.",
+        "operationId": "getVideoClipsByHashtag",
+        "parameters": [
+          {
+            "name": "hashtag",
+            "in": "query",
+            "description": "хештег",
+            "required": true,
+            "schema": {
+              "maxLength": 20,
+              "minLength": 2,
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Количество элементов, которые нужно пропустить для формирования текущего набора",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Количество элементов в наборе",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Видео-клип не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VideoClipDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}": {
+      "get": {
+        "tags": [
+          "Пользователь: Users."
+        ],
+        "summary": "Получение пользователя.",
+        "operationId": "getUserById",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "id пользователя",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Пользователь не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Пользователь найден.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Пользователь: Users."
+        ],
+        "summary": "Удаление пользователя.",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "id пользователя",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Пользователь не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Пользователь удален."
+          }
+        }
+      }
+    },
+    "/spectators/selection/{spectatorId}": {
+      "get": {
+        "tags": [
+          "Заявка зрителя на отбор: Users."
+        ],
+        "summary": "Получение заявки зрителя на отбор.",
+        "operationId": "getSelectionSpectatorRequestById",
+        "parameters": [
+          {
+            "name": "spectatorId",
+            "in": "path",
+            "description": "id заявки",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Заявка не найдена",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Заявка найдена.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SelectionSpectatorRequestDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Заявка зрителя на отбор: Users."
+        ],
+        "summary": "Удаление заявки зрителя на отбор.",
+        "operationId": "deleteSelectionSpectatorRequestById",
+        "parameters": [
+          {
+            "name": "spectatorId",
+            "in": "path",
+            "description": "id заявки",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Заявка не найдена",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Заявка удалена."
+          }
+        }
+      }
+    },
+    "/spectators/event/{spectatorId}": {
+      "get": {
+        "tags": [
+          "Заявка зрителя на мероприятие: Users."
+        ],
+        "summary": "Получение заявки зрителя на мероприятие по ИД.",
+        "operationId": "getEventSpectatorRequestById",
+        "parameters": [
+          {
+            "name": "spectatorId",
+            "in": "path",
+            "description": "id заявки",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Заявка не найдена",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Заявка найдена.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventSpectatorRequestDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Заявка зрителя на мероприятие: Users."
+        ],
+        "summary": "Удаление заявки зрителя на мероприятие.",
+        "operationId": "deleteEventSpectatorRequestById",
+        "parameters": [
+          {
+            "name": "spectatorId",
+            "in": "path",
+            "description": "id заявки",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Заявка не найдена",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Заявка удалена."
+          }
+        }
+      }
+    },
+    "/selections/video": {
+      "get": {
+        "tags": [
+          "Видео-отбор: Users."
+        ],
+        "summary": "Получение списка видео-отборов.",
+        "operationId": "getVideoSelections",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Количество элементов, которые нужно пропустить для формирования текущего набора",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Количество элементов в наборе",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Пользователь не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VideoSelectionDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/selections/video/{selectionId}": {
+      "get": {
+        "tags": [
+          "Видео-отбор: Users."
+        ],
+        "summary": "Получение видео-отбора.",
+        "operationId": "getVideoSelectionById",
+        "parameters": [
+          {
+            "name": "selectionId",
+            "in": "path",
+            "description": "id видео-отбора",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Видео-отбор не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Видео-отбор найден.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoSelectionDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/selections/video/competitions/{competitionId}": {
+      "get": {
+        "tags": [
+          "Видео-отбор: Users."
+        ],
+        "summary": "Получение списка видео-отборов к Гранд-соревнованию.",
+        "operationId": "getVideoSelectionsByGrandCompetitionId",
+        "parameters": [
+          {
+            "name": "competitionId",
+            "in": "path",
+            "description": "id Гранд-соревнования",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Количество элементов, которые нужно пропустить для формирования текущего набора",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Количество элементов в наборе",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Гранд-соревнование не найдено",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VideoSelectionDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/selections/offline": {
+      "get": {
+        "tags": [
+          "Оффлайн-отбор: Users."
+        ],
+        "summary": "Получение списка оффлайн-отборов.",
+        "operationId": "getOfflineSelections",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Количество элементов, которые нужно пропустить для формирования текущего набора",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Количество элементов в наборе",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Оффлайн-отбор не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OfflineSelectionDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/selections/offline/{selectionId}": {
+      "get": {
+        "tags": [
+          "Оффлайн-отбор: Users."
+        ],
+        "summary": "Получение оффлайн-отбора.",
+        "operationId": "getOfflineSelectionById",
+        "parameters": [
+          {
+            "name": "selectionId",
+            "in": "path",
+            "description": "id оффлайн-отбора",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Оффлайн-отбор не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Оффлайн-отбор найден.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OfflineSelectionDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/selections/offline/contestants": {
+      "get": {
+        "tags": [
+          "Оффлайн-отбор: Users."
+        ],
+        "summary": "Получение списка оффлайн-отборов с участием текущего пользователя.",
+        "operationId": "getOfflineSelectionsByRequestorId",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Количество элементов, которые нужно пропустить для формирования текущего набора",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Количество элементов в наборе",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Пользователь не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OfflineSelectionDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/selections/offline/competitions/{competitionId}": {
+      "get": {
+        "tags": [
+          "Оффлайн-отбор: Users."
+        ],
+        "summary": "Получение списка оффлайн-отборов к Гранд-соревнованию.",
+        "operationId": "getOfflineSelectionsByGrandCompetitionId",
+        "parameters": [
+          {
+            "name": "competitionId",
+            "in": "path",
+            "description": "id Гранд-соревнования",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Количество элементов, которые нужно пропустить для формирования текущего набора",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Количество элементов в наборе",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Гранд-соревнование не найдено",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/OfflineSelectionDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/events": {
+      "get": {
+        "tags": [
+          "Мероприятия: Users."
+        ],
+        "summary": "Получение списка мероприятия по заданным параметрам.",
+        "operationId": "getEventsByParams",
+        "parameters": [
+          {
+            "name": "grandCompetitionId",
+            "in": "query",
+            "description": "id Гранд-соревнования",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "day",
+            "in": "query",
+            "description": "Дата прохождения мероприятия",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "program",
+            "in": "query",
+            "description": "Программа мероприятия",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "VIDEO_CONTEST",
+                "GRANT_COMPETITION",
+                "DIALOG_PROGRAM",
+                "LEISURE_PROGRAM",
+                "CULTURAL_PROGRAM",
+                "STREET_CULTURE_AND_SPORTS",
+                "ENTERTAINMENT_PROGRAM",
+                "COMPETITIVE_PROGRAM",
+                "EXCURSION_PROGRAM"
+              ]
+            }
+          },
+          {
+            "name": "field",
+            "in": "query",
+            "description": "Направление мероприятия",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "BREAKING",
+                "PARKOUR",
+                "WORKOUT",
+                "KICKSCOOTERING",
+                "TRICKING",
+                "SKATEBOARDING",
+                "BMX",
+                "HIP_HOP",
+                "DJ_ING",
+                "GRAFFITI",
+                "WAKEBOARDING",
+                "ALL_FIELD"
+              ]
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Количество элементов, которые нужно пропустить для формирования текущего набора",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Количество элементов в наборе",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Мероприятие не найдено",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EventShortDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/events/{eventId}": {
+      "get": {
+        "tags": [
+          "Мероприятия: Users."
+        ],
+        "summary": "Получение мероприятия к Гранд-соревнованию по ИД.",
+        "operationId": "getEventById",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "id мероприятия",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Мероприятие не найдено",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Мероприятие найдено.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EventDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contests": {
+      "get": {
+        "tags": [
+          "Видео-соревнование: Users."
+        ],
+        "summary": "Получение списка видео-соревнований.",
+        "operationId": "getVideoContests",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Количество элементов, которые нужно пропустить для формирования текущего набора",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Количество элементов в наборе",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Пользователь не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VideoContestDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contests/{contestId}": {
+      "get": {
+        "tags": [
+          "Видео-соревнование: Users."
+        ],
+        "summary": "Получение видео-соревнования.",
+        "operationId": "getVideoContestById",
+        "parameters": [
+          {
+            "name": "contestId",
+            "in": "path",
+            "description": "id видео-соревнования",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Видео-соревнование не найдено",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Видео-соревнование найдено.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VideoContestDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/competitions": {
+      "get": {
+        "tags": [
+          "Гранд-соревнование: Users."
+        ],
+        "summary": "Получение списка Гранд-соревнований.",
+        "operationId": "getGrandCompetitions",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Количество элементов, которые нужно пропустить для формирования текущего набора",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Количество элементов в наборе",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Гранд-соревнование не найдено",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/GrandCompetitionDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/competitions/{competitionId}": {
+      "get": {
+        "tags": [
+          "Гранд-соревнование: Users."
+        ],
+        "summary": "Получение Гранд-соревнования по ИД.",
+        "operationId": "getGrandCompetitionById",
+        "parameters": [
+          {
+            "name": "competitionId",
+            "in": "path",
+            "description": "id Гранд-соревнования",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Гранд-соревнование не найдено",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "Гранд-соревнование найдено.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GrandCompetitionDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/users": {
+      "get": {
+        "tags": [
+          "Пользователь: Admin."
+        ],
+        "summary": "Получение списка пользователей.",
+        "operationId": "getUsersByIds",
+        "parameters": [
+          {
+            "name": "ids",
+            "in": "query",
+            "description": "Список ИД пользователей",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              }
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Количество элементов, которые нужно пропустить для формирования текущего набора",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Количество элементов в наборе",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Пользователь не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserShortDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/selections/offline/{selectionId}/contestants": {
+      "get": {
+        "tags": [
+          "Оффлайн-отбор: Admin."
+        ],
+        "summary": "Получение списка участников оффлайн-отбора.",
+        "operationId": "getContestantsByOfflineSelectionId",
+        "parameters": [
+          {
+            "name": "selectionId",
+            "in": "path",
+            "description": "id оффлайн-отбора",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "description": "Количество элементов, которые нужно пропустить для формирования текущего набора",
+            "required": false,
+            "schema": {
+              "minimum": 0,
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "Количество элементов в наборе",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Оффлайн-отбор не найден",
+            "content": {
+
+            }
+          },
+          "400": {
+            "description": "Запрос составлен некорректно",
+            "content": {
+
+            }
+          },
+          "401": {
+            "description": "Пользователь не авторизован",
+            "content": {
+
+            }
+          },
+          "500": {
+            "description": "Внутренняя ошибка сервера",
+            "content": {
+
+            }
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserShortDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UserShortDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "birthday": {
+            "type": "string",
+            "format": "date"
+          },
+          "country": {
+            "type": "string"
+          },
+          "avatarPhoto": {
+            "type": "string"
+          }
+        },
+        "description": "Сущность пользователя короткая."
+      },
+      "VideoClipDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "publicationTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "hashtags": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "creatorDto": {
+            "$ref": "#/components/schemas/UserShortDto"
+          },
+          "likesCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "videoLink": {
+            "type": "string"
+          }
+        },
+        "description": "Сущность видео-клипа."
+      },
+      "NewUserRequest": {
+        "required": [
+          "birthday",
+          "city",
+          "country",
+          "email",
+          "name",
+          "password",
+          "region",
+          "role",
+          "surname"
+        ],
+        "type": "object",
+        "properties": {
+          "email": {
+            "maxLength": 250,
+            "minLength": 6,
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "surname": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "patronymic": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "birthday": {
+            "type": "string",
+            "format": "date"
+          },
+          "country": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "region": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "city": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "network": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "ADMIN",
+              "EXPERT",
+              "USER"
+            ]
+          },
+          "password": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          }
+        },
+        "description": "Данные добавляемого пользователя"
+      },
+      "AuthenticationRequestDTO": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "description": "Сущность получаемая при авторизации."
+      },
+      "NewSelectionSpectatorRequest": {
+        "required": [
+          "requesterId",
+          "selectionId"
+        ],
+        "type": "object",
+        "properties": {
+          "selectionId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "requesterId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "description": "Данные добавляемой заявки"
+      },
+      "GrandCompetitionDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "title": {
+            "type": "string"
+          },
+          "hashtag": {
+            "type": "string"
+          },
+          "competitionStart": {
+            "type": "string",
+            "format": "date"
+          },
+          "competitionEnd": {
+            "type": "string",
+            "format": "date"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "FINISHED",
+              "UPCOMING",
+              "IN_PROGRESS"
+            ]
+          },
+          "location": {
+            "type": "string"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "BREAKING",
+                "PARKOUR",
+                "WORKOUT",
+                "KICKSCOOTERING",
+                "TRICKING",
+                "SKATEBOARDING",
+                "BMX",
+                "HIP_HOP",
+                "DJ_ING",
+                "GRAFFITI",
+                "WAKEBOARDING",
+                "ALL_FIELD"
+              ]
+            }
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "description": "Сущность Гранд-соревнования."
+      },
+      "OfflineSelectionDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "title": {
+            "type": "string"
+          },
+          "competitionDto": {
+            "$ref": "#/components/schemas/GrandCompetitionDto"
+          },
+          "selectionStart": {
+            "type": "string",
+            "format": "date"
+          },
+          "selectionEnd": {
+            "type": "string",
+            "format": "date"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "FINISHED",
+              "UPCOMING",
+              "IN_PROGRESS"
+            ]
+          },
+          "selectionType": {
+            "type": "string",
+            "enum": [
+              "REGIONAL",
+              "NATIONAL"
+            ]
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "BREAKING",
+                "PARKOUR",
+                "WORKOUT",
+                "KICKSCOOTERING",
+                "TRICKING",
+                "SKATEBOARDING",
+                "BMX",
+                "HIP_HOP",
+                "DJ_ING",
+                "GRAFFITI",
+                "WAKEBOARDING",
+                "ALL_FIELD"
+              ]
+            }
+          },
+          "location": {
+            "type": "string"
+          }
+        },
+        "description": "Сущность оффлайн-отбора."
+      },
+      "SelectionSpectatorRequestDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "creationTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "requesterDto": {
+            "$ref": "#/components/schemas/UserShortDto"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "CONFIRMED",
+              "CANCELED"
+            ]
+          },
+          "selectionDto": {
+            "$ref": "#/components/schemas/OfflineSelectionDto"
+          }
+        },
+        "description": "Сущность заявки зрителя на отбор."
+      },
+      "NewEventSpectatorRequest": {
+        "required": [
+          "eventId",
+          "requesterId"
+        ],
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "requesterId": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "description": "Данные добавляемой заявки"
+      },
+      "EventShortDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "title": {
+            "type": "string"
+          },
+          "competitionDto": {
+            "$ref": "#/components/schemas/GrandCompetitionDto"
+          },
+          "eventStart": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "eventEnd": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "FINISHED",
+              "UPCOMING",
+              "IN_PROGRESS"
+            ]
+          },
+          "logo": {
+            "type": "string"
+          }
+        },
+        "description": "Сущность мероприятия короткая."
+      },
+      "EventSpectatorRequestDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "creationTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "requesterDto": {
+            "$ref": "#/components/schemas/UserShortDto"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "CONFIRMED",
+              "CANCELED"
+            ]
+          },
+          "eventDto": {
+            "$ref": "#/components/schemas/EventShortDto"
+          }
+        },
+        "description": "Сущность заявки зрителя на мероприятие."
+      },
+      "NewParticipationRequest": {
+        "required": [
+          "fields",
+          "requesterId",
+          "selectionId"
+        ],
+        "type": "object",
+        "properties": {
+          "selectionId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "requesterId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "BREAKING",
+                "PARKOUR",
+                "WORKOUT",
+                "KICKSCOOTERING",
+                "TRICKING",
+                "SKATEBOARDING",
+                "BMX",
+                "HIP_HOP",
+                "DJ_ING",
+                "GRAFFITI",
+                "WAKEBOARDING",
+                "ALL_FIELD"
+              ]
+            }
+          }
+        },
+        "description": "Данные добавляемой заявки"
+      },
+      "ParticipationRequestDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "creationTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "selectionDto": {
+            "$ref": "#/components/schemas/OfflineSelectionDto"
+          },
+          "requesterDto": {
+            "$ref": "#/components/schemas/UserShortDto"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "CONFIRMED",
+              "CANCELED"
+            ]
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "BREAKING",
+                "PARKOUR",
+                "WORKOUT",
+                "KICKSCOOTERING",
+                "TRICKING",
+                "SKATEBOARDING",
+                "BMX",
+                "HIP_HOP",
+                "DJ_ING",
+                "GRAFFITI",
+                "WAKEBOARDING",
+                "ALL_FIELD"
+              ]
+            }
+          }
+        },
+        "description": "Сущность заявки на участие в отборе."
+      },
+      "NewCommentRequest": {
+        "required": [
+          "authorId",
+          "text"
+        ],
+        "type": "object",
+        "properties": {
+          "authorId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "text": {
+            "maxLength": 500,
+            "minLength": 2,
+            "type": "string"
+          }
+        },
+        "description": "Данные добавляемого комментария"
+      },
+      "CommentDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "authorDto": {
+            "$ref": "#/components/schemas/UserShortDto"
+          },
+          "publicationTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "videoClipDto": {
+            "$ref": "#/components/schemas/VideoClipDto"
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "description": "Сущность комментария к видео-клипу."
+      },
+      "NewVideoSelectionRequest": {
+        "required": [
+          "competitionId",
+          "description",
+          "hashtag",
+          "selectionEnd",
+          "selectionStart",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "competitionId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "selectionStart": {
+            "type": "string",
+            "format": "date"
+          },
+          "selectionEnd": {
+            "type": "string",
+            "format": "date"
+          },
+          "hashtag": {
+            "maxLength": 20,
+            "minLength": 2,
+            "type": "string"
+          },
+          "description": {
+            "maxLength": 6500,
+            "minLength": 2,
+            "type": "string"
+          }
+        },
+        "description": "Данные добавляемого видео-отбора"
+      },
+      "VideoSelectionDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "title": {
+            "type": "string"
+          },
+          "competitionDto": {
+            "$ref": "#/components/schemas/GrandCompetitionDto"
+          },
+          "selectionStart": {
+            "type": "string",
+            "format": "date"
+          },
+          "selectionEnd": {
+            "type": "string",
+            "format": "date"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "FINISHED",
+              "UPCOMING",
+              "IN_PROGRESS"
+            ]
+          },
+          "hashtag": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "description": "Сущность видео-отбора."
+      },
+      "NewOfflineSelectionRequest": {
+        "required": [
+          "competitionId",
+          "fields",
+          "location",
+          "selectionEnd",
+          "selectionStart",
+          "selectionType",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "competitionId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "selectionStart": {
+            "type": "string",
+            "format": "date"
+          },
+          "selectionEnd": {
+            "type": "string",
+            "format": "date"
+          },
+          "selectionType": {
+            "type": "string",
+            "enum": [
+              "REGIONAL",
+              "NATIONAL"
+            ]
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "BREAKING",
+                "PARKOUR",
+                "WORKOUT",
+                "KICKSCOOTERING",
+                "TRICKING",
+                "SKATEBOARDING",
+                "BMX",
+                "HIP_HOP",
+                "DJ_ING",
+                "GRAFFITI",
+                "WAKEBOARDING",
+                "ALL_FIELD"
+              ]
+            }
+          },
+          "location": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          }
+        },
+        "description": "Данные добавляемого отбора"
+      },
+      "NewEventRequest": {
+        "required": [
+          "competitionId",
+          "description",
+          "eventEnd",
+          "eventStart",
+          "fields",
+          "isMainEvent",
+          "location",
+          "programs",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "competitionId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "eventStart": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "eventEnd": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "location": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "programs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "VIDEO_CONTEST",
+                "GRANT_COMPETITION",
+                "DIALOG_PROGRAM",
+                "LEISURE_PROGRAM",
+                "CULTURAL_PROGRAM",
+                "STREET_CULTURE_AND_SPORTS",
+                "ENTERTAINMENT_PROGRAM",
+                "COMPETITIVE_PROGRAM",
+                "EXCURSION_PROGRAM"
+              ]
+            }
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "BREAKING",
+                "PARKOUR",
+                "WORKOUT",
+                "KICKSCOOTERING",
+                "TRICKING",
+                "SKATEBOARDING",
+                "BMX",
+                "HIP_HOP",
+                "DJ_ING",
+                "GRAFFITI",
+                "WAKEBOARDING",
+                "ALL_FIELD"
+              ]
+            }
+          },
+          "isMainEvent": {
+            "type": "boolean"
+          },
+          "description": {
+            "maxLength": 1500,
+            "minLength": 2,
+            "type": "string"
+          }
+        },
+        "description": "Данные добавляемого мероприятия"
+      },
+      "EventDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "title": {
+            "type": "string"
+          },
+          "competitionDto": {
+            "$ref": "#/components/schemas/GrandCompetitionDto"
+          },
+          "eventStart": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "eventEnd": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "location": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "FINISHED",
+              "UPCOMING",
+              "IN_PROGRESS"
+            ]
+          },
+          "programs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "VIDEO_CONTEST",
+                "GRANT_COMPETITION",
+                "DIALOG_PROGRAM",
+                "LEISURE_PROGRAM",
+                "CULTURAL_PROGRAM",
+                "STREET_CULTURE_AND_SPORTS",
+                "ENTERTAINMENT_PROGRAM",
+                "COMPETITIVE_PROGRAM",
+                "EXCURSION_PROGRAM"
+              ]
+            }
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "BREAKING",
+                "PARKOUR",
+                "WORKOUT",
+                "KICKSCOOTERING",
+                "TRICKING",
+                "SKATEBOARDING",
+                "BMX",
+                "HIP_HOP",
+                "DJ_ING",
+                "GRAFFITI",
+                "WAKEBOARDING",
+                "ALL_FIELD"
+              ]
+            }
+          },
+          "logo": {
+            "type": "string"
+          },
+          "isMainEvent": {
+            "type": "boolean"
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "description": "Сущность мероприятия."
+      },
+      "NewVideoContestRequest": {
+        "required": [
+          "contestEnd",
+          "contestStart",
+          "description",
+          "hashtag",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "hashtag": {
+            "maxLength": 20,
+            "minLength": 2,
+            "type": "string"
+          },
+          "contestStart": {
+            "type": "string",
+            "format": "date"
+          },
+          "contestEnd": {
+            "type": "string",
+            "format": "date"
+          },
+          "description": {
+            "maxLength": 3000,
+            "minLength": 2,
+            "type": "string"
+          }
+        },
+        "description": "Данные добавляемого видео-соревнования"
+      },
+      "VideoContestDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "title": {
+            "type": "string"
+          },
+          "hashtag": {
+            "type": "string"
+          },
+          "contestStart": {
+            "type": "string",
+            "format": "date"
+          },
+          "contestEnd": {
+            "type": "string",
+            "format": "date"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "FINISHED",
+              "UPCOMING",
+              "IN_PROGRESS"
+            ]
+          },
+          "description": {
+            "type": "string"
+          }
+        },
+        "description": "Сущность видео-соревнования."
+      },
+      "NewGrandCompetitionRequest": {
+        "required": [
+          "competitionEnd",
+          "competitionStart",
+          "description",
+          "fields",
+          "hashtag",
+          "location",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "hashtag": {
+            "maxLength": 20,
+            "minLength": 2,
+            "type": "string"
+          },
+          "competitionStart": {
+            "type": "string",
+            "format": "date"
+          },
+          "competitionEnd": {
+            "type": "string",
+            "format": "date"
+          },
+          "location": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "BREAKING",
+                "PARKOUR",
+                "WORKOUT",
+                "KICKSCOOTERING",
+                "TRICKING",
+                "SKATEBOARDING",
+                "BMX",
+                "HIP_HOP",
+                "DJ_ING",
+                "GRAFFITI",
+                "WAKEBOARDING",
+                "ALL_FIELD"
+              ]
+            }
+          },
+          "description": {
+            "maxLength": 1000,
+            "minLength": 2,
+            "type": "string"
+          }
+        },
+        "description": "Данные добавляемого Гранд-соревнования"
+      },
+      "UpdateVideoClipRequest": {
+        "required": [
+          "hashtags"
+        ],
+        "type": "object",
+        "properties": {
+          "hashtags": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "description": "Данные обновляемого видео-клипа"
+      },
+      "UpdateUserRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "maxLength": 250,
+            "minLength": 6,
+            "type": "string"
+          },
+          "name": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "surname": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "patronymic": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "birthday": {
+            "type": "string",
+            "format": "date"
+          },
+          "country": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "region": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "city": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "phoneNumber": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "gender": {
+            "type": "string",
+            "enum": [
+              "MALE",
+              "FEMALE"
+            ]
+          },
+          "citizenship": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "portfolio": {
+            "type": "string"
+          },
+          "aboutMe": {
+            "maxLength": 1000,
+            "minLength": 2,
+            "type": "string"
+          },
+          "network": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "description": "Данные обновляемого пользователя"
+      },
+      "UserDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "email": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "surname": {
+            "type": "string"
+          },
+          "patronymic": {
+            "type": "string"
+          },
+          "birthday": {
+            "type": "string",
+            "format": "date"
+          },
+          "country": {
+            "type": "string"
+          },
+          "region": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string",
+            "enum": [
+              "MALE",
+              "FEMALE"
+            ]
+          },
+          "citizenship": {
+            "type": "string"
+          },
+          "avatarPhoto": {
+            "type": "string"
+          },
+          "portfolio": {
+            "type": "string"
+          },
+          "aboutMe": {
+            "type": "string"
+          },
+          "network": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "description": "Сущность пользователя."
+      },
+      "UpdateParticipationRequest": {
+        "required": [
+          "fields"
+        ],
+        "type": "object",
+        "properties": {
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "BREAKING",
+                "PARKOUR",
+                "WORKOUT",
+                "KICKSCOOTERING",
+                "TRICKING",
+                "SKATEBOARDING",
+                "BMX",
+                "HIP_HOP",
+                "DJ_ING",
+                "GRAFFITI",
+                "WAKEBOARDING",
+                "ALL_FIELD"
+              ]
+            }
+          }
+        },
+        "description": "Данные для обновления заявки"
+      },
+      "UpdateCommentRequest": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "maxLength": 500,
+            "minLength": 2,
+            "type": "string"
+          }
+        },
+        "description": "Данные обновляемого комментария"
+      },
+      "SpectatorRequestStatusUpdateRequest": {
+        "required": [
+          "requestIds",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "requestIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "CONFIRMED",
+              "REJECTED"
+            ]
+          }
+        },
+        "description": "Данные обновляемых заявок"
+      },
+      "SpectatorRequestDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "creationTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "requesterDto": {
+            "$ref": "#/components/schemas/UserShortDto"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDING",
+              "CONFIRMED",
+              "CANCELED"
+            ]
+          }
+        },
+        "description": "Сущность заявки зрителя мероприятия."
+      },
+      "SpectatorRequestStatusUpdateResult": {
+        "type": "object",
+        "properties": {
+          "updatedRequests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SpectatorRequestDto"
+            }
+          },
+          "notUpdatedRequests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SpectatorRequestDto"
+            }
+          }
+        },
+        "description": "Возвращаемая сущность при обновления статуса заявки зрителя."
+      },
+      "UpdateVideoSelectionRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "selectionStart": {
+            "type": "string",
+            "format": "date"
+          },
+          "selectionEnd": {
+            "type": "string",
+            "format": "date"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "FINISHED",
+              "UPCOMING",
+              "IN_PROGRESS"
+            ]
+          },
+          "description": {
+            "maxLength": 6500,
+            "minLength": 2,
+            "type": "string"
+          }
+        },
+        "description": "Данные обновляемого видео-отбора"
+      },
+      "UpdateOfflineSelectionRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "selectionStart": {
+            "type": "string",
+            "format": "date"
+          },
+          "selectionEnd": {
+            "type": "string",
+            "format": "date"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "FINISHED",
+              "UPCOMING",
+              "IN_PROGRESS"
+            ]
+          },
+          "selectionType": {
+            "type": "string",
+            "enum": [
+              "REGIONAL",
+              "NATIONAL"
+            ]
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "BREAKING",
+                "PARKOUR",
+                "WORKOUT",
+                "KICKSCOOTERING",
+                "TRICKING",
+                "SKATEBOARDING",
+                "BMX",
+                "HIP_HOP",
+                "DJ_ING",
+                "GRAFFITI",
+                "WAKEBOARDING",
+                "ALL_FIELD"
+              ]
+            }
+          },
+          "location": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          }
+        },
+        "description": "Данные обновляемого отбора"
+      },
+      "ParticipationRequestStatusUpdateRequest": {
+        "required": [
+          "requestIds",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "requestIds": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "CONFIRMED",
+              "REJECTED"
+            ]
+          }
+        },
+        "description": "Данные для обновления заявок"
+      },
+      "ParticipationRequestStatusUpdateResult": {
+        "type": "object",
+        "properties": {
+          "updatedRequests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ParticipationRequestDto"
+            }
+          },
+          "notUpdatedRequests": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ParticipationRequestDto"
+            }
+          }
+        },
+        "description": "Возвращаемая сущность обновления статуса заявки участника."
+      },
+      "UpdateEventRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "eventStart": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "eventEnd": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "location": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "programs": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "VIDEO_CONTEST",
+                "GRANT_COMPETITION",
+                "DIALOG_PROGRAM",
+                "LEISURE_PROGRAM",
+                "CULTURAL_PROGRAM",
+                "STREET_CULTURE_AND_SPORTS",
+                "ENTERTAINMENT_PROGRAM",
+                "COMPETITIVE_PROGRAM",
+                "EXCURSION_PROGRAM"
+              ]
+            }
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "BREAKING",
+                "PARKOUR",
+                "WORKOUT",
+                "KICKSCOOTERING",
+                "TRICKING",
+                "SKATEBOARDING",
+                "BMX",
+                "HIP_HOP",
+                "DJ_ING",
+                "GRAFFITI",
+                "WAKEBOARDING",
+                "ALL_FIELD"
+              ]
+            }
+          },
+          "isMainEvent": {
+            "type": "boolean"
+          },
+          "description": {
+            "maxLength": 1500,
+            "minLength": 2,
+            "type": "string"
+          }
+        },
+        "description": "Данные обновляемого мероприятия"
+      },
+      "UpdateVideoContestRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "contestStart": {
+            "type": "string",
+            "format": "date"
+          },
+          "contestEnd": {
+            "type": "string",
+            "format": "date"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "FINISHED",
+              "UPCOMING",
+              "IN_PROGRESS"
+            ]
+          },
+          "description": {
+            "maxLength": 3000,
+            "minLength": 2,
+            "type": "string"
+          }
+        },
+        "description": "Данные обновляемого видео-соревнования"
+      },
+      "UpdateGrandCompetitionRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "competitionStart": {
+            "type": "string",
+            "format": "date"
+          },
+          "competitionEnd": {
+            "type": "string",
+            "format": "date"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "FINISHED",
+              "UPCOMING",
+              "IN_PROGRESS"
+            ]
+          },
+          "location": {
+            "maxLength": 250,
+            "minLength": 2,
+            "type": "string"
+          },
+          "fields": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "BREAKING",
+                "PARKOUR",
+                "WORKOUT",
+                "KICKSCOOTERING",
+                "TRICKING",
+                "SKATEBOARDING",
+                "BMX",
+                "HIP_HOP",
+                "DJ_ING",
+                "GRAFFITI",
+                "WAKEBOARDING",
+                "ALL_FIELD"
+              ]
+            }
+          },
+          "description": {
+            "maxLength": 1000,
+            "minLength": 2,
+            "type": "string"
+          }
+        },
+        "description": "Данные обновляемого Гранд-соревнования"
+      }
+    }
+  }
+}

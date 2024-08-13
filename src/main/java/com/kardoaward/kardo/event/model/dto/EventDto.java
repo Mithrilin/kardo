@@ -4,6 +4,7 @@ import com.kardoaward.kardo.enums.Field;
 import com.kardoaward.kardo.enums.Status;
 import com.kardoaward.kardo.event.model.enums.EventProgram;
 import com.kardoaward.kardo.grand_competition.model.dto.GrandCompetitionDto;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(description = "Сущность мероприятия.")
 public class EventDto {
 
     private Long id;

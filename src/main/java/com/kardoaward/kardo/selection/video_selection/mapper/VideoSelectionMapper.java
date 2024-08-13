@@ -2,7 +2,7 @@ package com.kardoaward.kardo.selection.video_selection.mapper;
 
 import com.kardoaward.kardo.grand_competition.mapper.GrandCompetitionMapper;
 import com.kardoaward.kardo.grand_competition.model.GrandCompetition;
-import com.kardoaward.kardo.selection.video_selection.model.UpdateVideoSelectionRequest;
+import com.kardoaward.kardo.selection.video_selection.model.dto.UpdateVideoSelectionRequest;
 import com.kardoaward.kardo.selection.video_selection.model.VideoSelection;
 import com.kardoaward.kardo.selection.video_selection.model.dto.NewVideoSelectionRequest;
 import com.kardoaward.kardo.selection.video_selection.model.dto.VideoSelectionDto;

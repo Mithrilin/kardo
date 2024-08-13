@@ -22,6 +22,6 @@ public interface ParticipationRequestService {
     ParticipationRequestDto updateParticipationById(Long requestorId, Long participationId,
                                                     UpdateParticipationRequest request);
 
-    ParticipationRequestStatusUpdateResult updateParticipationRequestStatusById(
+    ParticipationRequestStatusUpdateResult updateParticipationRequestStatus(
             Long selectionId, ParticipationRequestStatusUpdateRequest request);
 }

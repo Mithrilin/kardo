@@ -16,7 +16,7 @@ public interface SelectionSpectatorRequestService {
 
     SelectionSpectatorRequestDto getSelectionSpectatorRequestById(User requestor, Long spectatorId);
 
-    List<SelectionSpectatorRequestDto> getSelectionSpectatorRequestByEventId(Long selectionId, int from, int size);
+    List<SelectionSpectatorRequestDto> getSelectionSpectatorRequestBySelectionId(Long selectionId, int from, int size);
 
     SpectatorRequestStatusUpdateResult updateSelectionSpectatorRequestStatusBySelectionId(
             Long selectionId, SpectatorRequestStatusUpdateRequest request);
