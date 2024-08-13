@@ -74,8 +74,8 @@ public class SelectionSpectatorRequestServiceImpl implements SelectionSpectatorR
     }
 
     @Override
-    public List<SelectionSpectatorRequestDto> getSelectionSpectatorRequestByEventId(Long selectionId, int from,
-                                                                                    int size) {
+    public List<SelectionSpectatorRequestDto> getSelectionSpectatorRequestBySelectionId(Long selectionId, int from,
+                                                                                        int size) {
         offlineSelectionValidationHelper.isOfflineSelectionPresent(selectionId);
         int page = from / size;
         Sort sort = Sort.by(Sort.Direction.ASC, "id");
