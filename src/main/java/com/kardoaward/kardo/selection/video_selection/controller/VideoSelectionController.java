@@ -1,6 +1,6 @@
 package com.kardoaward.kardo.selection.video_selection.controller;
 
-import com.kardoaward.kardo.selection.video_selection.model.dto.VideoSelectionDto;
+import com.kardoaward.kardo.selection.video_selection.dto.VideoSelectionDto;
 import com.kardoaward.kardo.selection.video_selection.service.VideoSelectionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -46,7 +46,7 @@ public class VideoSelectionController {
     @Secured({"ADMIN", "USER"})
     public VideoSelectionDto getVideoSelectionById(@Parameter(description = "id видео-отбора")
                                                    @PathVariable @Positive Long selectionId) {
-        log.info("Возвращение видео-отбора с ИД {}.", selectionId);
+        log.debug("Возвращение видео-отбора с ИД {}.", selectionId);
         return videoSelectionService.getVideoSelectionById(selectionId);
     }
 
@@ -63,7 +63,7 @@ public class VideoSelectionController {
                                                       @RequestParam(defaultValue = "0") @Min(0) int from,
                                                       @Parameter(description = "Количество элементов в наборе")
                                                       @RequestParam(defaultValue = "10") @Positive int size) {
-        log.info("Возвращение списка видео-отборов.");
+        log.debug("Возвращение списка видео-отборов.");
         return videoSelectionService.getVideoSelections(from, size);
     }
 
@@ -83,7 +83,7 @@ public class VideoSelectionController {
                                                            @RequestParam(defaultValue = "0") @Min(0) int from,
                                                            @Parameter(description = "Количество элементов в наборе")
                                                            @RequestParam(defaultValue = "10") @Positive int size) {
-        log.info("Возвращение списка видео-отборов к гранд-соревнованию с ИД {}.", competitionId);
+        log.debug("Возвращение списка видео-отборов к гранд-соревнованию с ИД {}.", competitionId);
         return videoSelectionService.getVideoSelectionsByGrandCompetitionId(competitionId, from, size);
     }
 }

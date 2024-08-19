@@ -1,6 +1,6 @@
 package com.kardoaward.kardo.video_contest.controller;
 
-import com.kardoaward.kardo.video_contest.model.dto.VideoContestDto;
+import com.kardoaward.kardo.video_contest.dto.VideoContestDto;
 import com.kardoaward.kardo.video_contest.service.VideoContestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -47,7 +47,7 @@ public class VideoContestController {
     @Secured({"ADMIN", "USER"})
     public VideoContestDto getVideoContestById(@Parameter(description = "id видео-соревнования")
                                                    @PathVariable @Positive Long contestId) {
-        log.info("Возвращение видео-конкурса с ИД {}.", contestId);
+        log.debug("Возвращение видео-конкурса с ИД {}.", contestId);
         return service.getVideoContestById(contestId);
     }
 
@@ -64,7 +64,7 @@ public class VideoContestController {
                                                       @RequestParam(defaultValue = "0") @Min(0) int from,
                                                   @Parameter(description = "Количество элементов в наборе")
                                                       @RequestParam(defaultValue = "10") @Positive int size) {
-        log.info("Возвращение списка видео-конкурсов.");
+        log.debug("Возвращение списка видео-конкурсов.");
         return service.getVideoContests(from, size);
     }
 }

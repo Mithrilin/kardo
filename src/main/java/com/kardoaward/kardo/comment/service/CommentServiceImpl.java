@@ -2,9 +2,9 @@ package com.kardoaward.kardo.comment.service;
 
 import com.kardoaward.kardo.comment.mapper.CommentMapper;
 import com.kardoaward.kardo.comment.model.Comment;
-import com.kardoaward.kardo.comment.model.dto.CommentDto;
-import com.kardoaward.kardo.comment.model.dto.NewCommentRequest;
-import com.kardoaward.kardo.comment.model.dto.UpdateCommentRequest;
+import com.kardoaward.kardo.comment.dto.CommentDto;
+import com.kardoaward.kardo.comment.dto.NewCommentRequest;
+import com.kardoaward.kardo.comment.dto.UpdateCommentRequest;
 import com.kardoaward.kardo.comment.repository.CommentRepository;
 import com.kardoaward.kardo.comment.service.helper.CommentValidationHelper;
 import com.kardoaward.kardo.user.model.User;
@@ -60,7 +60,7 @@ public class CommentServiceImpl implements CommentService {
     public CommentDto getCommentById(Long commentId) {
         Comment comment = commentValidationHelper.isCommentPresent(commentId);
         CommentDto commentDto = commentMapper.commentToCommentDto(comment);
-        log.info("Возвращение комментария с ИД {}.", commentId);
+        log.debug("Возвращение комментария с ИД {}.", commentId);
         return commentDto;
     }
 
@@ -85,13 +85,13 @@ public class CommentServiceImpl implements CommentService {
         Page<Comment> commentPage = commentRepository.findByVideoClip_Id(videoId, pageRequest);
 
         if (commentPage.isEmpty()) {
-            log.info("Не нашлось комментариев по заданным параметрам.");
+            log.debug("Не нашлось комментариев по заданным параметрам.");
             return new ArrayList<>();
         }
 
         List<Comment> comments = commentPage.getContent();
         List<CommentDto> commentDtos = commentMapper.commentListToCommentDtoList(comments);
-        log.info("Список комментариев с номера {} размером {} возвращён.", from, commentDtos.size());
+        log.debug("Список комментариев с номера {} размером {} возвращён.", from, commentDtos.size());
         return commentDtos;
     }
 }

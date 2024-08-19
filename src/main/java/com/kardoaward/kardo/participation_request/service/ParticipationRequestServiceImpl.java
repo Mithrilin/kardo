@@ -4,11 +4,11 @@ import com.kardoaward.kardo.enums.RequestStatus;
 import com.kardoaward.kardo.enums.UpdateRequestStatus;
 import com.kardoaward.kardo.participation_request.mapper.ParticipationRequestMapper;
 import com.kardoaward.kardo.participation_request.model.ParticipationRequest;
-import com.kardoaward.kardo.participation_request.model.dto.NewParticipationRequest;
-import com.kardoaward.kardo.participation_request.model.dto.ParticipationRequestDto;
-import com.kardoaward.kardo.participation_request.model.dto.update.ParticipationRequestStatusUpdateRequest;
-import com.kardoaward.kardo.participation_request.model.dto.update.ParticipationRequestStatusUpdateResult;
-import com.kardoaward.kardo.participation_request.model.dto.update.UpdateParticipationRequest;
+import com.kardoaward.kardo.participation_request.dto.NewParticipationRequest;
+import com.kardoaward.kardo.participation_request.dto.ParticipationRequestDto;
+import com.kardoaward.kardo.participation_request.dto.update.ParticipationRequestStatusUpdateRequest;
+import com.kardoaward.kardo.participation_request.dto.update.ParticipationRequestStatusUpdateResult;
+import com.kardoaward.kardo.participation_request.dto.update.UpdateParticipationRequest;
 import com.kardoaward.kardo.participation_request.repository.ParticipationRequestRepository;
 import com.kardoaward.kardo.participation_request.service.helper.ParticipationRequestValidationHelper;
 import com.kardoaward.kardo.selection.offline_selection.model.OfflineSelection;
@@ -65,7 +65,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
         ParticipationRequest request = participationHelper.isParticipationRequestPresent(participationId);
         participationHelper.isUserRequesterOrAdmin(requestor, request.getRequester().getId());
         ParticipationRequestDto requestDto = mapper.participationRequestToParticipationRequestDto(request);
-        log.info("Заявка с ИД {} пользователя с ИД {} возвращена.", participationId, requestor.getId());
+        log.debug("Заявка с ИД {} пользователя с ИД {} возвращена.", participationId, requestor.getId());
         return requestDto;
     }
 
@@ -78,14 +78,14 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
         Page<ParticipationRequest> participationPage = repository.findBySelection_Id(selectionId, pageRequest);
 
         if (participationPage.isEmpty()) {
-            log.info("Не нашлось заявок по заданным параметрам.");
+            log.debug("Не нашлось заявок по заданным параметрам.");
             return new ArrayList<>();
         }
 
         List<ParticipationRequest> participations = participationPage.getContent();
         List<ParticipationRequestDto> participationDtos =
                 mapper.participationRequestListToParticipationRequestDtoList(participations);
-        log.info("Список заявок на участие в оффлайн-отборе с ИД {} с номера {} размером {} возвращён.", selectionId,
+        log.debug("Список заявок на участие в оффлайн-отборе с ИД {} с номера {} размером {} возвращён.", selectionId,
                 from, participationDtos.size());
         return participationDtos;
     }
@@ -103,6 +103,7 @@ public class ParticipationRequestServiceImpl implements ParticipationRequestServ
     }
 
     @Override
+    @Transactional
     public ParticipationRequestStatusUpdateResult updateParticipationRequestStatus(
             Long selectionId, ParticipationRequestStatusUpdateRequest request) {
 

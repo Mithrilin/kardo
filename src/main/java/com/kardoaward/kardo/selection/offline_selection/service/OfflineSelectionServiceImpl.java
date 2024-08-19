@@ -4,9 +4,9 @@ import com.kardoaward.kardo.grand_competition.model.GrandCompetition;
 import com.kardoaward.kardo.grand_competition.service.helper.GrandCompetitionValidationHelper;
 import com.kardoaward.kardo.selection.offline_selection.mapper.OfflineSelectionMapper;
 import com.kardoaward.kardo.selection.offline_selection.model.OfflineSelection;
-import com.kardoaward.kardo.selection.offline_selection.model.dto.NewOfflineSelectionRequest;
-import com.kardoaward.kardo.selection.offline_selection.model.dto.OfflineSelectionDto;
-import com.kardoaward.kardo.selection.offline_selection.model.dto.UpdateOfflineSelectionRequest;
+import com.kardoaward.kardo.selection.offline_selection.dto.NewOfflineSelectionRequest;
+import com.kardoaward.kardo.selection.offline_selection.dto.OfflineSelectionDto;
+import com.kardoaward.kardo.selection.offline_selection.dto.UpdateOfflineSelectionRequest;
 import com.kardoaward.kardo.selection.offline_selection.repository.OfflineSelectionRepository;
 import com.kardoaward.kardo.selection.offline_selection.service.helper.OfflineSelectionValidationHelper;
 import jakarta.transaction.Transactional;
@@ -59,7 +59,7 @@ public class OfflineSelectionServiceImpl implements OfflineSelectionService {
         OfflineSelection offlineSelection = offlineSelectionValidationHelper.isOfflineSelectionPresent(selectionId);
         OfflineSelectionDto offlineSelectionDto = offlineSelectionMapper
                 .offlineSelectionToOfflineSelectionDto(offlineSelection);
-        log.info("Оффлайн-отбор с ИД {} возвращен.", selectionId);
+        log.debug("Оффлайн-отбор с ИД {} возвращен.", selectionId);
         return offlineSelectionDto;
     }
 
@@ -71,14 +71,14 @@ public class OfflineSelectionServiceImpl implements OfflineSelectionService {
         Page<OfflineSelection> selectionsPage = offlineSelectionRepository.findAll(pageRequest);
 
         if (selectionsPage.isEmpty()) {
-            log.info("Не нашлось оффлайн-отборов по заданным параметрам.");
+            log.debug("Не нашлось оффлайн-отборов по заданным параметрам.");
             return new ArrayList<>();
         }
 
         List<OfflineSelection> offlineSelections = selectionsPage.getContent();
         List<OfflineSelectionDto> offlineSelectionDtos = offlineSelectionMapper
                 .offlineSelectionListToOfflineSelectionDtoList(offlineSelections);
-        log.info("Список оффлайн-отборов с номера {} размером {} возвращён.", from, offlineSelectionDtos.size());
+        log.debug("Список оффлайн-отборов с номера {} размером {} возвращён.", from, offlineSelectionDtos.size());
         return offlineSelectionDtos;
     }
 
@@ -103,14 +103,14 @@ public class OfflineSelectionServiceImpl implements OfflineSelectionService {
         Page<OfflineSelection> selectionsPage = offlineSelectionRepository.findAllByRequestorId(requestorId, pageRequest);
 
         if (selectionsPage.isEmpty()) {
-            log.info("Не нашлось оффлайн-отборов по заданным параметрам.");
+            log.debug("Не нашлось оффлайн-отборов по заданным параметрам.");
             return new ArrayList<>();
         }
 
         List<OfflineSelection> selections = selectionsPage.getContent();
         List<OfflineSelectionDto> selectionDtos = offlineSelectionMapper
                 .offlineSelectionListToOfflineSelectionDtoList(selections);
-        log.info("Список оффлайн-отборов с участием пользователя с ИД {} с номера {} размером {} возвращён.",
+        log.debug("Список оффлайн-отборов с участием пользователя с ИД {} с номера {} размером {} возвращён.",
                 requestorId, from, selectionDtos.size());
         return selectionDtos;
     }
@@ -125,14 +125,14 @@ public class OfflineSelectionServiceImpl implements OfflineSelectionService {
                 .findByCompetition_Id(competitionId, pageRequest);
 
         if (selectionsPage.isEmpty()) {
-            log.info("Не нашлось оффлайн-отборов по заданным параметрам.");
+            log.debug("Не нашлось оффлайн-отборов по заданным параметрам.");
             return new ArrayList<>();
         }
 
         List<OfflineSelection> selections = selectionsPage.getContent();
         List<OfflineSelectionDto> selectionDtos = offlineSelectionMapper
                 .offlineSelectionListToOfflineSelectionDtoList(selections);
-        log.info("Список оффлайн-отборов к гранд-соревнованию с ИД {} с номера {} размером {} возвращён.",
+        log.debug("Список оффлайн-отборов к гранд-соревнованию с ИД {} с номера {} размером {} возвращён.",
                 competitionId, from, selectionDtos.size());
         return selectionDtos;
     }

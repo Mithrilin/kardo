@@ -2,10 +2,10 @@ package com.kardoaward.kardo.user.controller;
 
 import com.kardoaward.kardo.security.UserDetailsImpl;
 import com.kardoaward.kardo.user.model.User;
-import com.kardoaward.kardo.user.model.dto.NewUserRequest;
-import com.kardoaward.kardo.user.model.dto.UpdateUserRequest;
-import com.kardoaward.kardo.user.model.dto.UserDto;
-import com.kardoaward.kardo.user.model.dto.UserShortDto;
+import com.kardoaward.kardo.user.dto.NewUserRequest;
+import com.kardoaward.kardo.user.dto.UpdateUserRequest;
+import com.kardoaward.kardo.user.dto.UserDto;
+import com.kardoaward.kardo.user.dto.UserShortDto;
 import com.kardoaward.kardo.user.service.UserService;
 import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -77,7 +77,7 @@ public class UserController {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         User requestor = userDetails.getUser();
-        log.info("Получение данных пользователя с ИД {}.", userId);
+        log.debug("Получение данных пользователя с ИД {}.", userId);
         userValidationHelper.isUserOwnerOrAdmin(requestor, userId);
         return userService.getUserById(userId);
     }

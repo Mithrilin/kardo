@@ -1,9 +1,9 @@
 package com.kardoaward.kardo.spectator_request.event_spectator_request.controller.admin;
 
-import com.kardoaward.kardo.spectator_request.event_spectator_request.model.dto.EventSpectatorRequestDto;
+import com.kardoaward.kardo.spectator_request.event_spectator_request.dto.EventSpectatorRequestDto;
 import com.kardoaward.kardo.spectator_request.event_spectator_request.service.EventSpectatorRequestService;
-import com.kardoaward.kardo.spectator_request.model.dto.update.SpectatorRequestStatusUpdateRequest;
-import com.kardoaward.kardo.spectator_request.model.dto.update.SpectatorRequestStatusUpdateResult;
+import com.kardoaward.kardo.spectator_request.dto.update.SpectatorRequestStatusUpdateRequest;
+import com.kardoaward.kardo.spectator_request.dto.update.SpectatorRequestStatusUpdateResult;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -55,7 +55,7 @@ public class EventSpectatorRequestAdminController {
                                                           @RequestParam(defaultValue = "0") @Min(0) int from,
                                                           @Parameter(description = "Количество элементов в наборе")
                                                           @RequestParam(defaultValue = "10") @Positive int size) {
-        log.info("Возвращение администратору списка заявок зрителей к мероприятию с ИД {}.", eventId);
+        log.debug("Возвращение администратору списка заявок зрителей к мероприятию с ИД {}.", eventId);
         return service.getEventSpectatorRequestByEventId(eventId, from, size);
     }
 

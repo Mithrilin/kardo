@@ -1,7 +1,7 @@
 package com.kardoaward.kardo.selection.offline_selection.controller;
 
 import com.kardoaward.kardo.security.UserDetailsImpl;
-import com.kardoaward.kardo.selection.offline_selection.model.dto.OfflineSelectionDto;
+import com.kardoaward.kardo.selection.offline_selection.dto.OfflineSelectionDto;
 import com.kardoaward.kardo.selection.offline_selection.service.OfflineSelectionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -49,7 +49,7 @@ public class OfflineSelectionController {
     @Secured({"ADMIN", "USER"})
     public OfflineSelectionDto getOfflineSelectionById(@Parameter(description = "id оффлайн-отбора")
                                                        @PathVariable @Positive Long selectionId) {
-        log.info("Возвращение оффлайн-отбора с ИД {}.", selectionId);
+        log.debug("Возвращение оффлайн-отбора с ИД {}.", selectionId);
         return offlineSelectionService.getOfflineSelectionById(selectionId);
     }
 
@@ -66,7 +66,7 @@ public class OfflineSelectionController {
                                                           @RequestParam(defaultValue = "0") @Min(0) int from,
                                                           @Parameter(description = "Количество элементов в наборе")
                                                           @RequestParam(defaultValue = "10") @Positive int size) {
-        log.info("Возвращение списка оффлайн-отборов.");
+        log.debug("Возвращение списка оффлайн-отборов.");
         return offlineSelectionService.getOfflineSelections(from, size);
     }
 
@@ -87,7 +87,7 @@ public class OfflineSelectionController {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         Long requestorId = userDetails.getUser().getId();
-        log.info("Возвращение списка оффлайн-отборов с участием пользователя с ИД {}.", requestorId);
+        log.debug("Возвращение списка оффлайн-отборов с участием пользователя с ИД {}.", requestorId);
         return offlineSelectionService.getOfflineSelectionsByRequestorId(requestorId, from, size);
     }
 
@@ -107,7 +107,7 @@ public class OfflineSelectionController {
                                                            @RequestParam(defaultValue = "0") @Min(0) int from,
                                                            @Parameter(description = "Количество элементов в наборе")
                                                            @RequestParam(defaultValue = "10") @Positive int size) {
-        log.info("Возвращение списка оффлайн-отборов к гранд-соревнованию с ИД {}.", competitionId);
+        log.debug("Возвращение списка оффлайн-отборов к гранд-соревнованию с ИД {}.", competitionId);
         return offlineSelectionService.getOfflineSelectionsByGrandCompetitionId(competitionId, from, size);
     }
 }

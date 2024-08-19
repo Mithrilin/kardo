@@ -3,9 +3,9 @@ package com.kardoaward.kardo.video_clip.controller;
 import com.google.gson.Gson;
 import com.kardoaward.kardo.security.UserDetailsImpl;
 import com.kardoaward.kardo.user.model.User;
-import com.kardoaward.kardo.video_clip.model.dto.NewVideoClipRequest;
-import com.kardoaward.kardo.video_clip.model.dto.UpdateVideoClipRequest;
-import com.kardoaward.kardo.video_clip.model.dto.VideoClipDto;
+import com.kardoaward.kardo.video_clip.dto.NewVideoClipRequest;
+import com.kardoaward.kardo.video_clip.dto.UpdateVideoClipRequest;
+import com.kardoaward.kardo.video_clip.dto.VideoClipDto;
 import com.kardoaward.kardo.video_clip.service.VideoClipService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -103,7 +103,7 @@ public class VideoClipController {
     @Secured({"ADMIN", "USER"})
     public VideoClipDto getVideoClipById(@Parameter(description = "id видео-клипа")
                                              @PathVariable @Positive Long videoId) {
-        log.info("Возвращение видео-клипа с ИД {}.", videoId);
+        log.debug("Возвращение видео-клипа с ИД {}.", videoId);
         return videoClipService.getVideoClipById(videoId);
     }
 
@@ -144,7 +144,7 @@ public class VideoClipController {
                                                          @RequestParam(defaultValue = "0") @Min(0) int from,
                                                      @Parameter(description = "Количество элементов в наборе")
                                                          @RequestParam(defaultValue = "10") @Positive int size) {
-        log.info("Возвращение списка видео-клипов с хештегом {}.", hashtag);
+        log.debug("Возвращение списка видео-клипов с хештегом {}.", hashtag);
         return videoClipService.getVideoClipsByHashtag(hashtag, from, size);
     }
 

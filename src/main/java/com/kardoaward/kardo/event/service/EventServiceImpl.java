@@ -2,10 +2,10 @@ package com.kardoaward.kardo.event.service;
 
 import com.kardoaward.kardo.event.mapper.EventMapper;
 import com.kardoaward.kardo.event.model.Event;
-import com.kardoaward.kardo.event.model.dto.EventDto;
-import com.kardoaward.kardo.event.model.dto.EventShortDto;
-import com.kardoaward.kardo.event.model.dto.NewEventRequest;
-import com.kardoaward.kardo.event.model.dto.UpdateEventRequest;
+import com.kardoaward.kardo.event.dto.EventDto;
+import com.kardoaward.kardo.event.dto.EventShortDto;
+import com.kardoaward.kardo.event.dto.NewEventRequest;
+import com.kardoaward.kardo.event.dto.UpdateEventRequest;
 import com.kardoaward.kardo.event.model.params.EventRequestParams;
 import com.kardoaward.kardo.event.repository.EventRepository;
 import com.kardoaward.kardo.event.service.helper.EventValidationHelper;
@@ -117,7 +117,7 @@ public class EventServiceImpl implements EventService {
     public EventDto getEventById(Long eventId) {
         Event event = eventValidationHelper.isEventPresent(eventId);
         EventDto eventDto = eventMapper.eventToEventDto(event);
-        log.info("Мероприятие с ИД {} возвращено.", eventId);
+        log.debug("Мероприятие с ИД {} возвращено.", eventId);
         return eventDto;
     }
 
@@ -133,13 +133,13 @@ public class EventServiceImpl implements EventService {
                 pageRequest);
 
         if (eventPage.isEmpty()) {
-            log.info("Не нашлось мероприятий по заданным параметрам.");
+            log.debug("Не нашлось мероприятий по заданным параметрам.");
             return new ArrayList<>();
         }
 
         List<Event> events = eventPage.getContent();
         List<EventShortDto> eventShortDtos = eventMapper.eventListToEventShortDtoList(events);
-        log.info("Список мероприятий с номера {} размером {} возвращён.", params.getFrom(), eventShortDtos.size());
+        log.debug("Список мероприятий с номера {} размером {} возвращён.", params.getFrom(), eventShortDtos.size());
         return eventShortDtos;
     }
 

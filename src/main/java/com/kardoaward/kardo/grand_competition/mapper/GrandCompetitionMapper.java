@@ -1,9 +1,9 @@
 package com.kardoaward.kardo.grand_competition.mapper;
 
 import com.kardoaward.kardo.grand_competition.model.GrandCompetition;
-import com.kardoaward.kardo.grand_competition.model.dto.NewGrandCompetitionRequest;
-import com.kardoaward.kardo.grand_competition.model.dto.GrandCompetitionDto;
-import com.kardoaward.kardo.grand_competition.model.dto.UpdateGrandCompetitionRequest;
+import com.kardoaward.kardo.grand_competition.dto.NewGrandCompetitionRequest;
+import com.kardoaward.kardo.grand_competition.dto.GrandCompetitionDto;
+import com.kardoaward.kardo.grand_competition.dto.UpdateGrandCompetitionRequest;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;

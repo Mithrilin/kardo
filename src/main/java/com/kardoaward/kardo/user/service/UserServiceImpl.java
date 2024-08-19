@@ -4,10 +4,10 @@ import com.kardoaward.kardo.exception.FileContentException;
 import com.kardoaward.kardo.selection.offline_selection.service.helper.OfflineSelectionValidationHelper;
 import com.kardoaward.kardo.user.mapper.UserMapper;
 import com.kardoaward.kardo.user.model.User;
-import com.kardoaward.kardo.user.model.dto.NewUserRequest;
-import com.kardoaward.kardo.user.model.dto.UpdateUserRequest;
-import com.kardoaward.kardo.user.model.dto.UserDto;
-import com.kardoaward.kardo.user.model.dto.UserShortDto;
+import com.kardoaward.kardo.user.dto.NewUserRequest;
+import com.kardoaward.kardo.user.dto.UpdateUserRequest;
+import com.kardoaward.kardo.user.dto.UserDto;
+import com.kardoaward.kardo.user.dto.UserShortDto;
 import com.kardoaward.kardo.user.repository.UserRepository;
 import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import jakarta.transaction.Transactional;
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
     public UserDto getUserById(Long userId) {
         User user = userValidationHelper.isUserPresent(userId);
         UserDto userDto = userMapper.userToUserDto(user);
-        log.info("Пользователь с ИД {} возвращен.", userId);
+        log.debug("Пользователь с ИД {} возвращен.", userId);
         return userDto;
     }
 
@@ -102,13 +102,13 @@ public class UserServiceImpl implements UserService {
             usersPage = userRepository.findByIdIn(ids, pageRequest);
         }
         if (usersPage.isEmpty()) {
-            log.info("Не нашлось пользователей по заданным параметрам.");
+            log.debug("Не нашлось пользователей по заданным параметрам.");
             return new ArrayList<>();
         }
 
         List<User> users = usersPage.getContent();
         List<UserShortDto> userShortDtos = userMapper.userListToUserShortDtoList(users);
-        log.info("Список пользователей с номера {} размером {} возвращён.", from, users.size());
+        log.debug("Список пользователей с номера {} размером {} возвращён.", from, users.size());
         return userShortDtos;
     }
 
@@ -148,7 +148,7 @@ public class UserServiceImpl implements UserService {
         user.setAvatarPhoto(newAvatarPath);
         User updatedUser = userRepository.save(user);
         UserDto userDto = userMapper.userToUserDto(updatedUser);
-        log.info("Аватар пользователя с ID {} обновлена.", user.getId());
+        log.info("Аватар пользователя с ID {} обновлён.", user.getId());
         return userDto;
     }
 
@@ -161,13 +161,13 @@ public class UserServiceImpl implements UserService {
         Page<User> usersPage = userRepository.findAllBySelectionId(selectionId, pageRequest);
 
         if (usersPage.isEmpty()) {
-            log.info("Не нашлось пользователей по заданным параметрам.");
+            log.debug("Не нашлось пользователей по заданным параметрам.");
             return new ArrayList<>();
         }
 
         List<User> users = usersPage.getContent();
         List<UserShortDto> userShortDtos = userMapper.userListToUserShortDtoList(users);
-        log.info("Список участников оффлайн-отбора с ИД {} с номера {} размером {} возвращён.",
+        log.debug("Список участников оффлайн-отбора с ИД {} с номера {} размером {} возвращён.",
                 selectionId, from, users.size());
         return userShortDtos;
     }

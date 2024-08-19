@@ -3,10 +3,10 @@ package com.kardoaward.kardo.selection.video_selection.service;
 import com.kardoaward.kardo.grand_competition.model.GrandCompetition;
 import com.kardoaward.kardo.grand_competition.service.helper.GrandCompetitionValidationHelper;
 import com.kardoaward.kardo.selection.video_selection.mapper.VideoSelectionMapper;
-import com.kardoaward.kardo.selection.video_selection.model.dto.UpdateVideoSelectionRequest;
+import com.kardoaward.kardo.selection.video_selection.dto.UpdateVideoSelectionRequest;
 import com.kardoaward.kardo.selection.video_selection.model.VideoSelection;
-import com.kardoaward.kardo.selection.video_selection.model.dto.NewVideoSelectionRequest;
-import com.kardoaward.kardo.selection.video_selection.model.dto.VideoSelectionDto;
+import com.kardoaward.kardo.selection.video_selection.dto.NewVideoSelectionRequest;
+import com.kardoaward.kardo.selection.video_selection.dto.VideoSelectionDto;
 import com.kardoaward.kardo.selection.video_selection.repository.VideoSelectionRepository;
 import com.kardoaward.kardo.selection.video_selection.service.helper.VideoSelectionValidationHelper;
 import jakarta.transaction.Transactional;
@@ -58,7 +58,7 @@ public class VideoSelectionServiceImpl implements VideoSelectionService {
     public VideoSelectionDto getVideoSelectionById(Long selectionId) {
         VideoSelection videoSelection = videoSelectionValidationHelper.isVideoSelectionPresent(selectionId);
         VideoSelectionDto videoSelectionDto = videoSelectionMapper.videoSelectionToVideoSelectionDto(videoSelection);
-        log.info("Видео-отбор с ИД {} возвращен.", selectionId);
+        log.debug("Видео-отбор с ИД {} возвращен.", selectionId);
         return videoSelectionDto;
     }
 
@@ -70,14 +70,14 @@ public class VideoSelectionServiceImpl implements VideoSelectionService {
         Page<VideoSelection> selectionsPage = videoSelectionRepository.findAll(pageRequest);
 
         if (selectionsPage.isEmpty()) {
-            log.info("Не нашлось видео-отборов по заданным параметрам.");
+            log.debug("Не нашлось видео-отборов по заданным параметрам.");
             return new ArrayList<>();
         }
 
         List<VideoSelection> videoSelections = selectionsPage.getContent();
         List<VideoSelectionDto> videoSelectionDtos = videoSelectionMapper
                 .videoSelectionListToVideoSelectionDtoList(videoSelections);
-        log.info("Список видео-отборов с номера {} размером {} возвращён.", from, videoSelectionDtos.size());
+        log.debug("Список видео-отборов с номера {} размером {} возвращён.", from, videoSelectionDtos.size());
         return videoSelectionDtos;
     }
 
@@ -103,14 +103,14 @@ public class VideoSelectionServiceImpl implements VideoSelectionService {
         Page<VideoSelection> selectionsPage = videoSelectionRepository.findByCompetition_Id(competitionId, pageRequest);
 
         if (selectionsPage.isEmpty()) {
-            log.info("Не нашлось видео-отборов по заданным параметрам.");
+            log.debug("Не нашлось видео-отборов по заданным параметрам.");
             return new ArrayList<>();
         }
 
         List<VideoSelection> selections = selectionsPage.getContent();
         List<VideoSelectionDto> selectionDtos = videoSelectionMapper
                 .videoSelectionListToVideoSelectionDtoList(selections);
-        log.info("Список видео-отборов к гранд-соревнованию с ИД {} с номера {} размером {} возвращён.",
+        log.debug("Список видео-отборов к гранд-соревнованию с ИД {} с номера {} размером {} возвращён.",
                 competitionId, from, selectionDtos.size());
         return selectionDtos;
     }

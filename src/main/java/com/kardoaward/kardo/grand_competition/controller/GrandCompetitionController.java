@@ -1,6 +1,6 @@
 package com.kardoaward.kardo.grand_competition.controller;
 
-import com.kardoaward.kardo.grand_competition.model.dto.GrandCompetitionDto;
+import com.kardoaward.kardo.grand_competition.dto.GrandCompetitionDto;
 import com.kardoaward.kardo.grand_competition.service.GrandCompetitionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -47,7 +47,7 @@ public class GrandCompetitionController {
     @Secured({"ADMIN", "USER"})
     public GrandCompetitionDto getGrandCompetitionById(@Parameter(description = "id Гранд-соревнования")
                                                        @PathVariable @Positive Long competitionId) {
-        log.info("Возвращение гранд-соревнования с ИД {}.", competitionId);
+        log.debug("Возвращение гранд-соревнования с ИД {}.", competitionId);
         return service.getGrandCompetitionById(competitionId);
     }
 
@@ -64,7 +64,7 @@ public class GrandCompetitionController {
                                                           @RequestParam(defaultValue = "0") @Min(0) int from,
                                                           @Parameter(description = "Количество элементов в наборе")
                                                           @RequestParam(defaultValue = "10") @Positive int size) {
-        log.info("Возвращение списка гранд-соревнований.");
+        log.debug("Возвращение списка гранд-соревнований.");
         return service.getGrandCompetitions(from, size);
     }
 }

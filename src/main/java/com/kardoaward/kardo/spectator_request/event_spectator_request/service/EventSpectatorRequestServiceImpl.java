@@ -6,12 +6,12 @@ import com.kardoaward.kardo.event.model.Event;
 import com.kardoaward.kardo.event.service.helper.EventValidationHelper;
 import com.kardoaward.kardo.spectator_request.event_spectator_request.mapper.EventSpectatorRequestMapper;
 import com.kardoaward.kardo.spectator_request.event_spectator_request.model.EventSpectatorRequest;
-import com.kardoaward.kardo.spectator_request.event_spectator_request.model.dto.EventSpectatorRequestDto;
-import com.kardoaward.kardo.spectator_request.event_spectator_request.model.dto.NewEventSpectatorRequest;
+import com.kardoaward.kardo.spectator_request.event_spectator_request.dto.EventSpectatorRequestDto;
+import com.kardoaward.kardo.spectator_request.event_spectator_request.dto.NewEventSpectatorRequest;
 import com.kardoaward.kardo.spectator_request.event_spectator_request.repository.EventSpectatorRequestRepository;
 import com.kardoaward.kardo.spectator_request.event_spectator_request.service.helper.EventSpectatorRequestValidationHelper;
-import com.kardoaward.kardo.spectator_request.model.dto.update.SpectatorRequestStatusUpdateRequest;
-import com.kardoaward.kardo.spectator_request.model.dto.update.SpectatorRequestStatusUpdateResult;
+import com.kardoaward.kardo.spectator_request.dto.update.SpectatorRequestStatusUpdateRequest;
+import com.kardoaward.kardo.spectator_request.dto.update.SpectatorRequestStatusUpdateResult;
 import com.kardoaward.kardo.user.model.User;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -64,7 +64,7 @@ public class EventSpectatorRequestServiceImpl implements EventSpectatorRequestSe
         helper.isUserRequesterOrAdmin(requestor, eventSpectatorRequest.getRequester().getId());
         EventSpectatorRequestDto spectatorRequestDto = mapper
                 .spectatorRequestToSpectatorRequestDto(eventSpectatorRequest);
-        log.info("Заявка зрителя мероприятия с ИД {} возвращена.", spectatorId);
+        log.debug("Заявка зрителя мероприятия с ИД {} возвращена.", spectatorId);
         return spectatorRequestDto;
     }
 
@@ -77,19 +77,20 @@ public class EventSpectatorRequestServiceImpl implements EventSpectatorRequestSe
         Page<EventSpectatorRequest> spectatorRequestsPage = repository.findByEvent_Id(eventId, pageRequest);
 
         if (spectatorRequestsPage.isEmpty()) {
-            log.info("Не нашлось заявок зрителей мероприятий по заданным параметрам.");
+            log.debug("Не нашлось заявок зрителей мероприятий по заданным параметрам.");
             return new ArrayList<>();
         }
 
         List<EventSpectatorRequest> spectatorRequests = spectatorRequestsPage.getContent();
         List<EventSpectatorRequestDto> spectatorRequestDtos = mapper
                 .spectatorRequestListToSpectatorRequestDtoList(spectatorRequests);
-        log.info("Список заявок зрителей к мероприятию с ИД {} с номера {} размером {} возвращён.", eventId, from,
+        log.debug("Список заявок зрителей к мероприятию с ИД {} с номера {} размером {} возвращён.", eventId, from,
                 spectatorRequestDtos.size());
         return spectatorRequestDtos;
     }
 
     @Override
+    @Transactional
     public SpectatorRequestStatusUpdateResult updateEventSpectatorRequestStatusByEventId(
             Long eventId, SpectatorRequestStatusUpdateRequest request) {
 

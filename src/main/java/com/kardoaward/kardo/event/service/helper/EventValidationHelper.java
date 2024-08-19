@@ -1,8 +1,8 @@
 package com.kardoaward.kardo.event.service.helper;
 
 import com.kardoaward.kardo.event.model.Event;
-import com.kardoaward.kardo.event.model.dto.NewEventRequest;
-import com.kardoaward.kardo.event.model.dto.UpdateEventRequest;
+import com.kardoaward.kardo.event.dto.NewEventRequest;
+import com.kardoaward.kardo.event.dto.UpdateEventRequest;
 import com.kardoaward.kardo.event.repository.EventRepository;
 import com.kardoaward.kardo.exception.BadRequestException;
 import com.kardoaward.kardo.exception.NotFoundException;

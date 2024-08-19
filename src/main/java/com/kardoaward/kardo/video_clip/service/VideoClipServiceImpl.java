@@ -5,9 +5,9 @@ import com.kardoaward.kardo.user.model.User;
 import com.kardoaward.kardo.video_clip.mapper.LikeMapper;
 import com.kardoaward.kardo.video_clip.mapper.VideoClipMapper;
 import com.kardoaward.kardo.video_clip.model.VideoClip;
-import com.kardoaward.kardo.video_clip.model.dto.NewVideoClipRequest;
-import com.kardoaward.kardo.video_clip.model.dto.UpdateVideoClipRequest;
-import com.kardoaward.kardo.video_clip.model.dto.VideoClipDto;
+import com.kardoaward.kardo.video_clip.dto.NewVideoClipRequest;
+import com.kardoaward.kardo.video_clip.dto.UpdateVideoClipRequest;
+import com.kardoaward.kardo.video_clip.dto.VideoClipDto;
 import com.kardoaward.kardo.video_clip.model.like.Like;
 import com.kardoaward.kardo.video_clip.repository.LikeRepository;
 import com.kardoaward.kardo.video_clip.repository.VideoClipRepository;
@@ -89,7 +89,7 @@ public class VideoClipServiceImpl implements VideoClipService {
     public VideoClipDto getVideoClipById(Long videoId) {
         VideoClip videoClip = videoClipValidationHelper.isVideoClipPresent(videoId);
         VideoClipDto videoClipDto = videoClipMapper.videoClipToVideoClipDto(videoClip);
-        log.info("Видео-клип с ИД {} возвращен.", videoId);
+        log.debug("Видео-клип с ИД {} возвращен.", videoId);
         return videoClipDto;
     }
 
@@ -113,13 +113,13 @@ public class VideoClipServiceImpl implements VideoClipService {
         Page<VideoClip> videoClipsPage = videoClipRepository.findAllByHashtag(hashtag, pageRequest);
 
         if (videoClipsPage.isEmpty()) {
-            log.info("Не нашлось видео-клипов по заданным параметрам.");
+            log.debug("Не нашлось видео-клипов по заданным параметрам.");
             return new ArrayList<>();
         }
 
         List<VideoClip> videoClips = videoClipsPage.getContent();
         List<VideoClipDto> videoClipDtos = videoClipMapper.videoClipListToVideoClipDtoList(videoClips);
-        log.info("Список видео-клипов с номера {} размером {} возвращён.", from, videoClipDtos.size());
+        log.debug("Список видео-клипов с номера {} размером {} возвращён.", from, videoClipDtos.size());
         return videoClipDtos;
     }
 

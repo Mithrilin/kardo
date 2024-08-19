@@ -1,11 +1,11 @@
 package com.kardoaward.kardo.selection.offline_selection.controller.admin;
 
-import com.kardoaward.kardo.selection.offline_selection.model.dto.NewOfflineSelectionRequest;
-import com.kardoaward.kardo.selection.offline_selection.model.dto.OfflineSelectionDto;
-import com.kardoaward.kardo.selection.offline_selection.model.dto.UpdateOfflineSelectionRequest;
+import com.kardoaward.kardo.selection.offline_selection.dto.NewOfflineSelectionRequest;
+import com.kardoaward.kardo.selection.offline_selection.dto.OfflineSelectionDto;
+import com.kardoaward.kardo.selection.offline_selection.dto.UpdateOfflineSelectionRequest;
 import com.kardoaward.kardo.selection.offline_selection.service.OfflineSelectionService;
 import com.kardoaward.kardo.selection.offline_selection.service.helper.OfflineSelectionValidationHelper;
-import com.kardoaward.kardo.user.model.dto.UserShortDto;
+import com.kardoaward.kardo.user.dto.UserShortDto;
 import com.kardoaward.kardo.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -115,7 +115,7 @@ public class OfflineSelectionAdminController {
                                                             @RequestParam(defaultValue = "0") @Min(0) int from,
                                                             @Parameter(description = "Количество элементов в наборе")
                                                             @RequestParam(defaultValue = "10") @Positive int size) {
-        log.info("Возвращение списка участников оффлайн-отбора с ИД {}.", selectionId);
+        log.debug("Возвращение списка участников оффлайн-отбора с ИД {}.", selectionId);
         return userService.getContestantsByOfflineSelectionId(selectionId, from, size);
     }
 }

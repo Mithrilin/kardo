@@ -1,6 +1,6 @@
 package com.kardoaward.kardo.user.controller.admin;
 
-import com.kardoaward.kardo.user.model.dto.UserShortDto;
+import com.kardoaward.kardo.user.dto.UserShortDto;
 import com.kardoaward.kardo.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -46,7 +46,7 @@ public class UserAdminController {
                                             @RequestParam(defaultValue = "0") @Min(0) int from,
                                             @Parameter(description = "Количество элементов в наборе")
                                             @RequestParam(defaultValue = "10") @Positive int size) {
-        log.info("Возвращение администратору списка пользователей.");
+        log.debug("Возвращение администратору списка пользователей.");
         return userService.getUsersByIds(ids, from, size);
     }
 }

@@ -1,9 +1,9 @@
 package com.kardoaward.kardo.video_clip.service;
 
 import com.kardoaward.kardo.user.model.User;
-import com.kardoaward.kardo.video_clip.model.dto.NewVideoClipRequest;
-import com.kardoaward.kardo.video_clip.model.dto.UpdateVideoClipRequest;
-import com.kardoaward.kardo.video_clip.model.dto.VideoClipDto;
+import com.kardoaward.kardo.video_clip.dto.NewVideoClipRequest;
+import com.kardoaward.kardo.video_clip.dto.UpdateVideoClipRequest;
+import com.kardoaward.kardo.video_clip.dto.VideoClipDto;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

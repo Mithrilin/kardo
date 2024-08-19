@@ -2,9 +2,9 @@ package com.kardoaward.kardo.grand_competition.service;
 
 import com.kardoaward.kardo.grand_competition.mapper.GrandCompetitionMapper;
 import com.kardoaward.kardo.grand_competition.model.GrandCompetition;
-import com.kardoaward.kardo.grand_competition.model.dto.GrandCompetitionDto;
-import com.kardoaward.kardo.grand_competition.model.dto.NewGrandCompetitionRequest;
-import com.kardoaward.kardo.grand_competition.model.dto.UpdateGrandCompetitionRequest;
+import com.kardoaward.kardo.grand_competition.dto.GrandCompetitionDto;
+import com.kardoaward.kardo.grand_competition.dto.NewGrandCompetitionRequest;
+import com.kardoaward.kardo.grand_competition.dto.UpdateGrandCompetitionRequest;
 import com.kardoaward.kardo.grand_competition.repository.GrandCompetitionRepository;
 import com.kardoaward.kardo.grand_competition.service.helper.GrandCompetitionValidationHelper;
 import jakarta.transaction.Transactional;
@@ -52,7 +52,7 @@ public class GrandCompetitionServiceImpl implements GrandCompetitionService {
     public GrandCompetitionDto getGrandCompetitionById(Long competitionId) {
         GrandCompetition competition = grandHelper.isGrandCompetitionPresent(competitionId);
         GrandCompetitionDto grandCompetitionDto = mapper.grandCompetitionToGrandCompetitionDto(competition);
-        log.info("Гранд-соревнование с ИД {} возвращено.", competitionId);
+        log.debug("Гранд-соревнование с ИД {} возвращено.", competitionId);
         return grandCompetitionDto;
     }
 
@@ -64,14 +64,14 @@ public class GrandCompetitionServiceImpl implements GrandCompetitionService {
         Page<GrandCompetition> competitionsPage = repository.findAll(pageRequest);
 
         if (competitionsPage.isEmpty()) {
-            log.info("Не нашлось гранд-соревнований по заданным параметрам.");
+            log.debug("Не нашлось гранд-соревнований по заданным параметрам.");
             return new ArrayList<>();
         }
 
         List<GrandCompetition> competitions = competitionsPage.getContent();
         List<GrandCompetitionDto> grandCompetitionDtos = mapper
                 .grandCompetitionListToGrandCompetitionDtoList(competitions);
-        log.info("Список гранд-соревнований с номера {} размером {} возвращён.", from, grandCompetitionDtos.size());
+        log.debug("Список гранд-соревнований с номера {} размером {} возвращён.", from, grandCompetitionDtos.size());
         return grandCompetitionDtos;
     }
 

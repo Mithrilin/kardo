@@ -1,8 +1,8 @@
 package com.kardoaward.kardo.selection.offline_selection.service;
 
-import com.kardoaward.kardo.selection.offline_selection.model.dto.NewOfflineSelectionRequest;
-import com.kardoaward.kardo.selection.offline_selection.model.dto.OfflineSelectionDto;
-import com.kardoaward.kardo.selection.offline_selection.model.dto.UpdateOfflineSelectionRequest;
+import com.kardoaward.kardo.selection.offline_selection.dto.NewOfflineSelectionRequest;
+import com.kardoaward.kardo.selection.offline_selection.dto.OfflineSelectionDto;
+import com.kardoaward.kardo.selection.offline_selection.dto.UpdateOfflineSelectionRequest;
 
 import java.util.List;
 

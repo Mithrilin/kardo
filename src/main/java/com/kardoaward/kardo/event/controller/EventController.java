@@ -1,8 +1,8 @@
 package com.kardoaward.kardo.event.controller;
 
 import com.kardoaward.kardo.enums.Field;
-import com.kardoaward.kardo.event.model.dto.EventDto;
-import com.kardoaward.kardo.event.model.dto.EventShortDto;
+import com.kardoaward.kardo.event.dto.EventDto;
+import com.kardoaward.kardo.event.dto.EventShortDto;
 import com.kardoaward.kardo.event.model.enums.EventProgram;
 import com.kardoaward.kardo.event.model.params.EventRequestParams;
 import com.kardoaward.kardo.event.service.EventService;
@@ -51,7 +51,7 @@ public class EventController {
     @Secured({"ADMIN", "USER"})
     public EventDto getEventById(@Parameter(description = "id мероприятия")
                                  @PathVariable @Positive Long eventId) {
-        log.info("Возвращение мероприятия с ИД {}.", eventId);
+        log.debug("Возвращение мероприятия с ИД {}.", eventId);
         return eventService.getEventById(eventId);
     }
 
@@ -79,7 +79,7 @@ public class EventController {
         EventRequestParams eventRequestParams = new EventRequestParams(
                 grandCompetitionId, day, program, field, from, size
         );
-        log.info("Возвращение списка мероприятий по заданным параметрам.");
+        log.debug("Возвращение списка мероприятий по заданным параметрам.");
         return eventService.getEventsByParams(eventRequestParams);
     }
 }

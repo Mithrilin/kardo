@@ -1,8 +1,8 @@
 package com.kardoaward.kardo.comment.controller;
 
-import com.kardoaward.kardo.comment.model.dto.CommentDto;
-import com.kardoaward.kardo.comment.model.dto.NewCommentRequest;
-import com.kardoaward.kardo.comment.model.dto.UpdateCommentRequest;
+import com.kardoaward.kardo.comment.dto.CommentDto;
+import com.kardoaward.kardo.comment.dto.NewCommentRequest;
+import com.kardoaward.kardo.comment.dto.UpdateCommentRequest;
 import com.kardoaward.kardo.comment.service.CommentService;
 import com.kardoaward.kardo.comment.service.helper.CommentValidationHelper;
 import com.kardoaward.kardo.security.UserDetailsImpl;
@@ -100,7 +100,7 @@ public class CommentController {
     @Secured({"ADMIN", "USER"})
     public CommentDto getCommentById(@Parameter(description = "id комментария")
                                      @PathVariable @Positive Long commentId) {
-        log.info("Возвращение комментария с ИД {}.", commentId);
+        log.debug("Возвращение комментария с ИД {}.", commentId);
         return commentService.getCommentById(commentId);
     }
 
@@ -141,6 +141,7 @@ public class CommentController {
                                                  @RequestParam(defaultValue = "0") @Min(0) int from,
                                                  @Parameter(description = "Количество элементов в наборе")
                                                  @RequestParam(defaultValue = "10") @Positive int size) {
+        log.debug("Получение списка комментариев к видео-клипу с ИД {}.", videoId);
         return commentService.getCommentsByVideoId(videoId, from, size);
     }
 }

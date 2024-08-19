@@ -2,9 +2,9 @@ package com.kardoaward.kardo.video_contest.service;
 
 import com.kardoaward.kardo.video_contest.mapper.VideoContestMapper;
 import com.kardoaward.kardo.video_contest.model.VideoContest;
-import com.kardoaward.kardo.video_contest.model.dto.NewVideoContestRequest;
-import com.kardoaward.kardo.video_contest.model.dto.VideoContestDto;
-import com.kardoaward.kardo.video_contest.model.dto.UpdateVideoContestRequest;
+import com.kardoaward.kardo.video_contest.dto.NewVideoContestRequest;
+import com.kardoaward.kardo.video_contest.dto.VideoContestDto;
+import com.kardoaward.kardo.video_contest.dto.UpdateVideoContestRequest;
 import com.kardoaward.kardo.video_contest.repository.VideoContestRepository;
 import com.kardoaward.kardo.video_contest.service.helper.VideoContestValidationHelper;
 import jakarta.transaction.Transactional;
@@ -51,7 +51,7 @@ public class VideoContestServiceImpl implements VideoContestService {
     public VideoContestDto getVideoContestById(Long contestId) {
         VideoContest contest = videoHelper.isVideoContestPresent(contestId);
         VideoContestDto contestDto = mapper.videoContestToVideoContestDto(contest);
-        log.info("Видео-конкурс с ИД {} возвращён.", contestId);
+        log.debug("Видео-конкурс с ИД {} возвращён.", contestId);
         return contestDto;
     }
 
@@ -63,13 +63,13 @@ public class VideoContestServiceImpl implements VideoContestService {
         Page<VideoContest> contestsPage = repository.findAll(pageRequest);
 
         if (contestsPage.isEmpty()) {
-            log.info("Не нашлось видео-конкурсов по заданным параметрам.");
+            log.debug("Не нашлось видео-конкурсов по заданным параметрам.");
             return new ArrayList<>();
         }
 
         List<VideoContest> contests = contestsPage.getContent();
         List<VideoContestDto> contestDtos = mapper.videoContestListToVideoContestDtoList(contests);
-        log.info("Список видео-конкурсов с номера {} размером {} возвращён.", from, contestDtos.size());
+        log.debug("Список видео-конкурсов с номера {} размером {} возвращён.", from, contestDtos.size());
         return contestDtos;
     }
 

@@ -1,8 +1,8 @@
 package com.kardoaward.kardo.spectator_request.event_spectator_request.controller;
 
 import com.kardoaward.kardo.security.UserDetailsImpl;
-import com.kardoaward.kardo.spectator_request.event_spectator_request.model.dto.EventSpectatorRequestDto;
-import com.kardoaward.kardo.spectator_request.event_spectator_request.model.dto.NewEventSpectatorRequest;
+import com.kardoaward.kardo.spectator_request.event_spectator_request.dto.EventSpectatorRequestDto;
+import com.kardoaward.kardo.spectator_request.event_spectator_request.dto.NewEventSpectatorRequest;
 import com.kardoaward.kardo.spectator_request.event_spectator_request.service.EventSpectatorRequestService;
 import com.kardoaward.kardo.spectator_request.event_spectator_request.service.helper.EventSpectatorRequestValidationHelper;
 import com.kardoaward.kardo.user.model.User;
@@ -97,7 +97,7 @@ public class EventSpectatorRequestController {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         User requestor = userDetails.getUser();
-        log.info("Возвращение заявки зрителя мероприятия с ИД {}.", spectatorId);
+        log.debug("Возвращение заявки зрителя мероприятия с ИД {}.", spectatorId);
         return service.getEventSpectatorRequestById(requestor, spectatorId);
     }
 }
