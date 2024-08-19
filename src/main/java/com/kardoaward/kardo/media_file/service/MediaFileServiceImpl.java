@@ -28,7 +28,24 @@ public class MediaFileServiceImpl implements MediaFileService {
         this.FOLDER_PATH = folderPath;
     }
 
+    @Override
+    @Transactional
+    public Event addLogoToEvent(Event event, MultipartFile file) {
+        String path = FOLDER_PATH + "/events/" + event.getId() + "/logo/";
+        createDirectory(path, event);
+        MediaFile logo = createNewMediaFile(file, path);
 
+        try {
+            file.transferTo(new File(logo.getFilePath()));
+        } catch (IOException e) {
+            log.error("Не удалось сохранить файл: " + logo.getFilePath());
+            throw new FileContentException("Не удалось сохранить файл: " + logo.getFilePath());
+        }
+
+        MediaFile returnedMediaFile = mediaFileRepository.save(logo);
+        event.setLogo(returnedMediaFile);
+        return event;
+    }
 
     private MediaFile createNewMediaFile(MultipartFile file, String path) {
         MediaFile logo = new MediaFile();
