@@ -5,5 +5,5 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface MediaFileService {
 
-    Event addLogoToEvent(Event event, MultipartFile file);
+    void addLogoToEvent(Event event, MultipartFile file);
 }

@@ -59,9 +59,9 @@ public class EventAdminController {
         return eventService.addEvent(newEventRequest);
     }
 
-    @Operation(summary = "Добавление администратором логотипа к мероприятию.")
+    @Operation(summary = "Добавление/обновление администратором логотипа к мероприятию.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Логотип к мероприятию добавлен.",
+            @ApiResponse(responseCode = "200", description = "Логотип к мероприятию добавлен/обновлён.",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = EventDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),

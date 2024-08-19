@@ -33,14 +33,19 @@ public class MediaFileServiceImpl implements MediaFileService {
     @Transactional
     public void addLogoToEvent(Event event, MultipartFile file) {
         String path = FOLDER_PATH + "/events/" + event.getId() + "/logo/";
-        createDirectory(path);
+
+        if (event.getLogo() != null) {
+            deleteFile(event);
+            mediaFileRepository.delete(event.getLogo());
+        } else {
+            createDirectory(path);
+        }
+
         MediaFile logo = createNewMediaFile(file, path);
         uploadFile(file, logo);
         MediaFile returnedMediaFile = mediaFileRepository.save(logo);
         event.setLogo(returnedMediaFile);
     }
-
-
 
     private void deleteFile(Event event) {
         try {
