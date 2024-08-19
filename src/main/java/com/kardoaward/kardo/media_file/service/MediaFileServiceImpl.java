@@ -7,6 +7,7 @@ import com.kardoaward.kardo.media_file.enums.FileType;
 import com.kardoaward.kardo.media_file.model.MediaFile;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,21 +31,24 @@ public class MediaFileServiceImpl implements MediaFileService {
 
     @Override
     @Transactional
-    public Event addLogoToEvent(Event event, MultipartFile file) {
+    public void addLogoToEvent(Event event, MultipartFile file) {
         String path = FOLDER_PATH + "/events/" + event.getId() + "/logo/";
-        createDirectory(path, event);
+        createDirectory(path);
         MediaFile logo = createNewMediaFile(file, path);
-
-        try {
-            file.transferTo(new File(logo.getFilePath()));
-        } catch (IOException e) {
-            log.error("Не удалось сохранить файл: " + logo.getFilePath());
-            throw new FileContentException("Не удалось сохранить файл: " + logo.getFilePath());
-        }
-
+        uploadFile(file, logo);
         MediaFile returnedMediaFile = mediaFileRepository.save(logo);
         event.setLogo(returnedMediaFile);
-        return event;
+    }
+
+
+
+    private void deleteFile(Event event) {
+        try {
+            FileUtils.forceDelete(new File(event.getLogo().getFilePath()));
+        } catch (IOException e) {
+            log.error("Не удалось удалить файл: " + event.getLogo().getFilePath());
+            throw new FileContentException("Не удалось удалить файл: " + event.getLogo().getFilePath());
+        }
     }
 
     private MediaFile createNewMediaFile(MultipartFile file, String path) {
