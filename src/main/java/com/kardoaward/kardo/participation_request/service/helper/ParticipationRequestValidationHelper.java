@@ -35,7 +35,7 @@ public class ParticipationRequestValidationHelper {
             log.error("Пользователь с ИД {} не является создателем заявки с ИД {} или администратором.",
                     requestor.getId(), requesterId);
             throw new NotValidException(String.format("Пользователь с ИД %d не является создателем заявки с ИД %d " +
-                            "или администратором.", requestor.getId(), requesterId));
+                    "или администратором.", requestor.getId(), requesterId));
         }
     }
 }

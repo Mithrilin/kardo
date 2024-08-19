@@ -4,6 +4,7 @@ import com.kardoaward.kardo.selection.video_selection.dto.VideoSelectionDto;
 import com.kardoaward.kardo.selection.video_selection.service.VideoSelectionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -28,7 +29,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/selections/video")
 @Validated
-@Tag(name="Видео-отбор: Users.", description="API для работы с видео-отборами для зарегистрированных пользователей.")
+@Tag(name = "Видео-отбор: Users.", description = "API для работы с видео-отборами для зарегистрированных пользователей.")
 public class VideoSelectionController {
 
     private final VideoSelectionService videoSelectionService;
@@ -36,8 +37,8 @@ public class VideoSelectionController {
     @Operation(summary = "Получение видео-отбора.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Видео-отбор найден.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = VideoSelectionDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = VideoSelectionDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Видео-отбор не найден", content = @Content),
@@ -52,6 +53,9 @@ public class VideoSelectionController {
 
     @Operation(summary = "Получение списка видео-отборов.")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Получен список постов пользователя", content = {
+                    @Content(mediaType = "application/json", array =
+                    @ArraySchema(schema = @Schema(implementation = VideoSelectionDto.class)))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Пользователь не найден", content = @Content),
@@ -59,7 +63,7 @@ public class VideoSelectionController {
     @GetMapping
     @Secured({"ADMIN", "USER"})
     public List<VideoSelectionDto> getVideoSelections(@Parameter(description = "Количество элементов, которые " +
-                                                      "нужно пропустить для формирования текущего набора")
+            "нужно пропустить для формирования текущего набора")
                                                       @RequestParam(defaultValue = "0") @Min(0) int from,
                                                       @Parameter(description = "Количество элементов в наборе")
                                                       @RequestParam(defaultValue = "10") @Positive int size) {
@@ -69,6 +73,9 @@ public class VideoSelectionController {
 
     @Operation(summary = "Получение списка видео-отборов к Гранд-соревнованию.")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Получен список постов пользователя", content = {
+                    @Content(mediaType = "application/json", array =
+                    @ArraySchema(schema = @Schema(implementation = VideoSelectionDto.class)))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Гранд-соревнование не найдено", content = @Content),

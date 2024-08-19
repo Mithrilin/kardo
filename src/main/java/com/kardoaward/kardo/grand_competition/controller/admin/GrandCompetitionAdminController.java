@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/admin/competitions")
 @Validated
-@Tag(name="Гранд-соревнование: Admin.", description="API администратора для работы с Гранд-соревнованиями.")
+@Tag(name = "Гранд-соревнование: Admin.", description = "API администратора для работы с Гранд-соревнованиями.")
 public class GrandCompetitionAdminController {
 
     private final GrandCompetitionService service;
@@ -38,8 +38,8 @@ public class GrandCompetitionAdminController {
     @Operation(summary = "Добавление администратором нового Гранд-соревнования.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Гранд-соревнование добавлено.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = GrandCompetitionDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GrandCompetitionDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Гранд-соревнование не найдено", content = @Content),
@@ -70,8 +70,8 @@ public class GrandCompetitionAdminController {
     @Operation(summary = "Обновление администратором Гранд-соревнования по ИД.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Гранд-соревнование обновлено.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = GrandCompetitionDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = GrandCompetitionDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Гранд-соревнование не найдено", content = @Content),

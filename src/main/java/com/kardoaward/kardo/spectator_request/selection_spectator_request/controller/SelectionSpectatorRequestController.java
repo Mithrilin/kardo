@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/spectators/selection")
 @Validated
-@Tag(name="Заявка зрителя на отбор: Users.", description="API для работы с заявками зрителей на отбор " +
+@Tag(name = "Заявка зрителя на отбор: Users.", description = "API для работы с заявками зрителей на отбор " +
         "для зарегистрированных пользователей.")
 public class SelectionSpectatorRequestController {
 
@@ -44,8 +44,8 @@ public class SelectionSpectatorRequestController {
     @Operation(summary = "Добавление заявки зрителя на отбор.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Заявка добавлена.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = SelectionSpectatorRequestDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = SelectionSpectatorRequestDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Отбор не найден", content = @Content),
@@ -85,8 +85,8 @@ public class SelectionSpectatorRequestController {
     @Operation(summary = "Получение заявки зрителя на отбор.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Заявка найдена.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = SelectionSpectatorRequestDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = SelectionSpectatorRequestDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Заявка не найдена", content = @Content),

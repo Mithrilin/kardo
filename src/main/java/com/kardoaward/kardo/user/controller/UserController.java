@@ -38,7 +38,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/users")
 @Validated
-@Tag(name="Пользователь: Users.", description="API для работы с пользователями для зарегистрированных пользователей.")
+@Tag(name = "Пользователь: Users.", description = "API для работы с пользователями для зарегистрированных пользователей.")
 public class UserController {
 
     private final UserService userService;
@@ -48,8 +48,8 @@ public class UserController {
     @Operation(summary = "Добавление пользователя. Регистрация.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Пользователь добавлен.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = UserShortDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserShortDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Пользователь не найден", content = @Content),
@@ -64,8 +64,8 @@ public class UserController {
     @Operation(summary = "Получение пользователя.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Пользователь найден.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = UserDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Пользователь не найден", content = @Content),
@@ -104,8 +104,8 @@ public class UserController {
     @Operation(summary = "Обновление пользователя.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Пользователь обновлён.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = UserDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Пользователь не найден", content = @Content),
@@ -124,8 +124,8 @@ public class UserController {
     @Operation(summary = "Обновление/добавление аватарки пользователя.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Аватарка обновлена/добавлена.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = UserDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = UserDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Пользователь не найден", content = @Content),
@@ -133,7 +133,7 @@ public class UserController {
     @PatchMapping("/avatar")
     @Secured({"ADMIN", "USER"})
     public UserDto addUserAvatar(@Parameter(description = "MultipartFile файл с аватаркой пользователя")
-                                     @RequestParam("image") MultipartFile file) {
+                                 @RequestParam("image") MultipartFile file) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         User requestor = userDetails.getUser();
