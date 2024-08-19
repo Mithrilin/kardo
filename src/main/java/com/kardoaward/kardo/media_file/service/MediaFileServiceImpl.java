@@ -55,13 +55,22 @@ public class MediaFileServiceImpl implements MediaFileService {
         return logo;
     }
 
-    private void createDirectory(String path, Event event) {
+    private void uploadFile(MultipartFile file, MediaFile logo) {
+        try {
+            file.transferTo(new File(logo.getFilePath()));
+        } catch (IOException e) {
+            log.error("Не удалось сохранить файл: " + logo.getFilePath());
+            throw new FileContentException("Не удалось сохранить файл: " + logo.getFilePath());
+        }
+    }
+
+    private void createDirectory(String path) {
         File logoDirectory = new File(path);
         boolean hasDirectoryCreated = logoDirectory.mkdirs();
 
         if (!hasDirectoryCreated) {
-            log.error("Не удалось создать директорию: " + event.getLogo());
-            throw new FileContentException("Не удалось создать директорию: " + event.getLogo());
+            log.error("Не удалось создать директорию: " + path);
+            throw new FileContentException("Не удалось создать директорию: " + path);
         }
     }
 }
