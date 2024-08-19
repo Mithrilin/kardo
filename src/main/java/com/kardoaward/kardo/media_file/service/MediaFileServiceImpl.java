@@ -30,6 +30,14 @@ public class MediaFileServiceImpl implements MediaFileService {
 
 
 
+    private MediaFile createNewMediaFile(MultipartFile file, String path) {
+        MediaFile logo = new MediaFile();
+        logo.setFileName(file.getOriginalFilename());
+        logo.setFileType(FileType.IMAGE);
+        logo.setFilePath(path + file.getOriginalFilename());
+        return logo;
+    }
+
     private void createDirectory(String path, Event event) {
         File logoDirectory = new File(path);
         boolean hasDirectoryCreated = logoDirectory.mkdirs();
