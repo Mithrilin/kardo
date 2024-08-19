@@ -1,4 +1,4 @@
-package com.kardoaward.kardo.event.model.enums;
+package com.kardoaward.kardo.event.enums;
 
 public enum EventProgram {
 

@@ -2,7 +2,7 @@ package com.kardoaward.kardo.event.service.specification;
 
 import com.kardoaward.kardo.enums.Field;
 import com.kardoaward.kardo.event.model.Event;
-import com.kardoaward.kardo.event.model.enums.EventProgram;
+import com.kardoaward.kardo.event.enums.EventProgram;
 import com.kardoaward.kardo.event.model.params.EventRequestParams;
 import jakarta.persistence.criteria.Join;
 import lombok.experimental.UtilityClass;

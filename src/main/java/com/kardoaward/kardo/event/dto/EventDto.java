@@ -2,7 +2,7 @@ package com.kardoaward.kardo.event.dto;
 
 import com.kardoaward.kardo.enums.Field;
 import com.kardoaward.kardo.enums.Status;
-import com.kardoaward.kardo.event.model.enums.EventProgram;
+import com.kardoaward.kardo.event.enums.EventProgram;
 import com.kardoaward.kardo.grand_competition.dto.GrandCompetitionDto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
