@@ -35,7 +35,7 @@ public class MediaFileServiceImpl implements MediaFileService {
         String path = FOLDER_PATH + "/events/" + event.getId() + "/logo/";
 
         if (event.getLogo() != null) {
-            deleteFile(event);
+            deleteFileOrDirectory(event.getLogo().getFilePath());
             mediaFileRepository.delete(event.getLogo());
         } else {
             createDirectory(path);
@@ -47,13 +47,13 @@ public class MediaFileServiceImpl implements MediaFileService {
         event.setLogo(returnedMediaFile);
     }
 
-    private void deleteFile(Event event) {
-        try {
-            FileUtils.forceDelete(new File(event.getLogo().getFilePath()));
-        } catch (IOException e) {
-            log.error("Не удалось удалить файл: " + event.getLogo().getFilePath());
-            throw new FileContentException("Не удалось удалить файл: " + event.getLogo().getFilePath());
-        }
+    @Override
+    @Transactional
+    public void deleteLogoFromEvent(Event event) {
+        String path = FOLDER_PATH + "/events/" + event.getId() + "/logo/";
+        deleteFileOrDirectory(path);
+        mediaFileRepository.delete(event.getLogo());
+        event.setLogo(null);
     }
 
     private MediaFile createNewMediaFile(MultipartFile file, String path) {
@@ -80,6 +80,15 @@ public class MediaFileServiceImpl implements MediaFileService {
         if (!hasDirectoryCreated) {
             log.error("Не удалось создать директорию: " + path);
             throw new FileContentException("Не удалось создать директорию: " + path);
+        }
+    }
+
+    private void deleteFileOrDirectory(String path) {
+        try {
+            FileUtils.forceDelete(new File(path));
+        } catch (IOException e) {
+            log.error("Не удалось удалить файл/директорию: " + path);
+            throw new FileContentException("Не удалось удалить файл/директорию: " + path);
         }
     }
 }
