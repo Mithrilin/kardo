@@ -138,6 +138,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
+    public void deleteAvatarFromUser(User user) {
+        mediaFileService.deleteAvatarFromUser(user);
+        userRepository.save(user);
+        log.info("Аватар пользователя с ID {} удалён.", user.getId());
+    }
+
+    @Override
     public List<UserShortDto> getContestantsByOfflineSelectionId(Long selectionId, int from, int size) {
         offlineSelectionValidationHelper.isOfflineSelectionPresent(selectionId);
         int page = from / size;

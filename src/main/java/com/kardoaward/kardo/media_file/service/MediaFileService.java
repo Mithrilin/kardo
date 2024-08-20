@@ -13,4 +13,6 @@ public interface MediaFileService {
     void deleteEventDirectory(Event event);
 
     void addAvatarToUser(User user, MultipartFile file);
+
+    void deleteAvatarFromUser(User user);
 }

@@ -93,6 +93,15 @@ public class MediaFileServiceImpl implements MediaFileService {
         user.setAvatar(returnedMediaFile);
     }
 
+    @Override
+    @Transactional
+    public void deleteAvatarFromUser(User user) {
+        String path = FOLDER_PATH + "/events/" + user.getId() + "/logo/";
+        deleteFileOrDirectory(path);
+        mediaFileRepository.delete(user.getAvatar());
+        user.setAvatar(null);
+    }
+
     private MediaFile createNewMediaFile(MultipartFile file, String path) {
         MediaFile logo = new MediaFile();
         logo.setFileName(file.getOriginalFilename());
