@@ -1,6 +1,7 @@
 package com.kardoaward.kardo.media_file.service;
 
 import com.kardoaward.kardo.event.model.Event;
+import com.kardoaward.kardo.user.model.User;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface MediaFileService {
@@ -10,4 +11,6 @@ public interface MediaFileService {
     void deleteLogoFromEvent(Event event);
 
     void deleteEventDirectory(Event event);
+
+    void addAvatarToUser(User user, MultipartFile file);
 }

@@ -1,4 +1,4 @@
-package com.kardoaward.kardo.media_file;
+package com.kardoaward.kardo.media_file.repository;
 
 import com.kardoaward.kardo.media_file.model.MediaFile;
 import org.springframework.data.jpa.repository.JpaRepository;

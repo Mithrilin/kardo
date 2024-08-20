@@ -2,9 +2,10 @@ package com.kardoaward.kardo.media_file.service;
 
 import com.kardoaward.kardo.event.model.Event;
 import com.kardoaward.kardo.exception.FileContentException;
-import com.kardoaward.kardo.media_file.MediaFileRepository;
+import com.kardoaward.kardo.media_file.repository.MediaFileRepository;
 import com.kardoaward.kardo.media_file.enums.FileType;
 import com.kardoaward.kardo.media_file.model.MediaFile;
+import com.kardoaward.kardo.user.model.User;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
@@ -72,6 +73,24 @@ public class MediaFileServiceImpl implements MediaFileService {
             mediaFileRepository.delete(logo);
             event.setLogo(null);
         }
+    }
+
+    @Override
+    @Transactional
+    public void addAvatarToUser(User user, MultipartFile file) {
+        String path = FOLDER_PATH + "/users/" + user.getId() + "/avatar/";
+
+        if (user.getAvatar() != null) {
+            deleteFileOrDirectory(user.getAvatar().getFilePath());
+            mediaFileRepository.delete(user.getAvatar());
+        } else {
+            createDirectory(path);
+        }
+
+        MediaFile logo = createNewMediaFile(file, path);
+        uploadFile(file, logo);
+        MediaFile returnedMediaFile = mediaFileRepository.save(logo);
+        user.setAvatar(returnedMediaFile);
     }
 
     private MediaFile createNewMediaFile(MultipartFile file, String path) {
