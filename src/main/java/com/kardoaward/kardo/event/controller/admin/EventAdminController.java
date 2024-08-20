@@ -74,8 +74,8 @@ public class EventAdminController {
                                    @PathVariable @Positive Long eventId,
                                    @Parameter(description = "MultipartFile с логотипом")
                                    @RequestParam("image") MultipartFile file) {
-        log.info("Добавление администратором логотипа к мероприятию с ИД {}.", eventId);
-        return eventService.addEventLogo(eventId, file);
+        log.info("Добавление/обновление администратором логотипа к мероприятию с ИД {}.", eventId);
+        return eventService.addLogoToEvent(eventId, file);
     }
 
     @Operation(summary = "Удаление администратором мероприятия по ИД.")

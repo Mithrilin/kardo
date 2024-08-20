@@ -21,5 +21,5 @@ public interface EventService {
 
     EventDto updateEventById(Long eventId, UpdateEventRequest request);
 
-    EventDto addEventLogo(Long eventId, MultipartFile file);
+    EventDto addLogoToEvent(Long eventId, MultipartFile file);
 }

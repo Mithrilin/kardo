@@ -13,6 +13,7 @@ import com.kardoaward.kardo.event.service.specification.EventSpecifications;
 import com.kardoaward.kardo.exception.FileContentException;
 import com.kardoaward.kardo.grand_competition.model.GrandCompetition;
 import com.kardoaward.kardo.grand_competition.service.helper.GrandCompetitionValidationHelper;
+import com.kardoaward.kardo.media_file.service.MediaFileService;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
@@ -33,6 +34,8 @@ import java.util.Objects;
 @Service
 public class EventServiceImpl implements EventService {
 
+    private final MediaFileService mediaFileService;
+
     private final EventRepository eventRepository;
 
     private final EventMapper eventMapper;
@@ -42,11 +45,13 @@ public class EventServiceImpl implements EventService {
 
     private final String FOLDER_PATH;
 
-    public EventServiceImpl(EventRepository eventRepository,
+    public EventServiceImpl(MediaFileService mediaFileService,
+                            EventRepository eventRepository,
                             EventMapper eventMapper,
                             EventValidationHelper eventValidationHelper,
                             GrandCompetitionValidationHelper grandHelper,
                             @Value("${folder.path}") String FOLDER_PATH) {
+        this.mediaFileService = mediaFileService;
         this.eventRepository = eventRepository;
         this.eventMapper = eventMapper;
         this.eventValidationHelper = eventValidationHelper;
@@ -67,33 +72,12 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Transactional
-    public EventDto addEventLogo(Long eventId, MultipartFile file) {
+    public EventDto addLogoToEvent(Long eventId, MultipartFile file) {
         Event event = eventValidationHelper.isEventPresent(eventId);
-
-        if (event.getLogo() != null) {
-            try {
-                FileUtils.forceDelete(new File(event.getLogo()));
-                event.setLogo(null);
-            } catch (IOException e) {
-                throw new FileContentException("Не удалось очистить директорию: " + event.getLogo());
-            }
-        }
-
-        String path = FOLDER_PATH + "/events/" + event.getId() + "/logo/";
-        File logoPath = new File(path);
-        logoPath.mkdirs();
-        String newLogoPath = path + file.getOriginalFilename();
-
-        try {
-            file.transferTo(new File(newLogoPath));
-        } catch (IOException e) {
-            throw new FileContentException("Не удалось сохранить файл: " + newLogoPath);
-        }
-
-        event.setLogo(newLogoPath);
+        mediaFileService.addLogoToEvent(event, file);
         Event updatedEvent = eventRepository.save(event);
         EventDto eventDto = eventMapper.eventToEventDto(updatedEvent);
-        log.info("Логотип к мероприятию с ID = {} добавлен.", eventDto.getId());
+        log.info("Логотип к мероприятию с ID = {} добавлен/обновлён.", eventDto.getId());
         return eventDto;
     }
 
