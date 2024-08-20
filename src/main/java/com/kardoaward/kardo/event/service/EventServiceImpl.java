@@ -10,28 +10,25 @@ import com.kardoaward.kardo.event.model.params.EventRequestParams;
 import com.kardoaward.kardo.event.repository.EventRepository;
 import com.kardoaward.kardo.event.service.helper.EventValidationHelper;
 import com.kardoaward.kardo.event.service.specification.EventSpecifications;
-import com.kardoaward.kardo.exception.FileContentException;
 import com.kardoaward.kardo.grand_competition.model.GrandCompetition;
 import com.kardoaward.kardo.grand_competition.service.helper.GrandCompetitionValidationHelper;
 import com.kardoaward.kardo.media_file.service.MediaFileService;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Slf4j
 @Service
+@AllArgsConstructor
 public class EventServiceImpl implements EventService {
 
     private final MediaFileService mediaFileService;
@@ -42,22 +39,6 @@ public class EventServiceImpl implements EventService {
 
     private final EventValidationHelper eventValidationHelper;
     private final GrandCompetitionValidationHelper grandHelper;
-
-    private final String FOLDER_PATH;
-
-    public EventServiceImpl(MediaFileService mediaFileService,
-                            EventRepository eventRepository,
-                            EventMapper eventMapper,
-                            EventValidationHelper eventValidationHelper,
-                            GrandCompetitionValidationHelper grandHelper,
-                            @Value("${folder.path}") String FOLDER_PATH) {
-        this.mediaFileService = mediaFileService;
-        this.eventRepository = eventRepository;
-        this.eventMapper = eventMapper;
-        this.eventValidationHelper = eventValidationHelper;
-        this.grandHelper = grandHelper;
-        this.FOLDER_PATH = FOLDER_PATH;
-    }
 
     @Override
     @Transactional
@@ -93,15 +74,8 @@ public class EventServiceImpl implements EventService {
     @Override
     @Transactional
     public void deleteEventById(Long eventId) {
-        eventValidationHelper.isEventPresent(eventId);
-        File eventPath = new File(FOLDER_PATH + "/events/" + eventId);
-
-        try {
-            FileUtils.deleteDirectory(eventPath);
-        } catch (IOException e) {
-            throw new FileContentException("Не удалось удалить директорию: " + eventPath.getPath());
-        }
-
+        Event event = eventValidationHelper.isEventPresent(eventId);
+        mediaFileService.deleteEventDirectory(event);
         eventRepository.deleteById(eventId);
         log.info("Мероприятие с ID {} удалено.", eventId);
     }
