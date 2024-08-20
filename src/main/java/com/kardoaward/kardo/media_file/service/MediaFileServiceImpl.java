@@ -56,6 +56,24 @@ public class MediaFileServiceImpl implements MediaFileService {
         event.setLogo(null);
     }
 
+    @Override
+    @Transactional
+    public void deleteEventDirectory(Event event) {
+        File eventDirectory = new File(FOLDER_PATH + "/events/" + event.getId());
+
+        if (!eventDirectory.exists()) {
+            return;
+        }
+
+        deleteFileOrDirectory(eventDirectory.getPath());
+
+        if (event.getLogo() != null) {
+            MediaFile logo = event.getLogo();
+            mediaFileRepository.delete(logo);
+            event.setLogo(null);
+        }
+    }
+
     private MediaFile createNewMediaFile(MultipartFile file, String path) {
         MediaFile logo = new MediaFile();
         logo.setFileName(file.getOriginalFilename());
