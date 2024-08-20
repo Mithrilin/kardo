@@ -98,7 +98,7 @@ public class UserController {
         User requestor = userDetails.getUser();
         log.info("Удаление профиля пользователя с ИД {}.", userId);
         userValidationHelper.isUserOwnerOrAdmin(requestor, userId);
-        userService.deleteUser(userId);
+        userService.deleteUser(requestor);
     }
 
     @Operation(summary = "Обновление пользователя.")

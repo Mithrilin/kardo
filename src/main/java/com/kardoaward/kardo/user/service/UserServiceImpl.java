@@ -1,6 +1,5 @@
 package com.kardoaward.kardo.user.service;
 
-import com.kardoaward.kardo.exception.FileContentException;
 import com.kardoaward.kardo.media_file.service.MediaFileService;
 import com.kardoaward.kardo.selection.offline_selection.service.helper.OfflineSelectionValidationHelper;
 import com.kardoaward.kardo.user.mapper.UserMapper;
@@ -12,9 +11,8 @@ import com.kardoaward.kardo.user.dto.UserShortDto;
 import com.kardoaward.kardo.user.repository.UserRepository;
 import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -22,13 +20,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private final MediaFileService mediaFileService;
@@ -41,24 +38,6 @@ public class UserServiceImpl implements UserService {
     private final OfflineSelectionValidationHelper offlineSelectionValidationHelper;
 
     private final PasswordEncoder passwordEncoder;
-
-    private final String FOLDER_PATH;
-
-    public UserServiceImpl(MediaFileService mediaFileService,
-                           UserRepository userRepository,
-                           UserMapper userMapper,
-                           UserValidationHelper userValidationHelper,
-                           OfflineSelectionValidationHelper offlineSelectionValidationHelper,
-                           PasswordEncoder passwordEncoder,
-                           @Value("${folder.path}") String FOLDER_PATH) {
-        this.mediaFileService = mediaFileService;
-        this.userRepository = userRepository;
-        this.userMapper = userMapper;
-        this.userValidationHelper = userValidationHelper;
-        this.offlineSelectionValidationHelper = offlineSelectionValidationHelper;
-        this.passwordEncoder = passwordEncoder;
-        this.FOLDER_PATH = FOLDER_PATH;
-    }
 
     @Override
     @Transactional
@@ -81,17 +60,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void deleteUser(Long userId) {
-        File userPath = new File(FOLDER_PATH + "/users/" + userId);
-
-        try {
-            FileUtils.deleteDirectory(userPath);
-        } catch (IOException e) {
-            throw new FileContentException("Не удалось удалить директорию: " + userPath.getPath());
-        }
-
-        userRepository.deleteById(userId);
-        log.info("Пользователь с ID {} удалён.", userId);
+    public void deleteUser(User user) {
+        mediaFileService.deleteUserDirectory(user);
+        userRepository.delete(user);
+        log.info("Пользователь с ID {} удалён.", user.getId());
     }
 
     @Override
