@@ -1,6 +1,7 @@
 package com.kardoaward.kardo.user.service;
 
 import com.kardoaward.kardo.exception.FileContentException;
+import com.kardoaward.kardo.media_file.service.MediaFileService;
 import com.kardoaward.kardo.selection.offline_selection.service.helper.OfflineSelectionValidationHelper;
 import com.kardoaward.kardo.user.mapper.UserMapper;
 import com.kardoaward.kardo.user.model.User;
@@ -30,6 +31,8 @@ import java.util.List;
 @Service
 public class UserServiceImpl implements UserService {
 
+    private final MediaFileService mediaFileService;
+
     private final UserRepository userRepository;
 
     private final UserMapper userMapper;
@@ -41,12 +44,14 @@ public class UserServiceImpl implements UserService {
 
     private final String FOLDER_PATH;
 
-    public UserServiceImpl(UserRepository userRepository,
+    public UserServiceImpl(MediaFileService mediaFileService,
+                           UserRepository userRepository,
                            UserMapper userMapper,
                            UserValidationHelper userValidationHelper,
                            OfflineSelectionValidationHelper offlineSelectionValidationHelper,
                            PasswordEncoder passwordEncoder,
                            @Value("${folder.path}") String FOLDER_PATH) {
+        this.mediaFileService = mediaFileService;
         this.userRepository = userRepository;
         this.userMapper = userMapper;
         this.userValidationHelper = userValidationHelper;
@@ -124,31 +129,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public UserDto addUserAvatar(User user, MultipartFile file) {
-        if (user.getAvatarPhoto() != null) {
-            try {
-                FileUtils.forceDelete(new File(user.getAvatarPhoto()));
-                user.setAvatarPhoto(null);
-            } catch (IOException e) {
-                throw new FileContentException("Не удалось очистить директорию: " + user.getAvatarPhoto());
-            }
-        }
-
-        String path = FOLDER_PATH + "/users/" + user.getId() + "/avatar/";
-        File avatarPath = new File(path);
-        avatarPath.mkdirs();
-        String newAvatarPath = path + file.getOriginalFilename();
-
-        try {
-            file.transferTo(new File(newAvatarPath));
-        } catch (IOException e) {
-            throw new FileContentException("Не удалось сохранить файл: " + newAvatarPath);
-        }
-
-        user.setAvatarPhoto(newAvatarPath);
+    public UserDto addAvatarToUser(User user, MultipartFile file) {
+        mediaFileService.addAvatarToUser(user, file);
         User updatedUser = userRepository.save(user);
         UserDto userDto = userMapper.userToUserDto(updatedUser);
-        log.info("Аватар пользователя с ID {} обновлён.", user.getId());
+        log.info("Аватар пользователя с ID {} добавлен/обновлён.", user.getId());
         return userDto;
     }
 
