@@ -2,6 +2,7 @@ package com.kardoaward.kardo.media_file.service;
 
 import com.kardoaward.kardo.event.model.Event;
 import com.kardoaward.kardo.user.model.User;
+import com.kardoaward.kardo.video_clip.model.VideoClip;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface MediaFileService {
@@ -17,4 +18,6 @@ public interface MediaFileService {
     void deleteAvatarFromUser(User user);
 
     void deleteUserDirectory(User user);
+
+    void addVideoClip(VideoClip videoClip, MultipartFile file);
 }

@@ -6,6 +6,7 @@ import com.kardoaward.kardo.media_file.repository.MediaFileRepository;
 import com.kardoaward.kardo.media_file.enums.FileType;
 import com.kardoaward.kardo.media_file.model.MediaFile;
 import com.kardoaward.kardo.user.model.User;
+import com.kardoaward.kardo.video_clip.model.VideoClip;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
@@ -42,7 +43,7 @@ public class MediaFileServiceImpl implements MediaFileService {
             createDirectory(path);
         }
 
-        MediaFile logo = createNewMediaFile(file, path);
+        MediaFile logo = createNewMediaFile(file, path, FileType.IMAGE);
         uploadFile(file, logo);
         MediaFile returnedMediaFile = mediaFileRepository.save(logo);
         event.setLogo(returnedMediaFile);
@@ -87,9 +88,9 @@ public class MediaFileServiceImpl implements MediaFileService {
             createDirectory(path);
         }
 
-        MediaFile logo = createNewMediaFile(file, path);
-        uploadFile(file, logo);
-        MediaFile returnedMediaFile = mediaFileRepository.save(logo);
+        MediaFile avatar = createNewMediaFile(file, path, FileType.IMAGE);
+        uploadFile(file, avatar);
+        MediaFile returnedMediaFile = mediaFileRepository.save(avatar);
         user.setAvatar(returnedMediaFile);
     }
 
@@ -120,20 +121,36 @@ public class MediaFileServiceImpl implements MediaFileService {
         }
     }
 
-    private MediaFile createNewMediaFile(MultipartFile file, String path) {
+    @Override
+    @Transactional
+    public void addVideoClip(VideoClip videoClip, MultipartFile file) {
+        String path = FOLDER_PATH + "/users/" + videoClip.getCreator().getId() + "/videos/";
+        File directoryForVideo = new File(path);
+
+        if (!directoryForVideo.exists()) {
+            createDirectory(path);
+        }
+
+        MediaFile video = createNewMediaFile(file, path, FileType.VIDEO);
+        uploadFile(file, video);
+        MediaFile returnedMediaFile = mediaFileRepository.save(video);
+        videoClip.setVideo(returnedMediaFile);
+    }
+
+    private MediaFile createNewMediaFile(MultipartFile file, String path, FileType fileType) {
         MediaFile logo = new MediaFile();
         logo.setFileName(file.getOriginalFilename());
-        logo.setFileType(FileType.IMAGE);
+        logo.setFileType(fileType);
         logo.setFilePath(path + file.getOriginalFilename());
         return logo;
     }
 
-    private void uploadFile(MultipartFile file, MediaFile logo) {
+    private void uploadFile(MultipartFile file, MediaFile mediaFile) {
         try {
-            file.transferTo(new File(logo.getFilePath()));
+            file.transferTo(new File(mediaFile.getFilePath()));
         } catch (IOException e) {
-            log.error("Не удалось сохранить файл: " + logo.getFilePath());
-            throw new FileContentException("Не удалось сохранить файл: " + logo.getFilePath());
+            log.error("Не удалось сохранить файл: " + mediaFile.getFilePath());
+            throw new FileContentException("Не удалось сохранить файл: " + mediaFile.getFilePath());
         }
     }
 
