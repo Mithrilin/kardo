@@ -11,7 +11,7 @@ CREATE TABLE users (
   phone_number VARCHAR(250),
   gender VARCHAR(6),
   citizenship VARCHAR(250),
-  avatar_photo VARCHAR(250),
+  avatar_id BIGINT REFERENCES media_files(id) ON DELETE CASCADE,
   portfolio VARCHAR(250),
   about_me VARCHAR(1000),
   role VARCHAR(10) NOT NULL,

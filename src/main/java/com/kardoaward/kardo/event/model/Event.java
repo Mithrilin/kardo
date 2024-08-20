@@ -17,6 +17,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -65,7 +66,7 @@ public class Event {
     @Column(name="field")
     @Enumerated(EnumType.STRING)
     private List<Field> fields;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @ToString.Exclude
     @JoinColumn(name = "logo_id")
     private MediaFile logo;

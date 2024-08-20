@@ -121,9 +121,9 @@ public class UserController {
         return userService.updateUser(requestor, request);
     }
 
-    @Operation(summary = "Обновление/добавление аватарки пользователя.")
+    @Operation(summary = "Добавление/обновление аватарки пользователем.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Аватарка обновлена/добавлена.",
+            @ApiResponse(responseCode = "200", description = "Аватарка добавлена/обновлена.",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = UserDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
@@ -132,12 +132,12 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content)})
     @PatchMapping("/avatar")
     @Secured({"ADMIN", "USER"})
-    public UserDto addUserAvatar(@Parameter(description = "MultipartFile файл с аватаркой пользователя")
-                                 @RequestParam("image") MultipartFile file) {
+    public UserDto addAvatarToUser(@Parameter(description = "MultipartFile файл с аватаркой пользователя")
+                                   @RequestParam("image") MultipartFile file) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         User requestor = userDetails.getUser();
-        log.info("Обновление пользователем с ИД {} своей аватарки.", requestor.getId());
-        return userService.addUserAvatar(requestor, file);
+        log.info("Добавление/обновление пользователем с ИД {} своей аватарки.", requestor.getId());
+        return userService.addAvatarToUser(requestor, file);
     }
 }
