@@ -20,4 +20,6 @@ public interface MediaFileService {
     void deleteUserDirectory(User user);
 
     void addVideoClip(VideoClip videoClip, MultipartFile file);
+
+    void deleteVideo(VideoClip videoClip);
 }

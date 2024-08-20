@@ -137,6 +137,15 @@ public class MediaFileServiceImpl implements MediaFileService {
         videoClip.setVideo(returnedMediaFile);
     }
 
+    @Override
+    @Transactional
+    public void deleteVideo(VideoClip videoClip) {
+        MediaFile video = videoClip.getVideo();
+        deleteFileOrDirectory(video.getFilePath());
+        mediaFileRepository.delete(video);
+        videoClip.setVideo(null);
+    }
+
     private MediaFile createNewMediaFile(MultipartFile file, String path, FileType fileType) {
         MediaFile logo = new MediaFile();
         logo.setFileName(file.getOriginalFilename());
