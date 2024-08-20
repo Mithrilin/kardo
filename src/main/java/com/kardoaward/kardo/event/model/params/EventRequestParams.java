@@ -1,7 +1,7 @@
 package com.kardoaward.kardo.event.model.params;
 
 import com.kardoaward.kardo.enums.Field;
-import com.kardoaward.kardo.event.model.enums.EventProgram;
+import com.kardoaward.kardo.event.enums.EventProgram;
 import lombok.Data;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;

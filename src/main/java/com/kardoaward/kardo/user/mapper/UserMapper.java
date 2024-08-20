@@ -20,8 +20,10 @@ public interface UserMapper {
     @Mapping(source = "encodePassword", target = "password")
     User newUserRequestToUser(NewUserRequest newUserRequest, String encodePassword);
 
+    @Mapping(source = "user.avatar.filePath", target = "avatar")
     UserDto userToUserDto(User user);
 
+    @Mapping(source = "user.avatar.filePath", target = "avatar")
     UserShortDto userToUserShortDto(User user);
 
     List<UserShortDto> userListToUserShortDtoList(List<User> userList);

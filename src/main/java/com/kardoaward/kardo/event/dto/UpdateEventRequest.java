@@ -1,7 +1,7 @@
 package com.kardoaward.kardo.event.dto;
 
 import com.kardoaward.kardo.enums.Field;
-import com.kardoaward.kardo.event.model.enums.EventProgram;
+import com.kardoaward.kardo.event.enums.EventProgram;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;

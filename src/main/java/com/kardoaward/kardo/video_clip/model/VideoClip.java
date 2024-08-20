@@ -1,5 +1,6 @@
 package com.kardoaward.kardo.video_clip.model;
 
+import com.kardoaward.kardo.media_file.model.MediaFile;
 import com.kardoaward.kardo.user.model.User;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -11,6 +12,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -49,6 +51,8 @@ public class VideoClip {
               "FROM likes AS l " +
               "WHERE l.video_clip_id = id)")
     private Integer likesCount = 0;
-    @Column(name="video_link")
-    private String videoLink;
+    @OneToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @JoinColumn(name = "video_id")
+    private MediaFile video;
 }

@@ -1,6 +1,6 @@
 package com.kardoaward.kardo.video_clip.service;
 
-import com.kardoaward.kardo.exception.FileContentException;
+import com.kardoaward.kardo.media_file.service.MediaFileService;
 import com.kardoaward.kardo.user.model.User;
 import com.kardoaward.kardo.video_clip.mapper.LikeMapper;
 import com.kardoaward.kardo.video_clip.mapper.VideoClipMapper;
@@ -13,23 +13,23 @@ import com.kardoaward.kardo.video_clip.repository.LikeRepository;
 import com.kardoaward.kardo.video_clip.repository.VideoClipRepository;
 import com.kardoaward.kardo.video_clip.service.helper.VideoClipValidationHelper;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @Service
+@AllArgsConstructor
 public class VideoClipServiceImpl implements VideoClipService {
+
+    private final MediaFileService mediaFileService;
 
     private final VideoClipRepository videoClipRepository;
     private final LikeRepository likeRepository;
@@ -39,37 +39,11 @@ public class VideoClipServiceImpl implements VideoClipService {
 
     private final VideoClipValidationHelper videoClipValidationHelper;
 
-    private final String FOLDER_PATH;
-
-    public VideoClipServiceImpl(VideoClipRepository videoClipRepository,
-                                LikeRepository likeRepository,
-                                VideoClipMapper videoClipMapper,
-                                LikeMapper likeMapper,
-                                VideoClipValidationHelper videoClipValidationHelper,
-                                @Value("${folder.path}") String FOLDER_PATH) {
-        this.videoClipRepository = videoClipRepository;
-        this.likeRepository = likeRepository;
-        this.videoClipMapper = videoClipMapper;
-        this.likeMapper = likeMapper;
-        this.videoClipValidationHelper = videoClipValidationHelper;
-        this.FOLDER_PATH = FOLDER_PATH;
-    }
-
     @Override
     @Transactional
     public VideoClipDto addVideoClip(User requestor, NewVideoClipRequest request, MultipartFile file) {
-        String path = FOLDER_PATH + "/users/" + requestor.getId() + "/videos/";
-        File videoPath = new File(path);
-        videoPath.mkdirs();
-        String newVideoPath = path + file.getOriginalFilename();
-
-        try {
-            file.transferTo(new File(newVideoPath));
-        } catch (IOException e) {
-            throw new FileContentException("Не удалось сохранить файл: " + newVideoPath);
-        }
-
-        VideoClip videoClip = videoClipMapper.newVideoClipRequestToVideoClip(request, requestor, newVideoPath);
+        VideoClip videoClip = videoClipMapper.newVideoClipRequestToVideoClip(request, requestor);
+        mediaFileService.addVideoClip(videoClip, file);
         VideoClip returnedVideoClip = videoClipRepository.save(videoClip);
         VideoClipDto videoClipDto = videoClipMapper.videoClipToVideoClipDto(returnedVideoClip);
         log.info("Видео-клип с ID = {} создан.", videoClipDto.getId());
@@ -81,7 +55,8 @@ public class VideoClipServiceImpl implements VideoClipService {
     public void deleteVideoClipById(User requestor, Long videoId) {
         VideoClip videoClip = videoClipValidationHelper.isVideoClipPresent(videoId);
         videoClipValidationHelper.isRequestorCreatorVideoOrAdmin(requestor, videoClip.getCreator().getId());
-        deleteVideo(videoClip);
+        mediaFileService.deleteVideo(videoClip);
+        videoClipRepository.delete(videoClip);
         log.info("Видео-клип с ID {} удалён.", videoId);
     }
 
@@ -148,17 +123,5 @@ public class VideoClipServiceImpl implements VideoClipService {
         VideoClipDto videoClipDto = videoClipMapper.videoClipToVideoClipDto(videoClip);
         log.info("Лайк пользователя с ID {} к видео-клипу с ИД {} удалён.", requestorId, videoId);
         return videoClipDto;
-    }
-
-    private void deleteVideo(VideoClip videoClip) {
-        String path = videoClip.getVideoLink();
-
-        try {
-            FileUtils.forceDelete(new File(path));
-        } catch (IOException e) {
-            throw new FileContentException("Не удалось удалить файл: " + path);
-        }
-
-        videoClipRepository.delete(videoClip);
     }
 }

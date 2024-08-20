@@ -17,11 +17,11 @@ public interface VideoClipMapper {
 
     @Mapping(target = "id", constant = "0L")
     @Mapping(source = "user", target = "creator")
-    @Mapping(source = "newVideoPath", target = "videoLink")
-    VideoClip newVideoClipRequestToVideoClip(NewVideoClipRequest request, User user, String newVideoPath);
+    VideoClip newVideoClipRequestToVideoClip(NewVideoClipRequest request, User user);
 
-    @Mapping(source = "returnedVideoClip.creator", target = "creatorDto")
-    VideoClipDto videoClipToVideoClipDto(VideoClip returnedVideoClip);
+    @Mapping(source = "videoClip.creator", target = "creatorDto")
+    @Mapping(source = "videoClip.video.filePath", target = "video")
+    VideoClipDto videoClipToVideoClipDto(VideoClip videoClip);
 
     void updateVideoClip(UpdateVideoClipRequest request, @MappingTarget VideoClip videoClip);
 

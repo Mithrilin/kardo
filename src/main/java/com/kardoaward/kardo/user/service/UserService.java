@@ -15,7 +15,7 @@ public interface UserService {
 
     UserDto getUserById(Long userId);
 
-    void deleteUser(Long userId);
+    void deleteUser(User user);
 
     List<UserShortDto> getUsersByIds(List<Long> ids, int from, int size);
 
@@ -23,5 +23,7 @@ public interface UserService {
 
     List<UserShortDto> getContestantsByOfflineSelectionId(Long selectionId, int from, int size);
 
-    UserDto addUserAvatar(User requestor, MultipartFile file);
+    UserDto addAvatarToUser(User requestor, MultipartFile file);
+
+    void deleteAvatarFromUser(User requestor);
 }

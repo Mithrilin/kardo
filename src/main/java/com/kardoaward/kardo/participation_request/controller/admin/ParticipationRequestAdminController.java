@@ -6,6 +6,7 @@ import com.kardoaward.kardo.participation_request.dto.update.ParticipationReques
 import com.kardoaward.kardo.participation_request.service.ParticipationRequestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -33,7 +34,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/participations")
 @Validated
-@Tag(name="Заявка на участие в отборе: Admin.", description="API администратора для работы с заявками " +
+@Tag(name = "Заявка на участие в отборе: Admin.", description = "API администратора для работы с заявками " +
         "на участие в отборе.")
 public class ParticipationRequestAdminController {
 
@@ -41,6 +42,9 @@ public class ParticipationRequestAdminController {
 
     @Operation(summary = "Получение списка заявок на участие в конкретном отборе.")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Получен список постов пользователя", content = {
+                    @Content(mediaType = "application/json", array =
+                    @ArraySchema(schema = @Schema(implementation = ParticipationRequestDto.class)))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Гранд-соревнование не найдено", content = @Content),
@@ -62,8 +66,8 @@ public class ParticipationRequestAdminController {
     @Operation(summary = "Обновление заявок на участие в конкретном отборе.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Заявки обновлены.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ParticipationRequestStatusUpdateResult.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ParticipationRequestStatusUpdateResult.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Отбор не найден", content = @Content),

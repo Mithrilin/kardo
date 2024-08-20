@@ -2,8 +2,9 @@ package com.kardoaward.kardo.event.model;
 
 import com.kardoaward.kardo.enums.Field;
 import com.kardoaward.kardo.enums.Status;
-import com.kardoaward.kardo.event.model.enums.EventProgram;
+import com.kardoaward.kardo.event.enums.EventProgram;
 import com.kardoaward.kardo.grand_competition.model.GrandCompetition;
+import com.kardoaward.kardo.media_file.model.MediaFile;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -16,6 +17,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -64,7 +66,10 @@ public class Event {
     @Column(name="field")
     @Enumerated(EnumType.STRING)
     private List<Field> fields;
-    private String logo;
+    @OneToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    @JoinColumn(name = "logo_id")
+    private MediaFile logo;
     @Column(name="is_main_event")
     private Boolean isMainEvent;
     private String description;

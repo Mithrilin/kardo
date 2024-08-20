@@ -29,9 +29,11 @@ public interface EventMapper {
     Event newEventRequestToEvent(NewEventRequest newEventRequest, GrandCompetition grandCompetition);
 
     @Mapping(source = "event.competition", target = "competitionDto")
+    @Mapping(source = "event.logo.filePath", target = "logo")
     EventDto eventToEventDto(Event event);
 
     @Mapping(source = "event.competition", target = "competitionDto")
+    @Mapping(source = "event.logo.filePath", target = "logo")
     EventShortDto eventToEventShortDto(Event event);
 
     @BeanMapping(nullValuePropertyMappingStrategy = IGNORE)
