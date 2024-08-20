@@ -102,6 +102,24 @@ public class MediaFileServiceImpl implements MediaFileService {
         user.setAvatar(null);
     }
 
+    @Override
+    @Transactional
+    public void deleteUserDirectory(User user) {
+        File userDirectory = new File(FOLDER_PATH + "/users/" + user.getId());
+
+        if (!userDirectory.exists()) {
+            return;
+        }
+
+        deleteFileOrDirectory(userDirectory.getPath());
+
+        if (user.getAvatar() != null) {
+            MediaFile avatar = user.getAvatar();
+            mediaFileRepository.delete(avatar);
+            user.setAvatar(null);
+        }
+    }
+
     private MediaFile createNewMediaFile(MultipartFile file, String path) {
         MediaFile logo = new MediaFile();
         logo.setFileName(file.getOriginalFilename());

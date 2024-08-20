@@ -15,4 +15,6 @@ public interface MediaFileService {
     void addAvatarToUser(User user, MultipartFile file);
 
     void deleteAvatarFromUser(User user);
+
+    void deleteUserDirectory(User user);
 }
