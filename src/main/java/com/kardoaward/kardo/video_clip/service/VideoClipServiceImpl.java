@@ -1,6 +1,5 @@
 package com.kardoaward.kardo.video_clip.service;
 
-import com.kardoaward.kardo.exception.FileContentException;
 import com.kardoaward.kardo.media_file.FileManager;
 import com.kardoaward.kardo.user.model.User;
 import com.kardoaward.kardo.video_clip.mapper.LikeMapper;
@@ -15,7 +14,6 @@ import com.kardoaward.kardo.video_clip.repository.VideoClipRepository;
 import com.kardoaward.kardo.video_clip.service.helper.VideoClipValidationHelper;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,8 +21,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +74,9 @@ public class VideoClipServiceImpl implements VideoClipService {
     public void deleteVideoClipById(User requestor, Long videoId) {
         VideoClip videoClip = videoClipValidationHelper.isVideoClipPresent(videoId);
         videoClipValidationHelper.isRequestorCreatorVideoOrAdmin(requestor, videoClip.getCreator().getId());
-        deleteVideo(videoClip);
+        String path = videoClip.getVideoLink();
+        videoClipRepository.delete(videoClip);
+        fileManager.deleteFileOrDirectory(path);
         log.info("Видео-клип с ID {} удалён.", videoId);
     }
 
@@ -145,17 +143,5 @@ public class VideoClipServiceImpl implements VideoClipService {
         VideoClipDto videoClipDto = videoClipMapper.videoClipToVideoClipDto(videoClip);
         log.info("Лайк пользователя с ID {} к видео-клипу с ИД {} удалён.", requestorId, videoId);
         return videoClipDto;
-    }
-
-    private void deleteVideo(VideoClip videoClip) {
-        String path = videoClip.getVideoLink();
-
-        try {
-            FileUtils.forceDelete(new File(path));
-        } catch (IOException e) {
-            throw new FileContentException("Не удалось удалить файл: " + path);
-        }
-
-        videoClipRepository.delete(videoClip);
     }
 }
