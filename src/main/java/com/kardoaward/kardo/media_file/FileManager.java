@@ -22,6 +22,17 @@ public class FileManager {
     }
 
 
+
+    private void uploadFile(MultipartFile file, String path) {
+        try {
+            file.transferTo(new File(path));
+        } catch (IOException e) {
+            log.error("Не удалось сохранить файл: " + path);
+            throw new FileContentException("Не удалось сохранить файл: " + path);
+        }
+        log.info("Файл сохранён: " + path);
+    }
+
     private void createDirectory(String path) {
         File logoDirectory = new File(path);
         boolean hasDirectoryCreated = logoDirectory.mkdirs();
