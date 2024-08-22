@@ -21,7 +21,17 @@ public class FileManager {
         FOLDER_PATH = folderPath;
     }
 
+    public void addAvatarToUser(User user, MultipartFile file, String path) {
 
+        if (user.getAvatarPhoto() != null) {
+            deleteFileOrDirectory(user.getAvatarPhoto());
+        } else {
+            createDirectory(path);
+        }
+
+        String filePath = path + file.getOriginalFilename();
+        uploadFile(file, filePath);
+    }
 
     private void uploadFile(MultipartFile file, String path) {
         try {
