@@ -130,11 +130,12 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserDto addAvatarToUser(User user, MultipartFile file) {
+        String oldAvatarPath = user.getAvatarPhoto();
         String path = FOLDER_PATH + "/users/" + user.getId() + "/avatar/";
         user.setAvatarPhoto(path + file.getOriginalFilename());
         User updatedUser = userRepository.save(user);
         UserDto userDto = userMapper.userToUserDto(updatedUser);
-        fileManager.addAvatarToUser(user, file, path);
+        fileManager.addAvatarToUser(oldAvatarPath, file, path);
         log.info("Аватарка пользователя с ID {} обновлена.", user.getId());
         return userDto;
     }
@@ -142,7 +143,6 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void deleteAvatarFromUser(User user) {
-        String path = FOLDER_PATH + "/users/" + user.getId() + "/avatar/";
 
         if (user.getAvatarPhoto() == null) {
             log.error("У пользователя с ИД {} отсутствует аватар.", user.getId());
@@ -151,6 +151,7 @@ public class UserServiceImpl implements UserService {
 
         user.setAvatarPhoto(null);
         userRepository.save(user);
+        String path = FOLDER_PATH + "/users/" + user.getId() + "/avatar/";
         fileManager.deleteAvatarFromUser(path);
         log.info("Аватарка пользователя с ID {} удалена.", user.getId());
     }

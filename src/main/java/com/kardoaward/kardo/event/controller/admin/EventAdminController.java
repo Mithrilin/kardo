@@ -59,9 +59,9 @@ public class EventAdminController {
         return eventService.addEvent(newEventRequest);
     }
 
-    @Operation(summary = "Добавление администратором логотипа к мероприятию.")
+    @Operation(summary = "Обновление/добавление администратором логотипа к мероприятию.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Логотип к мероприятию добавлен.",
+            @ApiResponse(responseCode = "200", description = "Логотип к мероприятию обновлён/добавлен.",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = EventDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
@@ -70,12 +70,12 @@ public class EventAdminController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content)})
     @PostMapping("/{eventId}/logo")
     @Secured("ADMIN")
-    public EventDto addEventLogo(@Parameter(description = "id мероприятия")
-                                 @PathVariable @Positive Long eventId,
-                                 @Parameter(description = "MultipartFile с логотипом")
-                                 @RequestParam("image") MultipartFile file) {
-        log.info("Добавление администратором логотипа к мероприятию с ИД {}.", eventId);
-        return eventService.addEventLogo(eventId, file);
+    public EventDto addLogoToEvent(@Parameter(description = "id мероприятия")
+                                   @PathVariable @Positive Long eventId,
+                                   @Parameter(description = "MultipartFile с логотипом")
+                                   @RequestParam("image") MultipartFile file) {
+        log.info("Обновление/добавление администратором логотипа к мероприятию с ИД {}.", eventId);
+        return eventService.addLogoToEvent(eventId, file);
     }
 
     @Operation(summary = "Удаление администратором мероприятия по ИД.")
