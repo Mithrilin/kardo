@@ -37,7 +37,7 @@ public class VideoClipValidationHelper {
         if (!requestor.getId().equals(creatorId) && requestor.getRole() != Role.ADMIN) {
             log.error("Пользователь с ИД {} не является создателем видео или администратором.", requestor.getId());
             throw new BadRequestException(String.format("Пользователь с ИД %d не является создателем видео " +
-                            "или администратором.", requestor.getId()));
+                    "или администратором.", requestor.getId()));
         }
     }
 

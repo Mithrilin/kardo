@@ -26,7 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/users")
 @Validated
-@Tag(name="Пользователь: Admin.", description="API администратора для работы с пользователями.")
+@Tag(name = "Пользователь: Admin.", description = "API администратора для работы с пользователями.")
 public class UserAdminController {
 
     private final UserService userService;
@@ -42,7 +42,7 @@ public class UserAdminController {
     public List<UserShortDto> getUsersByIds(@Parameter(description = "Список ИД пользователей")
                                             @RequestParam(required = false) List<Long> ids,
                                             @Parameter(description = "Количество элементов, которые " +
-                                            "нужно пропустить для формирования текущего набора")
+                                                    "нужно пропустить для формирования текущего набора")
                                             @RequestParam(defaultValue = "0") @Min(0) int from,
                                             @Parameter(description = "Количество элементов в наборе")
                                             @RequestParam(defaultValue = "10") @Positive int size) {

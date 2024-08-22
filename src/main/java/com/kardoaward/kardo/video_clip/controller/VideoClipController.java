@@ -41,7 +41,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/videos")
 @Validated
-@Tag(name="Видео-клип.", description="API для работы с видео-клипами для зарегистрированных пользователей.")
+@Tag(name = "Видео-клип.", description = "API для работы с видео-клипами для зарегистрированных пользователей.")
 public class VideoClipController {
 
     private final VideoClipService videoClipService;
@@ -49,8 +49,8 @@ public class VideoClipController {
     @Operation(summary = "Добавление видео-клипа.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Видео-клип добавлен.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = VideoClipDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = VideoClipDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Пользователь не найден", content = @Content),
@@ -58,9 +58,9 @@ public class VideoClipController {
     @PostMapping
     @Secured("USER")
     public VideoClipDto createVideoClip(@Parameter(description = "список хештегов в формате json")
-                                            @RequestParam("text") String json,
+                                        @RequestParam("text") String json,
                                         @Parameter(description = "MultipartFile файл с видео-клипом")
-                                            @RequestParam("video") MultipartFile file) {
+                                        @RequestParam("video") MultipartFile file) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         User requestor = userDetails.getUser();
@@ -82,7 +82,7 @@ public class VideoClipController {
     @DeleteMapping("/{videoId}")
     @Secured({"ADMIN", "USER"})
     public void deleteVideoClipById(@Parameter(description = "id видео-клипа")
-                                        @PathVariable @Positive Long videoId) {
+                                    @PathVariable @Positive Long videoId) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         User requestor = userDetails.getUser();
@@ -93,8 +93,8 @@ public class VideoClipController {
     @Operation(summary = "Получение видео-клипа.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Видео-клип найден.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = VideoClipDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = VideoClipDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Видео-клип не найден", content = @Content),
@@ -102,7 +102,7 @@ public class VideoClipController {
     @GetMapping("/{videoId}")
     @Secured({"ADMIN", "USER"})
     public VideoClipDto getVideoClipById(@Parameter(description = "id видео-клипа")
-                                             @PathVariable @Positive Long videoId) {
+                                         @PathVariable @Positive Long videoId) {
         log.info("Возвращение видео-клипа с ИД {}.", videoId);
         return videoClipService.getVideoClipById(videoId);
     }
@@ -110,8 +110,8 @@ public class VideoClipController {
     @Operation(summary = "Обновление видео-клипа.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Видео-клип обновлён.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = VideoClipDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = VideoClipDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Видео-клип не найден", content = @Content),
@@ -119,9 +119,9 @@ public class VideoClipController {
     @PatchMapping("/{videoId}")
     @Secured("USER")
     public VideoClipDto updateVideoClipById(@Parameter(description = "id видео-клипа")
-                                                @PathVariable @Positive Long videoId,
+                                            @PathVariable @Positive Long videoId,
                                             @Parameter(description = "Данные обновляемого видео-клипа")
-                                                @RequestBody @Valid UpdateVideoClipRequest request) {
+                                            @RequestBody @Valid UpdateVideoClipRequest request) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         User requestor = userDetails.getUser();
@@ -138,12 +138,12 @@ public class VideoClipController {
     @GetMapping("/search")
     @Secured({"ADMIN", "USER"})
     public List<VideoClipDto> getVideoClipsByHashtag(@Parameter(description = "хештег")
-                                                         @RequestParam @Size(min = 2, max = 20) String hashtag,
+                                                     @RequestParam @Size(min = 2, max = 20) String hashtag,
                                                      @Parameter(description = "Количество элементов, которые " +
                                                              "нужно пропустить для формирования текущего набора")
-                                                         @RequestParam(defaultValue = "0") @Min(0) int from,
+                                                     @RequestParam(defaultValue = "0") @Min(0) int from,
                                                      @Parameter(description = "Количество элементов в наборе")
-                                                         @RequestParam(defaultValue = "10") @Positive int size) {
+                                                     @RequestParam(defaultValue = "10") @Positive int size) {
         log.info("Возвращение списка видео-клипов с хештегом {}.", hashtag);
         return videoClipService.getVideoClipsByHashtag(hashtag, from, size);
     }
@@ -151,8 +151,8 @@ public class VideoClipController {
     @Operation(summary = "Добавление лайка к видео-клипу.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Лайк добавлен.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = VideoClipDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = VideoClipDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Видео-клип не найден", content = @Content),
@@ -160,7 +160,7 @@ public class VideoClipController {
     @PostMapping("/{videoId}/likes")
     @Secured({"ADMIN", "USER"})
     public VideoClipDto addLikeByVideoClipId(@Parameter(description = "id видео-клипа")
-                                                 @PathVariable @Positive Long videoId) {
+                                             @PathVariable @Positive Long videoId) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         User requestor = userDetails.getUser();
@@ -171,8 +171,8 @@ public class VideoClipController {
     @Operation(summary = "Удаление лайка к видео-клипу.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Лайк удалён.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = VideoClipDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = VideoClipDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Видео-клип не найден", content = @Content),
@@ -180,7 +180,7 @@ public class VideoClipController {
     @DeleteMapping("/{videoId}/likes")
     @Secured({"ADMIN", "USER"})
     public VideoClipDto deleteLikeByVideoClipId(@Parameter(description = "id видео-клипа")
-                                                    @PathVariable @Positive Long videoId) {
+                                                @PathVariable @Positive Long videoId) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         Long requestorId = userDetails.getUser().getId();

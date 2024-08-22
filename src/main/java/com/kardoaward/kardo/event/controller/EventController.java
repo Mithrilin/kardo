@@ -33,7 +33,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/events")
 @Validated
-@Tag(name="Мероприятия: Users.", description="API для работы с мероприятиями для зарегистрированных пользователей.")
+@Tag(name = "Мероприятия: Users.", description = "API для работы с мероприятиями для зарегистрированных пользователей.")
 public class EventController {
 
     private final EventService eventService;
@@ -41,8 +41,8 @@ public class EventController {
     @Operation(summary = "Получение мероприятия к Гранд-соревнованию по ИД.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Мероприятие найдено.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = EventDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = EventDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Мероприятие не найдено", content = @Content),

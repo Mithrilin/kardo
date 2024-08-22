@@ -28,7 +28,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/contests")
 @Validated
-@Tag(name="Видео-соревнование: Users.", description="API для работы с видео-соревнованиями " +
+@Tag(name = "Видео-соревнование: Users.", description = "API для работы с видео-соревнованиями " +
         "для зарегистрированных пользователей.")
 public class VideoContestController {
 
@@ -37,8 +37,8 @@ public class VideoContestController {
     @Operation(summary = "Получение видео-соревнования.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Видео-соревнование найдено.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = VideoContestDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = VideoContestDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Видео-соревнование не найдено", content = @Content),
@@ -46,7 +46,7 @@ public class VideoContestController {
     @GetMapping("/{contestId}")
     @Secured({"ADMIN", "USER"})
     public VideoContestDto getVideoContestById(@Parameter(description = "id видео-соревнования")
-                                                   @PathVariable @Positive Long contestId) {
+                                               @PathVariable @Positive Long contestId) {
         log.info("Возвращение видео-конкурса с ИД {}.", contestId);
         return service.getVideoContestById(contestId);
     }
@@ -60,10 +60,10 @@ public class VideoContestController {
     @GetMapping
     @Secured({"ADMIN", "USER"})
     public List<VideoContestDto> getVideoContests(@Parameter(description = "Количество элементов, которые " +
-                                                          "нужно пропустить для формирования текущего набора")
-                                                      @RequestParam(defaultValue = "0") @Min(0) int from,
+            "нужно пропустить для формирования текущего набора")
+                                                  @RequestParam(defaultValue = "0") @Min(0) int from,
                                                   @Parameter(description = "Количество элементов в наборе")
-                                                      @RequestParam(defaultValue = "10") @Positive int size) {
+                                                  @RequestParam(defaultValue = "10") @Positive int size) {
         log.info("Возвращение списка видео-конкурсов.");
         return service.getVideoContests(from, size);
     }

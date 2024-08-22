@@ -33,7 +33,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/participations")
 @Validated
-@Tag(name="Заявка на участие в отборе: Admin.", description="API администратора для работы с заявками " +
+@Tag(name = "Заявка на участие в отборе: Admin.", description = "API администратора для работы с заявками " +
         "на участие в отборе.")
 public class ParticipationRequestAdminController {
 
@@ -62,8 +62,8 @@ public class ParticipationRequestAdminController {
     @Operation(summary = "Обновление заявок на участие в конкретном отборе.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Заявки обновлены.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ParticipationRequestStatusUpdateResult.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ParticipationRequestStatusUpdateResult.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Отбор не найден", content = @Content),

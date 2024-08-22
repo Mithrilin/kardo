@@ -33,7 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/admin/events")
 @Validated
-@Tag(name="Мероприятия: Admin.", description="API администратора для работы с мероприятиями.")
+@Tag(name = "Мероприятия: Admin.", description = "API администратора для работы с мероприятиями.")
 public class EventAdminController {
 
     private final EventService eventService;
@@ -43,8 +43,8 @@ public class EventAdminController {
     @Operation(summary = "Добавление администратором нового мероприятия к Гранд-соревнованию.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Мероприятие добавлено.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = EventDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = EventDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Гранд-соревнование не найдено", content = @Content),
@@ -62,8 +62,8 @@ public class EventAdminController {
     @Operation(summary = "Добавление администратором логотипа к мероприятию.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Логотип к мероприятию добавлен.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = EventDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = EventDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Мероприятие не найдено", content = @Content),
@@ -96,8 +96,8 @@ public class EventAdminController {
     @Operation(summary = "Обновление администратором мероприятия по ИД.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Мероприятие обновлено.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = EventDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = EventDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Мероприятие не найдено", content = @Content),

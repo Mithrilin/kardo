@@ -38,7 +38,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/selections/offline")
 @Validated
-@Tag(name="Оффлайн-отбор: Admin.", description="API администратора для работы с оффлайн-отборами.")
+@Tag(name = "Оффлайн-отбор: Admin.", description = "API администратора для работы с оффлайн-отборами.")
 public class OfflineSelectionAdminController {
 
     private final OfflineSelectionService offlineSelectionService;
@@ -49,8 +49,8 @@ public class OfflineSelectionAdminController {
     @Operation(summary = "Добавление оффлайн-отбора.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Оффлайн-отбор добавлен.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = OfflineSelectionDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = OfflineSelectionDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Гранд-соревнование не найдено", content = @Content),
@@ -83,8 +83,8 @@ public class OfflineSelectionAdminController {
     @Operation(summary = "Обновление оффлайн-отбора.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Оффлайн-отбор обновлен.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = OfflineSelectionDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = OfflineSelectionDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Оффлайн-отбор не найден", content = @Content),

@@ -13,7 +13,6 @@ import com.kardoaward.kardo.spectator_request.selection_spectator_request.dto.Se
 import com.kardoaward.kardo.spectator_request.selection_spectator_request.repository.SelectionSpectatorRequestRepository;
 import com.kardoaward.kardo.spectator_request.selection_spectator_request.service.helper.SelectionSpectatorRequestValidationHelper;
 import com.kardoaward.kardo.user.model.User;
-import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +33,6 @@ public class SelectionSpectatorRequestServiceImpl implements SelectionSpectatorR
 
     private final SelectionSpectatorRequestMapper mapper;
 
-    private final UserValidationHelper userValidationHelper;
     private final OfflineSelectionValidationHelper offlineSelectionValidationHelper;
     private final SelectionSpectatorRequestValidationHelper helper;
 

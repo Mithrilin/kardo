@@ -39,7 +39,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/comments")
 @Validated
-@Tag(name="Комментарии.", description="Публичный API для работы с комментариями.")
+@Tag(name = "Комментарии.", description = "Публичный API для работы с комментариями.")
 public class CommentController {
 
     private final CommentService commentService;
@@ -49,8 +49,8 @@ public class CommentController {
     @Operation(summary = "Добавление нового комментария к видео-клипу.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Комментарий добавлен.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CommentDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CommentDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Видео-клип не найден", content = @Content),
@@ -90,8 +90,8 @@ public class CommentController {
     @Operation(summary = "Получение комментария к видео-клипу по ИД.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Комментарий найден.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CommentDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CommentDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Комментарий не найден", content = @Content),
@@ -107,8 +107,8 @@ public class CommentController {
     @Operation(summary = "Обновление пользователем своего комментария к видео-клипу по ИД.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Комментарий обновлён.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CommentDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CommentDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Комментарий не найден", content = @Content),
