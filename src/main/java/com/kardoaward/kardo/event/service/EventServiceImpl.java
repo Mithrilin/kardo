@@ -16,7 +16,6 @@ import com.kardoaward.kardo.grand_competition.service.helper.GrandCompetitionVal
 import com.kardoaward.kardo.media_file.FileManager;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,8 +23,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -105,15 +102,9 @@ public class EventServiceImpl implements EventService {
     @Transactional
     public void deleteEventById(Long eventId) {
         eventValidationHelper.isEventPresent(eventId);
-        File eventPath = new File(FOLDER_PATH + "/events/" + eventId);
-
-        try {
-            FileUtils.deleteDirectory(eventPath);
-        } catch (IOException e) {
-            throw new FileContentException("Не удалось удалить директорию: " + eventPath.getPath());
-        }
-
+        String path = FOLDER_PATH + "/events/" + eventId;
         eventRepository.deleteById(eventId);
+        fileManager.deleteFileOrDirectory(path);
         log.info("Мероприятие с ID {} удалено.", eventId);
     }
 
