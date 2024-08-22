@@ -22,4 +22,14 @@ public class FileManager {
     }
 
 
+
+    private void deleteFileOrDirectory(String path) {
+        try {
+            FileUtils.forceDelete(new File(path));
+        } catch (IOException e) {
+            log.error("Не удалось удалить файл/директорию: " + path);
+            throw new FileContentException("Не удалось удалить файл/директорию: " + path);
+        }
+        log.info("Удалён файл/директория: " + path);
+    }
 }
