@@ -22,6 +22,16 @@ public class FileManager {
     }
 
 
+    private void createDirectory(String path) {
+        File logoDirectory = new File(path);
+        boolean hasDirectoryCreated = logoDirectory.mkdirs();
+
+        if (!hasDirectoryCreated) {
+            log.error("Не удалось создать директорию: " + path);
+            throw new FileContentException("Не удалось создать директорию: " + path);
+        }
+        log.info("Создана директория: " + path);
+    }
 
     private void deleteFileOrDirectory(String path) {
         try {
