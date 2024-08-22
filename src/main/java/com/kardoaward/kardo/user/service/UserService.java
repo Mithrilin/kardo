@@ -23,5 +23,5 @@ public interface UserService {
 
     List<UserShortDto> getContestantsByOfflineSelectionId(Long selectionId, int from, int size);
 
-    UserDto addUserAvatar(User requestor, MultipartFile file);
+    UserDto addAvatarToUser(User requestor, MultipartFile file);
 }

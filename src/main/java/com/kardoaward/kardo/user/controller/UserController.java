@@ -132,12 +132,12 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content)})
     @PatchMapping("/avatar")
     @Secured({"ADMIN", "USER"})
-    public UserDto addUserAvatar(@Parameter(description = "MultipartFile файл с аватаркой пользователя")
-                                     @RequestParam("image") MultipartFile file) {
+    public UserDto addAvatarToUser(@Parameter(description = "MultipartFile файл с аватаркой пользователя")
+                                   @RequestParam("image") MultipartFile file) {
         UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
                 .getPrincipal();
         User requestor = userDetails.getUser();
-        log.info("Обновление пользователем с ИД {} своей аватарки.", requestor.getId());
-        return userService.addUserAvatar(requestor, file);
+        log.info("Обновление/добавление пользователем с ИД {} своей аватарки.", requestor.getId());
+        return userService.addAvatarToUser(requestor, file);
     }
 }

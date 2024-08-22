@@ -8,7 +8,6 @@ import com.kardoaward.kardo.comment.dto.UpdateCommentRequest;
 import com.kardoaward.kardo.comment.repository.CommentRepository;
 import com.kardoaward.kardo.comment.service.helper.CommentValidationHelper;
 import com.kardoaward.kardo.user.model.User;
-import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import com.kardoaward.kardo.video_clip.model.VideoClip;
 import com.kardoaward.kardo.video_clip.service.helper.VideoClipValidationHelper;
 import jakarta.transaction.Transactional;
@@ -31,7 +30,6 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentMapper commentMapper;
 
-    private final UserValidationHelper userValidationHelper;
     private final VideoClipValidationHelper videoClipValidationHelper;
     private final CommentValidationHelper commentValidationHelper;
 
