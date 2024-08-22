@@ -102,8 +102,8 @@ public class EventServiceImpl implements EventService {
     @Transactional
     public void deleteEventById(Long eventId) {
         eventValidationHelper.isEventPresent(eventId);
-        String path = FOLDER_PATH + "/events/" + eventId;
         eventRepository.deleteById(eventId);
+        String path = FOLDER_PATH + "/events/" + eventId;
         fileManager.deleteFileOrDirectory(path);
         log.info("Мероприятие с ID {} удалено.", eventId);
     }

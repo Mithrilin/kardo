@@ -13,7 +13,6 @@ import com.kardoaward.kardo.user.repository.UserRepository;
 import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,8 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -82,15 +79,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void deleteUser(Long userId) {
-        File userPath = new File(FOLDER_PATH + "/users/" + userId);
-
-        try {
-            FileUtils.deleteDirectory(userPath);
-        } catch (IOException e) {
-            throw new FileContentException("Не удалось удалить директорию: " + userPath.getPath());
-        }
-
         userRepository.deleteById(userId);
+        String path = FOLDER_PATH + "/users/" + userId;
+        fileManager.deleteFileOrDirectory(path);
         log.info("Пользователь с ID {} удалён.", userId);
     }
 
