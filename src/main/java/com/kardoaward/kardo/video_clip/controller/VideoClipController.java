@@ -9,6 +9,7 @@ import com.kardoaward.kardo.video_clip.dto.VideoClipDto;
 import com.kardoaward.kardo.video_clip.service.VideoClipService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -65,9 +66,6 @@ public class VideoClipController {
                 .getPrincipal();
         User requestor = userDetails.getUser();
         log.info("Добавление пользователем с ИД {} нового видео-клипа.", requestor.getId());
-        /* ToDo
-            Разобраться как принимать составные запросы.
-         */
         NewVideoClipRequest request = new Gson().fromJson(json, NewVideoClipRequest.class);
         return videoClipService.addVideoClip(requestor, request, file);
     }
@@ -131,6 +129,9 @@ public class VideoClipController {
 
     @Operation(summary = "Получение списка видео-клипов по хештегу.")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Список видео-клипов получен", content = {
+                    @Content(mediaType = "application/json", array =
+                    @ArraySchema(schema = @Schema(implementation = VideoClipDto.class)))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Видео-клип не найден", content = @Content),

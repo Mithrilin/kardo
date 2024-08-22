@@ -4,6 +4,7 @@ import com.kardoaward.kardo.video_contest.dto.VideoContestDto;
 import com.kardoaward.kardo.video_contest.service.VideoContestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -53,6 +54,9 @@ public class VideoContestController {
 
     @Operation(summary = "Получение списка видео-соревнований.")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Список видео-соревнований получен", content = {
+                    @Content(mediaType = "application/json", array =
+                    @ArraySchema(schema = @Schema(implementation = VideoContestDto.class)))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Пользователь не найден", content = @Content),

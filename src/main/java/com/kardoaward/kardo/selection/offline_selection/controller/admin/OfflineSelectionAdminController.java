@@ -9,6 +9,7 @@ import com.kardoaward.kardo.user.dto.UserShortDto;
 import com.kardoaward.kardo.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -101,6 +102,9 @@ public class OfflineSelectionAdminController {
 
     @Operation(summary = "Получение списка участников оффлайн-отбора.")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Список участников оффлайн-отбора получен", content = {
+                    @Content(mediaType = "application/json", array =
+                    @ArraySchema(schema = @Schema(implementation = UserShortDto.class)))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Оффлайн-отбор не найден", content = @Content),

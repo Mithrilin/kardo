@@ -9,6 +9,7 @@ import com.kardoaward.kardo.security.UserDetailsImpl;
 import com.kardoaward.kardo.user.model.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -128,6 +129,9 @@ public class CommentController {
 
     @Operation(summary = "Получение списка комментариев к видео-клипу.")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Список комментариев пользователя получен", content = {
+                    @Content(mediaType = "application/json", array =
+                    @ArraySchema(schema = @Schema(implementation = CommentDto.class)))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Видео-клип не найден", content = @Content),

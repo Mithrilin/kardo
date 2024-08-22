@@ -5,6 +5,7 @@ import com.kardoaward.kardo.selection.offline_selection.dto.OfflineSelectionDto;
 import com.kardoaward.kardo.selection.offline_selection.service.OfflineSelectionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -55,6 +56,9 @@ public class OfflineSelectionController {
 
     @Operation(summary = "Получение списка оффлайн-отборов.")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Список оффлайн-отборов получен", content = {
+                    @Content(mediaType = "application/json", array =
+                    @ArraySchema(schema = @Schema(implementation = OfflineSelectionDto.class)))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Оффлайн-отбор не найден", content = @Content),
@@ -72,6 +76,9 @@ public class OfflineSelectionController {
 
     @Operation(summary = "Получение списка оффлайн-отборов с участием текущего пользователя.")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Список оффлайн-отборов получен", content = {
+                    @Content(mediaType = "application/json", array =
+                    @ArraySchema(schema = @Schema(implementation = OfflineSelectionDto.class)))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Пользователь не найден", content = @Content),
@@ -93,6 +100,9 @@ public class OfflineSelectionController {
 
     @Operation(summary = "Получение списка оффлайн-отборов к Гранд-соревнованию.")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Список оффлайн-отборов получен", content = {
+                    @Content(mediaType = "application/json", array =
+                    @ArraySchema(schema = @Schema(implementation = OfflineSelectionDto.class)))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Гранд-соревнование не найдено", content = @Content),

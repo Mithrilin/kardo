@@ -4,6 +4,7 @@ import com.kardoaward.kardo.grand_competition.dto.GrandCompetitionDto;
 import com.kardoaward.kardo.grand_competition.service.GrandCompetitionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -53,6 +54,9 @@ public class GrandCompetitionController {
 
     @Operation(summary = "Получение списка Гранд-соревнований.")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Список Гранд-соревнований получен", content = {
+                    @Content(mediaType = "application/json", array =
+                    @ArraySchema(schema = @Schema(implementation = GrandCompetitionDto.class)))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Гранд-соревнование не найдено", content = @Content),
