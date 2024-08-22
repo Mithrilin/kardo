@@ -34,7 +34,6 @@ public class UpdateUserRequest {
     private String region;
     @Size(min = 2, max = 250, message = "Длина city должна быть в диапазоне от 2 до 250 символов.")
     private String city;
-    //ToDo Добавить валидацию телефонного номера
     @Size(min = 2, max = 250, message = "Длина phoneNumber должна быть в диапазоне от 2 до 250 символов.")
     private String phoneNumber;
     private Gender gender;
@@ -44,6 +43,5 @@ public class UpdateUserRequest {
     private String portfolio;
     @Size(min = 2, max = 1000, message = "Длина aboutMe должна быть в диапазоне от 2 до 1000 символов.")
     private String aboutMe;
-    //ToDo Добавить валидацию списка ссылок
     private Set<String> network;
 }

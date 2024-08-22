@@ -1,6 +1,7 @@
 package com.kardoaward.kardo.video_clip.service;
 
 import com.kardoaward.kardo.exception.FileContentException;
+import com.kardoaward.kardo.media_file.FileManager;
 import com.kardoaward.kardo.user.model.User;
 import com.kardoaward.kardo.video_clip.mapper.LikeMapper;
 import com.kardoaward.kardo.video_clip.mapper.VideoClipMapper;
@@ -39,6 +40,8 @@ public class VideoClipServiceImpl implements VideoClipService {
 
     private final VideoClipValidationHelper videoClipValidationHelper;
 
+    private final FileManager fileManager;
+
     private final String FOLDER_PATH;
 
     public VideoClipServiceImpl(VideoClipRepository videoClipRepository,
@@ -46,32 +49,26 @@ public class VideoClipServiceImpl implements VideoClipService {
                                 VideoClipMapper videoClipMapper,
                                 LikeMapper likeMapper,
                                 VideoClipValidationHelper videoClipValidationHelper,
+                                FileManager fileManager,
                                 @Value("${folder.path}") String FOLDER_PATH) {
         this.videoClipRepository = videoClipRepository;
         this.likeRepository = likeRepository;
         this.videoClipMapper = videoClipMapper;
         this.likeMapper = likeMapper;
         this.videoClipValidationHelper = videoClipValidationHelper;
+        this.fileManager = fileManager;
         this.FOLDER_PATH = FOLDER_PATH;
     }
 
     @Override
     @Transactional
-    public VideoClipDto addVideoClip(User requestor, NewVideoClipRequest request, MultipartFile file) {
-        String path = FOLDER_PATH + "/users/" + requestor.getId() + "/videos/";
-        File videoPath = new File(path);
-        videoPath.mkdirs();
+    public VideoClipDto addVideoClip(User user, NewVideoClipRequest request, MultipartFile file) {
+        String path = FOLDER_PATH + "/users/" + user.getId() + "/videos/";
         String newVideoPath = path + file.getOriginalFilename();
-
-        try {
-            file.transferTo(new File(newVideoPath));
-        } catch (IOException e) {
-            throw new FileContentException("Не удалось сохранить файл: " + newVideoPath);
-        }
-
-        VideoClip videoClip = videoClipMapper.newVideoClipRequestToVideoClip(request, requestor, newVideoPath);
+        VideoClip videoClip = videoClipMapper.newVideoClipRequestToVideoClip(request, user, newVideoPath);
         VideoClip returnedVideoClip = videoClipRepository.save(videoClip);
         VideoClipDto videoClipDto = videoClipMapper.videoClipToVideoClipDto(returnedVideoClip);
+        fileManager.addVideoClip(path, file);
         log.info("Видео-клип с ID = {} создан.", videoClipDto.getId());
         return videoClipDto;
     }
