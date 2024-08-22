@@ -49,6 +49,17 @@ public class FileManager {
         uploadFile(file, filePath);
     }
 
+    public void addVideoClip(String path, MultipartFile file) {
+        File videoDirectory = new File(path);
+
+        if (!videoDirectory.exists()) {
+            createDirectory(path);
+        }
+
+        String filePath = path + file.getOriginalFilename();
+        uploadFile(file, filePath);
+    }
+
     private void uploadFile(MultipartFile file, String path) {
         try {
             file.transferTo(new File(path));
