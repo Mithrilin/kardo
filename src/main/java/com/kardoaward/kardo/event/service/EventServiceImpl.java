@@ -86,6 +86,23 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Transactional
+    public void deleteLogoFromEvent(Long eventId) {
+        Event event = eventValidationHelper.isEventPresent(eventId);
+
+        if (event.getLogo() == null) {
+            log.error("У мероприятия с ИД {} отсутствует логотип.", event.getId());
+            throw new FileContentException(String.format("У мероприятия с ИД %d отсутствует логотип.", event.getId()));
+        }
+
+        event.setLogo(null);
+        eventRepository.save(event);
+        String path = FOLDER_PATH + "/events/" + event.getId() + "/logo/";
+        fileManager.deleteFileOrDirectory(path);
+        log.info("Логотип мероприятия с ID {} удалён.", event.getId());
+    }
+
+    @Override
+    @Transactional
     public void deleteEventById(Long eventId) {
         eventValidationHelper.isEventPresent(eventId);
         File eventPath = new File(FOLDER_PATH + "/events/" + eventId);

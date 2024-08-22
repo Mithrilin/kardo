@@ -78,6 +78,21 @@ public class EventAdminController {
         return eventService.addLogoToEvent(eventId, file);
     }
 
+    @Operation(summary = "Удаление администратором логотипа к мероприятию.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Логотип к мероприятию удалён.", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Мероприятие не найдено", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content)})
+    @DeleteMapping("/{eventId}/logo")
+    @Secured("ADMIN")
+    public void deleteLogoFromEvent(@Parameter(description = "id мероприятия")
+                                    @PathVariable @Positive Long eventId) {
+        log.info("Удаление администратором логотипа к мероприятию с ИД {}.", eventId);
+        eventService.deleteLogoFromEvent(eventId);
+    }
+
     @Operation(summary = "Удаление администратором мероприятия по ИД.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Мероприятие удалено.", content = @Content),

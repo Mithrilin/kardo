@@ -152,7 +152,7 @@ public class UserServiceImpl implements UserService {
         user.setAvatarPhoto(null);
         userRepository.save(user);
         String path = FOLDER_PATH + "/users/" + user.getId() + "/avatar/";
-        fileManager.deleteAvatarFromUser(path);
+        fileManager.deleteFileOrDirectory(path);
         log.info("Аватарка пользователя с ID {} удалена.", user.getId());
     }
 

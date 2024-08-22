@@ -27,8 +27,14 @@ public class FileManager {
         uploadFile(file, filePath);
     }
 
-    public void deleteAvatarFromUser(String path) {
-        deleteFileOrDirectory(path);
+    public void deleteFileOrDirectory(String path) {
+        try {
+            FileUtils.forceDelete(new File(path));
+        } catch (IOException e) {
+            log.error("Не удалось удалить файл/директорию: " + path);
+            throw new FileContentException("Не удалось удалить файл/директорию: " + path);
+        }
+        log.info("Удалён файл/директория: " + path);
     }
 
     public void addLogoToEvent(String oldLogoPath, MultipartFile file, String path) {
@@ -62,15 +68,5 @@ public class FileManager {
             throw new FileContentException("Не удалось создать директорию: " + path);
         }
         log.info("Создана директория: " + path);
-    }
-
-    private void deleteFileOrDirectory(String path) {
-        try {
-            FileUtils.forceDelete(new File(path));
-        } catch (IOException e) {
-            log.error("Не удалось удалить файл/директорию: " + path);
-            throw new FileContentException("Не удалось удалить файл/директорию: " + path);
-        }
-        log.info("Удалён файл/директория: " + path);
     }
 }
