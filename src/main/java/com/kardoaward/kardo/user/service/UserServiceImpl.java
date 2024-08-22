@@ -140,6 +140,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
+    public void deleteAvatarFromUser(User user) {
+        String path = FOLDER_PATH + "/users/" + user.getId() + "/avatar/";
+
+        if (user.getAvatarPhoto() == null) {
+            log.error("У пользователя с ИД {} отсутствует аватар.", user.getId());
+            throw new FileContentException(String.format("У пользователя с ИД %d отсутствует аватар.", user.getId()));
+        }
+
+        user.setAvatarPhoto(null);
+        userRepository.save(user);
+        fileManager.deleteAvatarFromUser(path);
+        log.info("Аватарка пользователя с ID {} удалена.", user.getId());
+    }
+
+    @Override
     public List<UserShortDto> getContestantsByOfflineSelectionId(Long selectionId, int from, int size) {
         offlineSelectionValidationHelper.isOfflineSelectionPresent(selectionId);
         int page = from / size;

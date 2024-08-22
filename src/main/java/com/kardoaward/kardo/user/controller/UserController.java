@@ -140,4 +140,21 @@ public class UserController {
         log.info("Обновление/добавление пользователем с ИД {} своей аватарки.", requestor.getId());
         return userService.addAvatarToUser(requestor, file);
     }
+
+    @Operation(summary = "Удаление аватарки пользователя.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Аватарка удалена.", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Пользователь не найден", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content)})
+    @DeleteMapping("/avatar")
+    @Secured({"ADMIN", "USER"})
+    public void deleteAvatarFromUser() {
+        UserDetailsImpl userDetails = (UserDetailsImpl) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        User requestor = userDetails.getUser();
+        log.info("Удаление пользователем с ИД {} своей аватарки.", requestor.getId());
+        userService.deleteAvatarFromUser(requestor);
+    }
 }

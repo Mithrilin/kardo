@@ -2,9 +2,9 @@ package com.kardoaward.kardo.media_file;
 
 import com.kardoaward.kardo.exception.FileContentException;
 import com.kardoaward.kardo.user.model.User;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,13 +13,8 @@ import java.io.IOException;
 
 @Slf4j
 @Service
+@NoArgsConstructor
 public class FileManager {
-
-    private final String FOLDER_PATH;
-
-    public FileManager(@Value("${folder.path}") String folderPath) {
-        FOLDER_PATH = folderPath;
-    }
 
     public void addAvatarToUser(User user, MultipartFile file, String path) {
 
@@ -31,6 +26,10 @@ public class FileManager {
 
         String filePath = path + file.getOriginalFilename();
         uploadFile(file, filePath);
+    }
+
+    public void deleteAvatarFromUser(String path) {
+        deleteFileOrDirectory(path);
     }
 
     private void uploadFile(MultipartFile file, String path) {
