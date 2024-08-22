@@ -1,11 +1,11 @@
 package com.kardoaward.kardo.selection.offline_selection.controller.admin;
 
-import com.kardoaward.kardo.selection.offline_selection.model.dto.NewOfflineSelectionRequest;
-import com.kardoaward.kardo.selection.offline_selection.model.dto.OfflineSelectionDto;
-import com.kardoaward.kardo.selection.offline_selection.model.dto.UpdateOfflineSelectionRequest;
+import com.kardoaward.kardo.selection.offline_selection.dto.NewOfflineSelectionRequest;
+import com.kardoaward.kardo.selection.offline_selection.dto.OfflineSelectionDto;
+import com.kardoaward.kardo.selection.offline_selection.dto.UpdateOfflineSelectionRequest;
 import com.kardoaward.kardo.selection.offline_selection.service.OfflineSelectionService;
 import com.kardoaward.kardo.selection.offline_selection.service.helper.OfflineSelectionValidationHelper;
-import com.kardoaward.kardo.user.model.dto.UserShortDto;
+import com.kardoaward.kardo.user.dto.UserShortDto;
 import com.kardoaward.kardo.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

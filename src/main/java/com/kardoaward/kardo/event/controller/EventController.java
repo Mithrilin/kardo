@@ -1,9 +1,9 @@
 package com.kardoaward.kardo.event.controller;
 
 import com.kardoaward.kardo.enums.Field;
-import com.kardoaward.kardo.event.model.dto.EventDto;
-import com.kardoaward.kardo.event.model.dto.EventShortDto;
-import com.kardoaward.kardo.event.model.enums.EventProgram;
+import com.kardoaward.kardo.event.dto.EventDto;
+import com.kardoaward.kardo.event.dto.EventShortDto;
+import com.kardoaward.kardo.event.enums.EventProgram;
 import com.kardoaward.kardo.event.model.params.EventRequestParams;
 import com.kardoaward.kardo.event.service.EventService;
 import io.swagger.v3.oas.annotations.Operation;

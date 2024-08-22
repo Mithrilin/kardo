@@ -1,9 +1,9 @@
 package com.kardoaward.kardo.participation_request.mapper;
 
 import com.kardoaward.kardo.participation_request.model.ParticipationRequest;
-import com.kardoaward.kardo.participation_request.model.dto.NewParticipationRequest;
-import com.kardoaward.kardo.participation_request.model.dto.ParticipationRequestDto;
-import com.kardoaward.kardo.participation_request.model.dto.update.UpdateParticipationRequest;
+import com.kardoaward.kardo.participation_request.dto.NewParticipationRequest;
+import com.kardoaward.kardo.participation_request.dto.ParticipationRequestDto;
+import com.kardoaward.kardo.participation_request.dto.update.UpdateParticipationRequest;
 import com.kardoaward.kardo.selection.offline_selection.mapper.OfflineSelectionMapper;
 import com.kardoaward.kardo.selection.offline_selection.model.OfflineSelection;
 import com.kardoaward.kardo.user.mapper.UserMapper;

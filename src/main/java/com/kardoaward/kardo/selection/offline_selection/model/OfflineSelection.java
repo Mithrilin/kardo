@@ -2,7 +2,7 @@ package com.kardoaward.kardo.selection.offline_selection.model;
 
 import com.kardoaward.kardo.enums.Field;
 import com.kardoaward.kardo.selection.model.Selection;
-import com.kardoaward.kardo.selection.offline_selection.model.enums.SelectionType;
+import com.kardoaward.kardo.selection.offline_selection.enums.SelectionType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;

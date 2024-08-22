@@ -1,7 +1,7 @@
 package com.kardoaward.kardo.selection.offline_selection.controller;
 
 import com.kardoaward.kardo.security.UserDetailsImpl;
-import com.kardoaward.kardo.selection.offline_selection.model.dto.OfflineSelectionDto;
+import com.kardoaward.kardo.selection.offline_selection.dto.OfflineSelectionDto;
 import com.kardoaward.kardo.selection.offline_selection.service.OfflineSelectionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

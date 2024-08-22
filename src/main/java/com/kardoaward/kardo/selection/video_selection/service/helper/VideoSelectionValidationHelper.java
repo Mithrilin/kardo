@@ -2,9 +2,9 @@ package com.kardoaward.kardo.selection.video_selection.service.helper;
 
 import com.kardoaward.kardo.exception.BadRequestException;
 import com.kardoaward.kardo.exception.NotFoundException;
-import com.kardoaward.kardo.selection.model.dto.UpdateSelectionRequest;
+import com.kardoaward.kardo.selection.dto.UpdateSelectionRequest;
 import com.kardoaward.kardo.selection.video_selection.model.VideoSelection;
-import com.kardoaward.kardo.selection.video_selection.model.dto.NewVideoSelectionRequest;
+import com.kardoaward.kardo.selection.video_selection.dto.NewVideoSelectionRequest;
 import com.kardoaward.kardo.selection.video_selection.repository.VideoSelectionRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

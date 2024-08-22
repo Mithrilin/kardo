@@ -1,10 +1,10 @@
 package com.kardoaward.kardo.participation_request.service;
 
-import com.kardoaward.kardo.participation_request.model.dto.NewParticipationRequest;
-import com.kardoaward.kardo.participation_request.model.dto.ParticipationRequestDto;
-import com.kardoaward.kardo.participation_request.model.dto.update.ParticipationRequestStatusUpdateRequest;
-import com.kardoaward.kardo.participation_request.model.dto.update.ParticipationRequestStatusUpdateResult;
-import com.kardoaward.kardo.participation_request.model.dto.update.UpdateParticipationRequest;
+import com.kardoaward.kardo.participation_request.dto.NewParticipationRequest;
+import com.kardoaward.kardo.participation_request.dto.ParticipationRequestDto;
+import com.kardoaward.kardo.participation_request.dto.update.ParticipationRequestStatusUpdateRequest;
+import com.kardoaward.kardo.participation_request.dto.update.ParticipationRequestStatusUpdateResult;
+import com.kardoaward.kardo.participation_request.dto.update.UpdateParticipationRequest;
 import com.kardoaward.kardo.user.model.User;
 
 import java.util.List;

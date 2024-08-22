@@ -1,6 +1,6 @@
 package com.kardoaward.kardo.selection.video_selection.controller;
 
-import com.kardoaward.kardo.selection.video_selection.model.dto.VideoSelectionDto;
+import com.kardoaward.kardo.selection.video_selection.dto.VideoSelectionDto;
 import com.kardoaward.kardo.selection.video_selection.service.VideoSelectionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

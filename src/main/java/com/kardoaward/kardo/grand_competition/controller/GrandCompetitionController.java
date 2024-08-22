@@ -1,6 +1,6 @@
 package com.kardoaward.kardo.grand_competition.controller;
 
-import com.kardoaward.kardo.grand_competition.model.dto.GrandCompetitionDto;
+import com.kardoaward.kardo.grand_competition.dto.GrandCompetitionDto;
 import com.kardoaward.kardo.grand_competition.service.GrandCompetitionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

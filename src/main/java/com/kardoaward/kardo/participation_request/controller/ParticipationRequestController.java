@@ -1,9 +1,9 @@
 package com.kardoaward.kardo.participation_request.controller;
 
 import com.kardoaward.kardo.security.UserDetailsImpl;
-import com.kardoaward.kardo.participation_request.model.dto.NewParticipationRequest;
-import com.kardoaward.kardo.participation_request.model.dto.ParticipationRequestDto;
-import com.kardoaward.kardo.participation_request.model.dto.update.UpdateParticipationRequest;
+import com.kardoaward.kardo.participation_request.dto.NewParticipationRequest;
+import com.kardoaward.kardo.participation_request.dto.ParticipationRequestDto;
+import com.kardoaward.kardo.participation_request.dto.update.UpdateParticipationRequest;
 import com.kardoaward.kardo.participation_request.service.ParticipationRequestService;
 import com.kardoaward.kardo.participation_request.service.helper.ParticipationRequestValidationHelper;
 import com.kardoaward.kardo.user.model.User;

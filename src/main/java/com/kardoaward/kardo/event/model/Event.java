@@ -2,7 +2,7 @@ package com.kardoaward.kardo.event.model;
 
 import com.kardoaward.kardo.enums.Field;
 import com.kardoaward.kardo.enums.Status;
-import com.kardoaward.kardo.event.model.enums.EventProgram;
+import com.kardoaward.kardo.event.enums.EventProgram;
 import com.kardoaward.kardo.grand_competition.model.GrandCompetition;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;

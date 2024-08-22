@@ -5,7 +5,7 @@ import com.kardoaward.kardo.exception.NotValidException;
 import com.kardoaward.kardo.spectator_request.selection_spectator_request.model.SelectionSpectatorRequest;
 import com.kardoaward.kardo.spectator_request.selection_spectator_request.repository.SelectionSpectatorRequestRepository;
 import com.kardoaward.kardo.user.model.User;
-import com.kardoaward.kardo.user.model.enums.Role;
+import com.kardoaward.kardo.user.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

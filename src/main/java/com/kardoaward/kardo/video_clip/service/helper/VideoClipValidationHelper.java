@@ -3,7 +3,7 @@ package com.kardoaward.kardo.video_clip.service.helper;
 import com.kardoaward.kardo.exception.BadRequestException;
 import com.kardoaward.kardo.exception.NotFoundException;
 import com.kardoaward.kardo.user.model.User;
-import com.kardoaward.kardo.user.model.enums.Role;
+import com.kardoaward.kardo.user.enums.Role;
 import com.kardoaward.kardo.video_clip.model.VideoClip;
 import com.kardoaward.kardo.video_clip.model.like.Like;
 import com.kardoaward.kardo.video_clip.repository.LikeRepository;

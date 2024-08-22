@@ -2,9 +2,9 @@ package com.kardoaward.kardo.video_contest.service;
 
 import com.kardoaward.kardo.video_contest.mapper.VideoContestMapper;
 import com.kardoaward.kardo.video_contest.model.VideoContest;
-import com.kardoaward.kardo.video_contest.model.dto.NewVideoContestRequest;
-import com.kardoaward.kardo.video_contest.model.dto.VideoContestDto;
-import com.kardoaward.kardo.video_contest.model.dto.UpdateVideoContestRequest;
+import com.kardoaward.kardo.video_contest.dto.NewVideoContestRequest;
+import com.kardoaward.kardo.video_contest.dto.VideoContestDto;
+import com.kardoaward.kardo.video_contest.dto.UpdateVideoContestRequest;
 import com.kardoaward.kardo.video_contest.repository.VideoContestRepository;
 import com.kardoaward.kardo.video_contest.service.helper.VideoContestValidationHelper;
 import jakarta.transaction.Transactional;

@@ -5,7 +5,7 @@ import com.kardoaward.kardo.comment.repository.CommentRepository;
 import com.kardoaward.kardo.exception.NotFoundException;
 import com.kardoaward.kardo.exception.NotValidException;
 import com.kardoaward.kardo.user.model.User;
-import com.kardoaward.kardo.user.model.enums.Role;
+import com.kardoaward.kardo.user.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

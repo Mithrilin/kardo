@@ -1,9 +1,8 @@
 package com.kardoaward.kardo.participation_request.controller.admin;
 
-import com.kardoaward.kardo.event.model.dto.EventDto;
-import com.kardoaward.kardo.participation_request.model.dto.ParticipationRequestDto;
-import com.kardoaward.kardo.participation_request.model.dto.update.ParticipationRequestStatusUpdateRequest;
-import com.kardoaward.kardo.participation_request.model.dto.update.ParticipationRequestStatusUpdateResult;
+import com.kardoaward.kardo.participation_request.dto.ParticipationRequestDto;
+import com.kardoaward.kardo.participation_request.dto.update.ParticipationRequestStatusUpdateRequest;
+import com.kardoaward.kardo.participation_request.dto.update.ParticipationRequestStatusUpdateResult;
 import com.kardoaward.kardo.participation_request.service.ParticipationRequestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

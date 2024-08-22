@@ -1,8 +1,8 @@
 package com.kardoaward.kardo.comment.controller;
 
-import com.kardoaward.kardo.comment.model.dto.CommentDto;
-import com.kardoaward.kardo.comment.model.dto.NewCommentRequest;
-import com.kardoaward.kardo.comment.model.dto.UpdateCommentRequest;
+import com.kardoaward.kardo.comment.dto.CommentDto;
+import com.kardoaward.kardo.comment.dto.NewCommentRequest;
+import com.kardoaward.kardo.comment.dto.UpdateCommentRequest;
 import com.kardoaward.kardo.comment.service.CommentService;
 import com.kardoaward.kardo.comment.service.helper.CommentValidationHelper;
 import com.kardoaward.kardo.security.UserDetailsImpl;

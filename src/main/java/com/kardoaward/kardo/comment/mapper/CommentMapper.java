@@ -1,9 +1,9 @@
 package com.kardoaward.kardo.comment.mapper;
 
 import com.kardoaward.kardo.comment.model.Comment;
-import com.kardoaward.kardo.comment.model.dto.CommentDto;
-import com.kardoaward.kardo.comment.model.dto.NewCommentRequest;
-import com.kardoaward.kardo.comment.model.dto.UpdateCommentRequest;
+import com.kardoaward.kardo.comment.dto.CommentDto;
+import com.kardoaward.kardo.comment.dto.NewCommentRequest;
+import com.kardoaward.kardo.comment.dto.UpdateCommentRequest;
 import com.kardoaward.kardo.user.mapper.UserMapper;
 import com.kardoaward.kardo.user.model.User;
 import com.kardoaward.kardo.video_clip.mapper.VideoClipMapper;

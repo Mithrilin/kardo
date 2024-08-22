@@ -1,0 +1,14 @@
+package com.kardoaward.kardo.event.enums;
+
+public enum EventProgram {
+
+    VIDEO_CONTEST,
+    GRANT_COMPETITION,
+    DIALOG_PROGRAM,
+    LEISURE_PROGRAM,
+    CULTURAL_PROGRAM,
+    STREET_CULTURE_AND_SPORTS,
+    ENTERTAINMENT_PROGRAM,
+    COMPETITIVE_PROGRAM,
+    EXCURSION_PROGRAM
+}

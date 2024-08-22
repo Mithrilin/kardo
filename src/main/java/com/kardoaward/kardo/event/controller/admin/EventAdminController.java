@@ -1,8 +1,8 @@
 package com.kardoaward.kardo.event.controller.admin;
 
-import com.kardoaward.kardo.event.model.dto.EventDto;
-import com.kardoaward.kardo.event.model.dto.NewEventRequest;
-import com.kardoaward.kardo.event.model.dto.UpdateEventRequest;
+import com.kardoaward.kardo.event.dto.EventDto;
+import com.kardoaward.kardo.event.dto.NewEventRequest;
+import com.kardoaward.kardo.event.dto.UpdateEventRequest;
 import com.kardoaward.kardo.event.service.EventService;
 import com.kardoaward.kardo.event.service.helper.EventValidationHelper;
 import io.swagger.v3.oas.annotations.Operation;
