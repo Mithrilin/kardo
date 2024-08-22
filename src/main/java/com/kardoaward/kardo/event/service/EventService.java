@@ -1,9 +1,9 @@
 package com.kardoaward.kardo.event.service;
 
-import com.kardoaward.kardo.event.model.dto.EventDto;
-import com.kardoaward.kardo.event.model.dto.EventShortDto;
-import com.kardoaward.kardo.event.model.dto.NewEventRequest;
-import com.kardoaward.kardo.event.model.dto.UpdateEventRequest;
+import com.kardoaward.kardo.event.dto.EventDto;
+import com.kardoaward.kardo.event.dto.EventShortDto;
+import com.kardoaward.kardo.event.dto.NewEventRequest;
+import com.kardoaward.kardo.event.dto.UpdateEventRequest;
 import com.kardoaward.kardo.event.model.params.EventRequestParams;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,5 +21,7 @@ public interface EventService {
 
     EventDto updateEventById(Long eventId, UpdateEventRequest request);
 
-    EventDto addEventLogo(Long eventId, MultipartFile file);
+    EventDto addLogoToEvent(Long eventId, MultipartFile file);
+
+    void deleteLogoFromEvent(Long eventId);
 }

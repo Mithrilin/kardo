@@ -1,8 +1,8 @@
 package com.kardoaward.kardo.video_contest.controller.admin;
 
-import com.kardoaward.kardo.video_contest.model.dto.NewVideoContestRequest;
-import com.kardoaward.kardo.video_contest.model.dto.VideoContestDto;
-import com.kardoaward.kardo.video_contest.model.dto.UpdateVideoContestRequest;
+import com.kardoaward.kardo.video_contest.dto.NewVideoContestRequest;
+import com.kardoaward.kardo.video_contest.dto.VideoContestDto;
+import com.kardoaward.kardo.video_contest.dto.UpdateVideoContestRequest;
 import com.kardoaward.kardo.video_contest.service.VideoContestService;
 import com.kardoaward.kardo.video_contest.service.helper.VideoContestValidationHelper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/admin/contests")
 @Validated
-@Tag(name="Видео-соревнование: Admin.", description="API администратора для работы с видео-соревнованиями.")
+@Tag(name = "Видео-соревнование: Admin.", description = "API администратора для работы с видео-соревнованиями.")
 public class VideoContestAdminController {
 
     private final VideoContestService service;
@@ -41,8 +41,8 @@ public class VideoContestAdminController {
     @Operation(summary = "Добавление видео-соревнования.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Видео-соревнование добавлено.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = VideoContestDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = VideoContestDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Пользователь не найден", content = @Content),
@@ -50,7 +50,7 @@ public class VideoContestAdminController {
     @PostMapping
     @Secured("ADMIN")
     public VideoContestDto createVideoContest(@Parameter(description = "Данные добавляемого видео-соревнования")
-                                                  @RequestBody @Valid NewVideoContestRequest newContest) {
+                                              @RequestBody @Valid NewVideoContestRequest newContest) {
         log.info("Добавление администратором нового видео-конкурса {}.", newContest);
         videoHelper.isNewVideoContestDateValid(newContest);
         return service.createVideoContest(newContest);
@@ -66,7 +66,7 @@ public class VideoContestAdminController {
     @DeleteMapping("/{contestId}")
     @Secured("ADMIN")
     public void deleteVideoContest(@Parameter(description = "id видео-соревнования")
-                                       @PathVariable @Positive Long contestId) {
+                                   @PathVariable @Positive Long contestId) {
         log.info("Удаление администратором видео-конкурса с ИД {}.", contestId);
         service.deleteVideoContest(contestId);
     }
@@ -74,8 +74,8 @@ public class VideoContestAdminController {
     @Operation(summary = "Обновление видео-соревнования.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Видео-соревнование обновлено.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = VideoContestDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = VideoContestDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Видео-соревнование не найдено", content = @Content),
@@ -83,9 +83,9 @@ public class VideoContestAdminController {
     @PatchMapping("/{contestId}")
     @Secured("ADMIN")
     public VideoContestDto updateVideoContest(@Parameter(description = "id видео-соревнования")
-                                                  @PathVariable @Positive Long contestId,
+                                              @PathVariable @Positive Long contestId,
                                               @Parameter(description = "Данные обновляемого видео-соревнования")
-                                                  @RequestBody @Valid UpdateVideoContestRequest request) {
+                                              @RequestBody @Valid UpdateVideoContestRequest request) {
         log.info("Обновление администратором видео-конкурса с ИД {}.", contestId);
         return service.updateVideoContest(contestId, request);
     }

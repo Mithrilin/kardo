@@ -1,8 +1,8 @@
 package com.kardoaward.kardo.event.controller.admin;
 
-import com.kardoaward.kardo.event.model.dto.EventDto;
-import com.kardoaward.kardo.event.model.dto.NewEventRequest;
-import com.kardoaward.kardo.event.model.dto.UpdateEventRequest;
+import com.kardoaward.kardo.event.dto.EventDto;
+import com.kardoaward.kardo.event.dto.NewEventRequest;
+import com.kardoaward.kardo.event.dto.UpdateEventRequest;
 import com.kardoaward.kardo.event.service.EventService;
 import com.kardoaward.kardo.event.service.helper.EventValidationHelper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,7 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/admin/events")
 @Validated
-@Tag(name="Мероприятия: Admin.", description="API администратора для работы с мероприятиями.")
+@Tag(name = "Мероприятия: Admin.", description = "API администратора для работы с мероприятиями.")
 public class EventAdminController {
 
     private final EventService eventService;
@@ -43,8 +43,8 @@ public class EventAdminController {
     @Operation(summary = "Добавление администратором нового мероприятия к Гранд-соревнованию.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Мероприятие добавлено.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = EventDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = EventDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Гранд-соревнование не найдено", content = @Content),
@@ -59,23 +59,38 @@ public class EventAdminController {
         return eventService.addEvent(newEventRequest);
     }
 
-    @Operation(summary = "Добавление администратором логотипа к мероприятию.")
+    @Operation(summary = "Обновление/добавление администратором логотипа к мероприятию.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Логотип к мероприятию добавлен.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = EventDto.class)) }),
+            @ApiResponse(responseCode = "200", description = "Логотип к мероприятию обновлён/добавлен.",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = EventDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Мероприятие не найдено", content = @Content),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content)})
     @PostMapping("/{eventId}/logo")
     @Secured("ADMIN")
-    public EventDto addEventLogo(@Parameter(description = "id мероприятия")
-                                 @PathVariable @Positive Long eventId,
-                                 @Parameter(description = "MultipartFile с логотипом")
-                                 @RequestParam("image") MultipartFile file) {
-        log.info("Добавление администратором логотипа к мероприятию с ИД {}.", eventId);
-        return eventService.addEventLogo(eventId, file);
+    public EventDto addLogoToEvent(@Parameter(description = "id мероприятия")
+                                   @PathVariable @Positive Long eventId,
+                                   @Parameter(description = "MultipartFile с логотипом")
+                                   @RequestParam("image") MultipartFile file) {
+        log.info("Обновление/добавление администратором логотипа к мероприятию с ИД {}.", eventId);
+        return eventService.addLogoToEvent(eventId, file);
+    }
+
+    @Operation(summary = "Удаление администратором логотипа к мероприятию.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Логотип к мероприятию удалён.", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Мероприятие не найдено", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера", content = @Content)})
+    @DeleteMapping("/{eventId}/logo")
+    @Secured("ADMIN")
+    public void deleteLogoFromEvent(@Parameter(description = "id мероприятия")
+                                    @PathVariable @Positive Long eventId) {
+        log.info("Удаление администратором логотипа к мероприятию с ИД {}.", eventId);
+        eventService.deleteLogoFromEvent(eventId);
     }
 
     @Operation(summary = "Удаление администратором мероприятия по ИД.")
@@ -96,8 +111,8 @@ public class EventAdminController {
     @Operation(summary = "Обновление администратором мероприятия по ИД.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Мероприятие обновлено.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = EventDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = EventDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Мероприятие не найдено", content = @Content),

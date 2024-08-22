@@ -1,9 +1,9 @@
 package com.kardoaward.kardo.participation_request.controller;
 
 import com.kardoaward.kardo.security.UserDetailsImpl;
-import com.kardoaward.kardo.participation_request.model.dto.NewParticipationRequest;
-import com.kardoaward.kardo.participation_request.model.dto.ParticipationRequestDto;
-import com.kardoaward.kardo.participation_request.model.dto.update.UpdateParticipationRequest;
+import com.kardoaward.kardo.participation_request.dto.NewParticipationRequest;
+import com.kardoaward.kardo.participation_request.dto.ParticipationRequestDto;
+import com.kardoaward.kardo.participation_request.dto.update.UpdateParticipationRequest;
 import com.kardoaward.kardo.participation_request.service.ParticipationRequestService;
 import com.kardoaward.kardo.participation_request.service.helper.ParticipationRequestValidationHelper;
 import com.kardoaward.kardo.user.model.User;
@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/participations")
 @Validated
-@Tag(name="Заявка на участие в отборе: Users.", description="API для работы с заявками на участие в отборе " +
+@Tag(name = "Заявка на участие в отборе: Users.", description = "API для работы с заявками на участие в отборе " +
         "для зарегистрированных пользователей.")
 public class ParticipationRequestController {
 
@@ -46,8 +46,8 @@ public class ParticipationRequestController {
     @Operation(summary = "Добавление заявки на участие в отборе.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Заявка добавлена.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ParticipationRequestDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ParticipationRequestDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Отбор не найден", content = @Content),
@@ -88,8 +88,8 @@ public class ParticipationRequestController {
     @Operation(summary = "Получение заявки на участие в отборе.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Заявка найдена.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ParticipationRequestDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ParticipationRequestDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Заявка не найдена", content = @Content),
@@ -108,8 +108,8 @@ public class ParticipationRequestController {
     @Operation(summary = "Обновление заявки на участие в отборе.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Заявка обновлена.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ParticipationRequestDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = ParticipationRequestDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Заявка не найдена", content = @Content),

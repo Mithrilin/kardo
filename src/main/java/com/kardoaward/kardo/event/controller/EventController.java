@@ -1,13 +1,14 @@
 package com.kardoaward.kardo.event.controller;
 
 import com.kardoaward.kardo.enums.Field;
-import com.kardoaward.kardo.event.model.dto.EventDto;
-import com.kardoaward.kardo.event.model.dto.EventShortDto;
-import com.kardoaward.kardo.event.model.enums.EventProgram;
+import com.kardoaward.kardo.event.dto.EventDto;
+import com.kardoaward.kardo.event.dto.EventShortDto;
+import com.kardoaward.kardo.event.enums.EventProgram;
 import com.kardoaward.kardo.event.model.params.EventRequestParams;
 import com.kardoaward.kardo.event.service.EventService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -33,7 +34,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/events")
 @Validated
-@Tag(name="Мероприятия: Users.", description="API для работы с мероприятиями для зарегистрированных пользователей.")
+@Tag(name = "Мероприятия: Users.", description = "API для работы с мероприятиями для зарегистрированных пользователей.")
 public class EventController {
 
     private final EventService eventService;
@@ -41,8 +42,8 @@ public class EventController {
     @Operation(summary = "Получение мероприятия к Гранд-соревнованию по ИД.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Мероприятие найдено.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = EventDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = EventDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Мероприятие не найдено", content = @Content),
@@ -57,6 +58,9 @@ public class EventController {
 
     @Operation(summary = "Получение списка мероприятия по заданным параметрам.")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Список мероприятий получен", content = {
+                    @Content(mediaType = "application/json", array =
+                    @ArraySchema(schema = @Schema(implementation = EventShortDto.class)))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Мероприятие не найдено", content = @Content),

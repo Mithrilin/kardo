@@ -1,10 +1,10 @@
 package com.kardoaward.kardo.user.mapper;
 
-import com.kardoaward.kardo.user.model.dto.NewUserRequest;
+import com.kardoaward.kardo.user.dto.NewUserRequest;
 import com.kardoaward.kardo.user.model.User;
-import com.kardoaward.kardo.user.model.dto.UpdateUserRequest;
-import com.kardoaward.kardo.user.model.dto.UserDto;
-import com.kardoaward.kardo.user.model.dto.UserShortDto;
+import com.kardoaward.kardo.user.dto.UpdateUserRequest;
+import com.kardoaward.kardo.user.dto.UserDto;
+import com.kardoaward.kardo.user.dto.UserShortDto;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

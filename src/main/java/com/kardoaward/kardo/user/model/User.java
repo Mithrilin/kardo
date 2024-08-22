@@ -1,7 +1,7 @@
 package com.kardoaward.kardo.user.model;
 
-import com.kardoaward.kardo.user.model.enums.Gender;
-import com.kardoaward.kardo.user.model.enums.Role;
+import com.kardoaward.kardo.user.enums.Gender;
+import com.kardoaward.kardo.user.enums.Role;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;

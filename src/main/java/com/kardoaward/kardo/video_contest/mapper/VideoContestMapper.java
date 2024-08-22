@@ -1,9 +1,9 @@
 package com.kardoaward.kardo.video_contest.mapper;
 
 import com.kardoaward.kardo.video_contest.model.VideoContest;
-import com.kardoaward.kardo.video_contest.model.dto.NewVideoContestRequest;
-import com.kardoaward.kardo.video_contest.model.dto.VideoContestDto;
-import com.kardoaward.kardo.video_contest.model.dto.UpdateVideoContestRequest;
+import com.kardoaward.kardo.video_contest.dto.NewVideoContestRequest;
+import com.kardoaward.kardo.video_contest.dto.VideoContestDto;
+import com.kardoaward.kardo.video_contest.dto.UpdateVideoContestRequest;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;

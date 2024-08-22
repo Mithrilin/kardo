@@ -1,11 +1,12 @@
 package com.kardoaward.kardo.spectator_request.selection_spectator_request.controller.admin;
 
-import com.kardoaward.kardo.spectator_request.model.dto.update.SpectatorRequestStatusUpdateRequest;
-import com.kardoaward.kardo.spectator_request.model.dto.update.SpectatorRequestStatusUpdateResult;
-import com.kardoaward.kardo.spectator_request.selection_spectator_request.model.dto.SelectionSpectatorRequestDto;
+import com.kardoaward.kardo.spectator_request.dto.update.SpectatorRequestStatusUpdateRequest;
+import com.kardoaward.kardo.spectator_request.dto.update.SpectatorRequestStatusUpdateResult;
+import com.kardoaward.kardo.spectator_request.selection_spectator_request.dto.SelectionSpectatorRequestDto;
 import com.kardoaward.kardo.spectator_request.selection_spectator_request.service.SelectionSpectatorRequestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -33,13 +34,17 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/spectators/selection")
 @Validated
-@Tag(name="Заявка зрителя на отбор: Admin.", description="API администратора для работы с заявками зрителей на отбор.")
+@Tag(name = "Заявка зрителя на отбор: Admin.", description = "API администратора для работы с " +
+        "заявками зрителей на отбор.")
 public class SelectionSpectatorRequestAdminController {
 
     private final SelectionSpectatorRequestService service;
 
     @Operation(summary = "Получение списка заявок зрителей по ИД отбора.")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Список заявок зрителей получен", content = {
+                    @Content(mediaType = "application/json", array =
+                    @ArraySchema(schema = @Schema(implementation = SelectionSpectatorRequestDto.class)))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Мероприятие не найдено", content = @Content),
@@ -61,8 +66,8 @@ public class SelectionSpectatorRequestAdminController {
     @Operation(summary = "Обновление администратором статуса заявок зрителей к отбору.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Заявки обновлены.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = SpectatorRequestStatusUpdateResult.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = SpectatorRequestStatusUpdateResult.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Пользователь не найден", content = @Content),

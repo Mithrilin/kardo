@@ -2,13 +2,12 @@ package com.kardoaward.kardo.comment.service;
 
 import com.kardoaward.kardo.comment.mapper.CommentMapper;
 import com.kardoaward.kardo.comment.model.Comment;
-import com.kardoaward.kardo.comment.model.dto.CommentDto;
-import com.kardoaward.kardo.comment.model.dto.NewCommentRequest;
-import com.kardoaward.kardo.comment.model.dto.UpdateCommentRequest;
+import com.kardoaward.kardo.comment.dto.CommentDto;
+import com.kardoaward.kardo.comment.dto.NewCommentRequest;
+import com.kardoaward.kardo.comment.dto.UpdateCommentRequest;
 import com.kardoaward.kardo.comment.repository.CommentRepository;
 import com.kardoaward.kardo.comment.service.helper.CommentValidationHelper;
 import com.kardoaward.kardo.user.model.User;
-import com.kardoaward.kardo.user.service.helper.UserValidationHelper;
 import com.kardoaward.kardo.video_clip.model.VideoClip;
 import com.kardoaward.kardo.video_clip.service.helper.VideoClipValidationHelper;
 import jakarta.transaction.Transactional;
@@ -31,7 +30,6 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentMapper commentMapper;
 
-    private final UserValidationHelper userValidationHelper;
     private final VideoClipValidationHelper videoClipValidationHelper;
     private final CommentValidationHelper commentValidationHelper;
 

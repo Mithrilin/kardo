@@ -1,14 +1,15 @@
 package com.kardoaward.kardo.selection.offline_selection.controller.admin;
 
-import com.kardoaward.kardo.selection.offline_selection.model.dto.NewOfflineSelectionRequest;
-import com.kardoaward.kardo.selection.offline_selection.model.dto.OfflineSelectionDto;
-import com.kardoaward.kardo.selection.offline_selection.model.dto.UpdateOfflineSelectionRequest;
+import com.kardoaward.kardo.selection.offline_selection.dto.NewOfflineSelectionRequest;
+import com.kardoaward.kardo.selection.offline_selection.dto.OfflineSelectionDto;
+import com.kardoaward.kardo.selection.offline_selection.dto.UpdateOfflineSelectionRequest;
 import com.kardoaward.kardo.selection.offline_selection.service.OfflineSelectionService;
 import com.kardoaward.kardo.selection.offline_selection.service.helper.OfflineSelectionValidationHelper;
-import com.kardoaward.kardo.user.model.dto.UserShortDto;
+import com.kardoaward.kardo.user.dto.UserShortDto;
 import com.kardoaward.kardo.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -38,7 +39,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/selections/offline")
 @Validated
-@Tag(name="Оффлайн-отбор: Admin.", description="API администратора для работы с оффлайн-отборами.")
+@Tag(name = "Оффлайн-отбор: Admin.", description = "API администратора для работы с оффлайн-отборами.")
 public class OfflineSelectionAdminController {
 
     private final OfflineSelectionService offlineSelectionService;
@@ -49,8 +50,8 @@ public class OfflineSelectionAdminController {
     @Operation(summary = "Добавление оффлайн-отбора.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Оффлайн-отбор добавлен.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = OfflineSelectionDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = OfflineSelectionDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Гранд-соревнование не найдено", content = @Content),
@@ -83,8 +84,8 @@ public class OfflineSelectionAdminController {
     @Operation(summary = "Обновление оффлайн-отбора.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Оффлайн-отбор обновлен.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = OfflineSelectionDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = OfflineSelectionDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Оффлайн-отбор не найден", content = @Content),
@@ -101,6 +102,9 @@ public class OfflineSelectionAdminController {
 
     @Operation(summary = "Получение списка участников оффлайн-отбора.")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Список участников оффлайн-отбора получен", content = {
+                    @Content(mediaType = "application/json", array =
+                    @ArraySchema(schema = @Schema(implementation = UserShortDto.class)))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Оффлайн-отбор не найден", content = @Content),

@@ -3,7 +3,7 @@ package com.kardoaward.kardo.user.service.helper;
 import com.kardoaward.kardo.exception.BadRequestException;
 import com.kardoaward.kardo.exception.NotFoundException;
 import com.kardoaward.kardo.user.model.User;
-import com.kardoaward.kardo.user.model.enums.Role;
+import com.kardoaward.kardo.user.enums.Role;
 import com.kardoaward.kardo.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

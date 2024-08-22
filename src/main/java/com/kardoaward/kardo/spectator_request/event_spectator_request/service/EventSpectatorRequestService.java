@@ -1,9 +1,9 @@
 package com.kardoaward.kardo.spectator_request.event_spectator_request.service;
 
-import com.kardoaward.kardo.spectator_request.event_spectator_request.model.dto.EventSpectatorRequestDto;
-import com.kardoaward.kardo.spectator_request.event_spectator_request.model.dto.NewEventSpectatorRequest;
-import com.kardoaward.kardo.spectator_request.model.dto.update.SpectatorRequestStatusUpdateRequest;
-import com.kardoaward.kardo.spectator_request.model.dto.update.SpectatorRequestStatusUpdateResult;
+import com.kardoaward.kardo.spectator_request.event_spectator_request.dto.EventSpectatorRequestDto;
+import com.kardoaward.kardo.spectator_request.event_spectator_request.dto.NewEventSpectatorRequest;
+import com.kardoaward.kardo.spectator_request.dto.update.SpectatorRequestStatusUpdateRequest;
+import com.kardoaward.kardo.spectator_request.dto.update.SpectatorRequestStatusUpdateResult;
 import com.kardoaward.kardo.user.model.User;
 
 import java.util.List;

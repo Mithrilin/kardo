@@ -1,8 +1,8 @@
 package com.kardoaward.kardo.selection.video_selection.service;
 
-import com.kardoaward.kardo.selection.video_selection.model.dto.UpdateVideoSelectionRequest;
-import com.kardoaward.kardo.selection.video_selection.model.dto.NewVideoSelectionRequest;
-import com.kardoaward.kardo.selection.video_selection.model.dto.VideoSelectionDto;
+import com.kardoaward.kardo.selection.video_selection.dto.UpdateVideoSelectionRequest;
+import com.kardoaward.kardo.selection.video_selection.dto.NewVideoSelectionRequest;
+import com.kardoaward.kardo.selection.video_selection.dto.VideoSelectionDto;
 
 import java.util.List;
 

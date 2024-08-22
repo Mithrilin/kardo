@@ -1,8 +1,8 @@
 package com.kardoaward.kardo.spectator_request.event_spectator_request.controller;
 
 import com.kardoaward.kardo.security.UserDetailsImpl;
-import com.kardoaward.kardo.spectator_request.event_spectator_request.model.dto.EventSpectatorRequestDto;
-import com.kardoaward.kardo.spectator_request.event_spectator_request.model.dto.NewEventSpectatorRequest;
+import com.kardoaward.kardo.spectator_request.event_spectator_request.dto.EventSpectatorRequestDto;
+import com.kardoaward.kardo.spectator_request.event_spectator_request.dto.NewEventSpectatorRequest;
 import com.kardoaward.kardo.spectator_request.event_spectator_request.service.EventSpectatorRequestService;
 import com.kardoaward.kardo.spectator_request.event_spectator_request.service.helper.EventSpectatorRequestValidationHelper;
 import com.kardoaward.kardo.user.model.User;
@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/spectators/event")
 @Validated
-@Tag(name="Заявка зрителя на мероприятие: Users.", description="API для работы с заявками зрителей на мероприятие " +
+@Tag(name = "Заявка зрителя на мероприятие: Users.", description = "API для работы с заявками зрителей на мероприятие " +
         "для зарегистрированных пользователей.")
 public class EventSpectatorRequestController {
 
@@ -44,8 +44,8 @@ public class EventSpectatorRequestController {
     @Operation(summary = "Добавление заявки зрителя на мероприятие.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Заявка добавлена.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = EventSpectatorRequestDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = EventSpectatorRequestDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Мероприятие не найдено", content = @Content),
@@ -84,8 +84,8 @@ public class EventSpectatorRequestController {
     @Operation(summary = "Получение заявки зрителя на мероприятие по ИД.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Заявка найдена.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = EventSpectatorRequestDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = EventSpectatorRequestDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Заявка не найдена", content = @Content),

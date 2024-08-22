@@ -5,7 +5,7 @@ import com.kardoaward.kardo.exception.NotValidException;
 import com.kardoaward.kardo.participation_request.model.ParticipationRequest;
 import com.kardoaward.kardo.participation_request.repository.ParticipationRequestRepository;
 import com.kardoaward.kardo.user.model.User;
-import com.kardoaward.kardo.user.model.enums.Role;
+import com.kardoaward.kardo.user.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -35,7 +35,7 @@ public class ParticipationRequestValidationHelper {
             log.error("Пользователь с ИД {} не является создателем заявки с ИД {} или администратором.",
                     requestor.getId(), requesterId);
             throw new NotValidException(String.format("Пользователь с ИД %d не является создателем заявки с ИД %d " +
-                            "или администратором.", requestor.getId(), requesterId));
+                    "или администратором.", requestor.getId(), requesterId));
         }
     }
 }

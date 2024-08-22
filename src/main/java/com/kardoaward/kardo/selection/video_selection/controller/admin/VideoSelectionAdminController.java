@@ -1,8 +1,8 @@
 package com.kardoaward.kardo.selection.video_selection.controller.admin;
 
-import com.kardoaward.kardo.selection.video_selection.model.dto.UpdateVideoSelectionRequest;
-import com.kardoaward.kardo.selection.video_selection.model.dto.NewVideoSelectionRequest;
-import com.kardoaward.kardo.selection.video_selection.model.dto.VideoSelectionDto;
+import com.kardoaward.kardo.selection.video_selection.dto.UpdateVideoSelectionRequest;
+import com.kardoaward.kardo.selection.video_selection.dto.NewVideoSelectionRequest;
+import com.kardoaward.kardo.selection.video_selection.dto.VideoSelectionDto;
 import com.kardoaward.kardo.selection.video_selection.service.VideoSelectionService;
 import com.kardoaward.kardo.selection.video_selection.service.helper.VideoSelectionValidationHelper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/admin/selections/video")
 @Validated
-@Tag(name="Видео-отбор: Admin.", description="API администратора для работы с видео-отборами.")
+@Tag(name = "Видео-отбор: Admin.", description = "API администратора для работы с видео-отборами.")
 public class VideoSelectionAdminController {
 
     private final VideoSelectionService videoSelectionService;
@@ -41,8 +41,8 @@ public class VideoSelectionAdminController {
     @Operation(summary = "Добавление видео-отбора.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Видео-отбор добавлен.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = VideoSelectionDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = VideoSelectionDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Гранд-соревнование не найдено", content = @Content),
@@ -75,8 +75,8 @@ public class VideoSelectionAdminController {
     @Operation(summary = "Обновление видео-отбора.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Видео-отбор обновлён.",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = VideoSelectionDto.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = VideoSelectionDto.class))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Видео-отбор не найден", content = @Content),

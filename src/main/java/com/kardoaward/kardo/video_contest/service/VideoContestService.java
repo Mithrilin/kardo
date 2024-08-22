@@ -1,8 +1,8 @@
 package com.kardoaward.kardo.video_contest.service;
 
-import com.kardoaward.kardo.video_contest.model.dto.NewVideoContestRequest;
-import com.kardoaward.kardo.video_contest.model.dto.VideoContestDto;
-import com.kardoaward.kardo.video_contest.model.dto.UpdateVideoContestRequest;
+import com.kardoaward.kardo.video_contest.dto.NewVideoContestRequest;
+import com.kardoaward.kardo.video_contest.dto.VideoContestDto;
+import com.kardoaward.kardo.video_contest.dto.UpdateVideoContestRequest;
 
 import java.util.List;
 

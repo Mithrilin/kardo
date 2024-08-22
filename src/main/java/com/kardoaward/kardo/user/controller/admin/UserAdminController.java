@@ -1,10 +1,12 @@
 package com.kardoaward.kardo.user.controller.admin;
 
-import com.kardoaward.kardo.user.model.dto.UserShortDto;
+import com.kardoaward.kardo.user.dto.UserShortDto;
 import com.kardoaward.kardo.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -26,13 +28,16 @@ import java.util.List;
 @RestController
 @RequestMapping("/admin/users")
 @Validated
-@Tag(name="Пользователь: Admin.", description="API администратора для работы с пользователями.")
+@Tag(name = "Пользователь: Admin.", description = "API администратора для работы с пользователями.")
 public class UserAdminController {
 
     private final UserService userService;
 
     @Operation(summary = "Получение списка пользователей.")
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Список пользователей получен", content = {
+                    @Content(mediaType = "application/json", array =
+                    @ArraySchema(schema = @Schema(implementation = UserShortDto.class)))}),
             @ApiResponse(responseCode = "400", description = "Запрос составлен некорректно", content = @Content),
             @ApiResponse(responseCode = "401", description = "Пользователь не авторизован", content = @Content),
             @ApiResponse(responseCode = "404", description = "Пользователь не найден", content = @Content),
@@ -42,7 +47,7 @@ public class UserAdminController {
     public List<UserShortDto> getUsersByIds(@Parameter(description = "Список ИД пользователей")
                                             @RequestParam(required = false) List<Long> ids,
                                             @Parameter(description = "Количество элементов, которые " +
-                                            "нужно пропустить для формирования текущего набора")
+                                                    "нужно пропустить для формирования текущего набора")
                                             @RequestParam(defaultValue = "0") @Min(0) int from,
                                             @Parameter(description = "Количество элементов в наборе")
                                             @RequestParam(defaultValue = "10") @Positive int size) {
