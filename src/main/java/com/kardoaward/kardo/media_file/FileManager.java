@@ -1,7 +1,6 @@
 package com.kardoaward.kardo.media_file;
 
 import com.kardoaward.kardo.exception.FileContentException;
-import com.kardoaward.kardo.user.model.User;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.http.fileupload.FileUtils;
@@ -16,10 +15,10 @@ import java.io.IOException;
 @NoArgsConstructor
 public class FileManager {
 
-    public void addAvatarToUser(User user, MultipartFile file, String path) {
+    public void addAvatarToUser(String oldAvatarPath, MultipartFile file, String path) {
 
-        if (user.getAvatarPhoto() != null) {
-            deleteFileOrDirectory(user.getAvatarPhoto());
+        if (oldAvatarPath != null) {
+            deleteFileOrDirectory(oldAvatarPath);
         } else {
             createDirectory(path);
         }
@@ -30,6 +29,18 @@ public class FileManager {
 
     public void deleteAvatarFromUser(String path) {
         deleteFileOrDirectory(path);
+    }
+
+    public void addLogoToEvent(String oldLogoPath, MultipartFile file, String path) {
+
+        if (oldLogoPath != null) {
+            deleteFileOrDirectory(oldLogoPath);
+        } else {
+            createDirectory(path);
+        }
+
+        String filePath = path + file.getOriginalFilename();
+        uploadFile(file, filePath);
     }
 
     private void uploadFile(MultipartFile file, String path) {
